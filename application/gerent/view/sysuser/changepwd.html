@@ -1,0 +1,36 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header text-error">修改用户【{$user.name}】密码</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal left-align" method="post" action="{:url('Sysuser/changepwd',array('id'=>$user['id']))}">
+            <input type="hidden" name="ref" value="{$ref}"/>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 新密码</label>
+                <div class="controls">
+                    <input type="password" name="pwd" class="input" placeholder="登录密码"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 确认密码</label>
+                <div class="controls">
+                    <input type="password" name="pwd1" class="input" placeholder="确认登录密码"/>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="editbtn">确定修改</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div>

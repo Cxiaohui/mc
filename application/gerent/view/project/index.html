@@ -1,0 +1,83 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目列表</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row-fluid">
+
+            <div class="controls ml0"><form class="form-horizontal">
+                <div class="input-append"><span class="add-on">搜索查询</span>
+                    <select name="sok" class="input select34 span3">{$fselect}</select>
+                    <input type="text" name="sov" class="input" value="{$sov}" placeholder="搜索的内容"/>
+                    <button class="btn btn-success"><i class="icon-search"></i> 搜索</button>
+                    {if $is_so}
+                    <a href="./" class="btn btn-warning"><i class="icon-trash"></i> 清空搜索</a>
+                    {/if}
+                </div></form>
+            </div>
+
+
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>项目名称</th>
+                <th>项目范围</th>
+                <th>项目地址</th>
+                <th>户型/面积</th>
+                <th>装修风格</th>
+                <th>业主名称</th>
+                <th>业主电话</th>
+                <th>联系地址</th>
+                <th>添加时间</th>
+                <th style="width: 150px;">操作</th>
+            </tr>
+            {empty name="data"}
+            <tr><td colspan="11">木有找到相关的信息</td></tr>
+            {else/}
+            {foreach name="data" item="da"}
+            <tr><td>{$da.id}</td>
+                <td><a href="{:url('Project/info',array('id'=>$da['id']))}" target="_blank">{$da.name}</a></td>
+                <td>{$types[$da.type]}</td>
+                <td>{$da.address}</td>
+                <td>{$da.house_type}/{$da.acreage}㎡</td>
+                <td>{$da.decoration_style}</td>
+                <td>{$da.owner_name}</td>
+                <td>{$da.owner_mobile}</td>
+                <td>{$da.owner_address}</td>
+                <td>{$da.addtime}</td>
+                <td>
+                    <a href="{:url('Project/edit',array('id'=>$da['id']))}" class="btn mini"><i class="icon-info-sign"></i>编辑项目</a>
+                    <a href="javascript:;" data-href="{:url('Project/del',array('id'=>$da['id']))}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+                    <a href="{:url('Projectstep/info')}?p_id={$da.id}" class="btn mini btn-primary"><i class="icon-info-sign"></i>项目阶段信息</a>
+                    <a href="{:url('Projectoffer/info',array('p_id'=>$da['id']))}" class="btn mini"><i class="icon-file-alt"></i>施工预算</a>
+                    <a href="{:url('Projectpay/info',array('p_id'=>$da['id']))}" class="btn mini"><i class="icon-money"></i>付款信息</a>
+                    <a href="{:url('Projectreport/info',array('p_id'=>$da['id']))}" class="btn mini"><i class="icon-file-alt"></i>验收报告</a>
+                    <a href="{:url('Projectstatic/info',array('p_id'=>$da['id']))}" class="btn mini"><i class="icon-file-alt"></i>方案图纸</a>
+                </td>
+            </tr>
+            {/foreach}
+            {/empty}
+            </tbody>
+
+        </table>
+        {if $pagenav}
+        <div class="row-fluid">
+            <div class="span6"><div class="dataTables_info">{$pagenav.txt}</div></div>
+            <div class="span6"><div class="dataTables_paginate paging_bootstrap pagination"><ul>{$pagenav.links}</ul></div></div>
+        </div>
+        {/if}
+    </div>
+</div>

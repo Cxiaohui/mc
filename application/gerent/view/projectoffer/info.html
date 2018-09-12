@@ -1,0 +1,61 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span6"><h3 class="page-header">[{$p_info.name}]施工预算列表</h3></div>
+                    <div class="span6">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                        <a href="{:url('Projectoffer/add',['p_id'=>$p_info.id])}" class="btn btn-primary pull-right"><i class="icon-plus"></i>添加方案</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>名称</th>
+                <th>状态</th>
+                <th>文档数</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            {empty name="data"}
+            <tr><td colspan="5">没有找到相关数据</td></tr>
+            {else /}
+            {foreach name="data" item="da"}
+            <tr>
+                <td>{$da.name}</td>
+                <td>{$status[$da.status]}</td>
+                <td>{$da.doc_count}</td>
+                <td>{$da.addtime}</td>
+                <td>{if $is_sejishi && $da.status==0}
+                    <a href="javascript:;" class="btn btn-primary mini checkbtn" data-id="{$da.id}" data-v="1">设计师确认</a>
+                    {/if}
+                    {if $is_jingli && $da.status==1}
+                    <a href="javascript:;" class="btn btn-primary mini checkbtn" data-id="{$da.id}" data-v="2">项目经理确认</a>
+                    {/if}
+                    <a href="{:url('Projectoffer/edit',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                    <a href="{:url('Pusher/add')}?p_id={$da.p_id}&type=4&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                </td>
+            </tr>
+            <tr><th>操作记录</th><td colspan="4">
+                {empty name="da.modifys"}
+                无
+                {else /}
+                {foreach name="da.modifys" item="mfy"}
+                <p>{$report_type[$mfy.type]}:{$mfy.content}[{$mfy.addtime}]</p>
+                {/foreach}
+                {/empty}
+            </td></tr>
+            {/foreach}
+            {/empty}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    var check_url = "{:url('Projectoffer/opers')}";
+</script>

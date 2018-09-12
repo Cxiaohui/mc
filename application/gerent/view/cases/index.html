@@ -1,0 +1,85 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">案例列表</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                        <a href="{:url('Cases/add')}" class="btn btn-primary pull-right"><i class="icon-plus"></i>添加新案例</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row-fluid">
+            <form class="form-horizontal">
+                <fieldset class="default span10">
+                    <legend>筛选</legend>
+                    <div class="mb10 mt10"><span class="b">分类：</span>
+                        { $ flink}</div>
+                </fieldset>
+            </form>
+        </div>-->
+
+        <div class="row-fluid"><form class="form-horizontal">
+
+            <div class="controls ml0"><form class="form-horizontal">
+                <div class="input-append"><span class="add-on">搜索查询</span>
+                    <select name="sok" class="input select34 span3">{$fselect}</select>
+                    <input type="text" name="sov" class="input" value="{$sov}" placeholder="搜索的内容"/>
+                    <button class="btn btn-success"><i class="icon-search"></i> 搜索</button>
+                    {if $is_so}
+                    <a href="./" class="btn btn-warning"><i class="icon-trash"></i> 清空搜索</a>
+                    {/if}
+                </div></form>
+            </div>
+        </form>
+
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>封面</th>
+                <th>名称</th>
+                <th>文章数</th>
+                <th>阅读量</th>
+                <th>发布时间</th>
+                <!--<th>状态</th>-->
+                <th>操作</th>
+            </tr>
+            {empty name="data"}
+            <tr><td colspan="5">木有找到相关的信息</td></tr>
+            {else/}
+            {volist name="data" id="da"}
+            <tr>
+                <td>
+                    <img src="{$da.coverimg}" style="height: 50px;"/>
+                </td>
+                <td><a href="{$h5_base_url}CaseSharing.html?id={$da.id}" target="_blank">{$da.name}</a></td>
+                <td>{$da.a_count}</td>
+                <td>{$da.view_num}</td>
+                <td>{$da.addtime}</td>
+                <!--<td>$da.status</td>-->
+                <td>
+                    <a href="{:url('Cases/edit',['id'=>$da.id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                    <a href="{:url('Cases/step_info',['case_id'=>$da.id])}" class="btn mini"><i class="icon-info-sign"></i>文章信息</a>
+
+                    <a href="javascript:;" data-href="{:url('Cases/del',['id'=>$da.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+                </td>
+            </tr>
+            {/volist}
+            {/empty}
+            </tbody>
+        </table>
+
+        {if $pagenav}
+        <div class="row-fluid">
+            <div class="span6"><div class="dataTables_info">{$pagenav.txt}</div></div>
+            <div class="span6"><div class="dataTables_paginate paging_bootstrap pagination"><ul>{$pagenav.links}</ul></div></div>
+        </div>
+        {/if}
+    </div>
+</div>

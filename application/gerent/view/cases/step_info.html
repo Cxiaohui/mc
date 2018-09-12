@@ -1,0 +1,47 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">案例列表</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                        <a href="{:url('Cases/step_add',['case_id'=>$case_id])}" class="btn btn-primary pull-right"><i class="icon-plus"></i>添加新文章</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                </tr>
+                {empty name="data"}
+                <tr><td colspan="4">没有找到相关文章信息</td></tr>
+                {else /}
+                {foreach name="data" item="da"}
+                <tr>
+                    <td>{$da.id}</td>
+                    <td>{$da.title}</td>
+                    <td>{$da.addtime}</td>
+                    <td>
+                        <a href="{:url('Cases/step_edit',['id'=>$da.id,'case_id'=>$da.case_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                        <a href="javascript:;" data-href="{:url('Cases/step_del',['id'=>$da.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+                    </td>
+                </tr>
+                {/foreach}
+                {/empty}
+            </tbody>
+        </table>
+
+
+    </div>
+</div>

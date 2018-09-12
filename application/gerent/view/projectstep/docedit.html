@@ -1,0 +1,56 @@
+<div class="main-wrapper">
+<div class="container-fluid">
+
+    <div class="row-fluid ">
+        <div class="span12">
+            <div class="primary-head">
+
+                <div class="span3"><h3 class="page-header">项目操作</h3></div>
+                <div class="span9">
+                    <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="stat-table responsive table table-stats table-striped table-bordered">
+        <tbody>
+        <tr>
+            <th>阶段名称</th>
+            <td>{$info.name}</td>
+        </tr>
+        <tr>
+            <th>备注说明</th>
+            <td>
+                <textarea class="span8" id="usermesg" rows="4" maxlength="200" placeholder="备注说明，200字内"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>文档上传</th>
+            <td class="up_box">
+                <div class="mcdoc_upload_box">
+                    <input type="file" class="select"/>
+                    <!---->
+                    <div class="mcdoc_ppress">
+                        <div class="mcdoc_press">0%</div>
+                    </div>
+                </div>
+
+
+                <a href="javascript:;" id="add_more_ups" class="btn btn-primary mini"><i class="icon-plus-sign"></i> 再上传一个</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="subbtn">保存资料</button>
+        <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+    </div>
+
+</div>
+</div>
+<script type="text/javascript">
+    var uptoken = '{$uptoken}',
+        qu_host = "{:config('qiniu.host')}";
+</script>

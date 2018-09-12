@@ -1,0 +1,104 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目付款信息</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr><td colspan="7">{$p_info.name}
+                {if $count>0}
+                &nbsp;&nbsp;<a href="{:url('Projectpay/edit',['p_id'=>$p_info.id])}" class="btn btn-primary mini">编辑付款信息</a>
+            {/if}
+            </td></tr>
+            {if $count==0}
+            <tr><td colspan="7">
+                <a href="{:url('Projectpay/add',['p_id'=>$p_info.id])}" class="btn btn-primary">创建付款信息</a>
+            </td></tr>
+            {/if}
+            {notempty name="type1"}
+            <tr><th colspan="8">设计阶段</th></tr>
+            <tr>
+                <th>ID</th>
+                <th>阶段</th>
+                <th>应付金额</th>
+                <th>应付时间</th>
+                <th>实付金额</th>
+                <th>实付时间</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            {foreach name="type1" item="stp1"}
+            <tr>
+                <td>{$stp1.id}</td>
+                <td>{$stp1.name}</td>
+                <td>{$stp1.payable}</td>
+                <td>{$stp1.payable_time}</td>
+                <td>{if $stp1.paied>0}{$stp1.paied}{/if}</td>
+                <td>{if $stp1.paied_time>0}{$stp1.paied_time}{/if}</td>
+                <td>{$stp1.remark}</td>
+                <td>
+                    <a href="{:url('Projectpay/step_info',['p_id'=>$stp1.p_id,'id'=>$stp1.id])}" class="btn mini">
+                        {if $stp1.paied>0}
+                        <i class="icon-info-sign"></i>详情
+                        {else /}
+                        <i class="icon-edit"></i>付款操作
+                        {/if}
+                    </a>
+                    {if $stp1.paied==0}
+                    <a href="{:url('Pusher/add')}?p_id={$stp1.p_id}&type=2&type_id={$stp1.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                    {/if}
+
+                </td>
+            </tr>
+            {/foreach}
+            {/notempty}
+            {notempty name="type2"}
+            <tr><th colspan="8">施工阶段</th></tr>
+            <tr>
+                <th>ID</th>
+                <th>阶段</th>
+                <th>应付金额</th>
+                <th>应付时间</th>
+                <th>实付金额</th>
+                <th>实付时间</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            {foreach name="type2" item="stp2"}
+            <tr>
+                <td>{$stp2.id}</td>
+                <td>{$stp2.name}</td>
+                <td>{$stp2.payable}</td>
+                <td>{$stp2.payable_time}</td>
+                <td>{if $stp2.paied>0}{$stp2.paied}{/if}</td>
+                <td>{if $stp2.paied_time>0}{$stp2.paied_time}{/if}</td>
+                <td>{$stp2.remark}</td>
+                <td>
+                    <a href="{:url('Projectpay/step_info',['p_id'=>$stp2.p_id,'id'=>$stp2.id])}" class="btn mini">
+                        {if $stp2.paied>0}
+                        <i class="icon-info-sign"></i>详情
+                        {else /}
+                        <i class="icon-edit"></i>付款操作
+                        {/if}
+                    </a>
+                    {if $stp2.paied==0}
+                    <a href="{:url('Pusher/add')}?p_id={$stp2.p_id}&type=2&type_id={$stp2.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            {/notempty}
+            </tbody>
+        </table>
+
+    </div>
+</div>

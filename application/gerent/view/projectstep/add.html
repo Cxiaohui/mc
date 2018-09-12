@@ -1,0 +1,158 @@
+<style type="text/css">
+    .step_m_time1,.step_m_time2,.step_s_time1,.step_s_time2{width: 130px;padding: 6px 0;}
+</style>
+<div class="main-wrapper">
+    <div class="container-fluid">
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+            {notempty name="info"}
+            <input type="hidden" id="infoid" name="id" value="{$info.id}"/>
+            {/notempty}
+            <input type="hidden" name="ref" value=""/>
+
+            <table class="stat-table responsive table table-stats table-striped table-bordered">
+                <tbody>
+                {in name="p_info.type" value="1,3"}
+                <tr>
+                    <th>设计阶段</th>
+                    <td>
+                        <div class="">
+                            <ol id="sheji" class="project_steps" data-type="1">
+                                {empty name="type1_steps"}
+                                <li class="mb10" data-id="">
+                                    <p class="input-append">
+                                        <a href="javascript:;" class="add-on text-error del_main_step"><i class="icon-trash"></i></a>
+                                        <span class="add-on">阶段名称</span><input type="text" class="stepv step_m_name" value="">
+                                        <span class="add-on">计划时间</span><input type="date" min="{$mindate}" class="stepv step_m_time1" value="">
+                                        <span class="add-on">-</span><input type="date" min="{$mindate}" class="stepv step_m_time2" value="">
+                                        <span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>
+                                        <span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>
+                                    </p>
+                                    <ol class="mt10 sub_step_ul"></ol>
+                                    <p><a href="javascript:;" class="btn btn-primary mini add_sub_step" style="margin-left: 20%;"><i class="icon-plus-sign"></i>子阶段</a></p>
+                                </li>
+                                {else /}
+                                {foreach name="type1_steps" item="step1"}
+                                <li class="mb10" data-id="{$step1.id}">
+                                    <p class="input-append">
+                                        <a href="javascript:;" class="add-on text-error del_main_step"><i class="icon-trash"></i></a>
+                                        <span class="add-on">阶段名称</span><input type="text" class="stepv step_m_name" value="{$step1.name}">
+                                        <span class="add-on">计划时间</span><input type="date" class="stepv step_m_time1" value="{$step1.plan_time[0]}">
+                                        <span class="add-on">-</span><input type="date" class="stepv step_m_time2" value="{$step1.plan_time[1]}">
+                                        <span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>
+                                        <span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>
+                                    </p>
+                                    <ol class="mt10 sub_step_ul">
+                                        {notempty name="step1.sub"}
+                                        {foreach name="step1.sub" item="sub1"}
+                                        <li class="mb10" data-id="{$sub1.id}">
+                                            <p class="input-append">
+                                                <a href="javascript:;" class="add-on text-error del_sub_step"><i class="icon-trash"></i></a>
+                                                <span class="add-on">阶段名称</span><input type="text" class="stepv step_s_name" value="{$sub1.name}">
+                                                <span class="add-on">计划时间</span><input type="date" class="stepv step_s_time1" value="{$sub1.plan_time[0]}">
+                                                <span class="add-on">-</span><input type="date" class="stepv step_s_time2" value="{$sub1.plan_time[1]}">
+                                                <span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>
+                                                <span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>
+                                            </p>
+                                        </li>
+                                        {/foreach}
+                                        {/notempty}
+                                    </ol>
+                                    <p><a href="javascript:;" class="btn btn-primary mini add_sub_step" style="margin-left: 20%;"><i class="icon-plus-sign"></i>子阶段</a></p>
+                                </li>
+                                {/foreach}
+                                {/empty}
+                            </ol>
+
+                            <a href="javascript:;" class="btn btn-success add_main_step"><i class="icon-plus-sign"></i> 新增主阶段</a>
+
+                        </div>
+                    </td>
+                </tr>
+                {/in}
+                {in name="p_info.type" value="1,2"}
+                <tr>
+                    <th>施工阶段</th>
+                    <td>
+                        <div class="">
+                            <ol id="shigong" class="project_steps" data-type="2">
+                                {empty name="type2_steps"}
+                                <li class="mb10" data-id="">
+                                    <p class="input-append">
+                                        <a href="javascript:;" class="add-on text-error del_main_step"><i class="icon-trash"></i></a>
+                                        <span class="add-on">阶段名称</span><input type="text" class="stepv step_m_name" value="">
+                                        <span class="add-on">计划时间</span><input type="date" min="{$mindate}" class="stepv step_m_time1" value="">
+                                        <span class="add-on">-</span><input type="date" min="{$mindate}" class="stepv step_m_time2" value="">
+                                        <span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>
+                                        <span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>
+                                    </p>
+                                    <ol class="mt10 sub_step_ul"></ol>
+                                    <p><a href="javascript:;" class="btn btn-primary mini add_sub_step" style="margin-left: 20%;"><i class="icon-plus-sign"></i>子阶段</a></p>
+                                </li>
+                                {else /}
+                                {foreach name="type2_steps" item="step2"}
+                                <li class="mb10" data-id="{$step2.id}">
+                                    <p class="input-append">
+                                        <a href="javascript:;" class="add-on text-error del_main_step"><i class="icon-trash"></i></a>
+                                        <span class="add-on">阶段名称</span><input type="text" class="stepv step_m_name" value="{$step2.name}">
+                                        <span class="add-on">计划时间</span><input type="date" class="stepv step_m_time1" value="{$step2.plan_time[0]}">
+                                        <span class="add-on">-</span><input type="date" class="stepv step_m_time2" value="{$step2.plan_time[1]}">
+                                        <span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>
+                                        <span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>
+                                    </p>
+                                    <ol class="mt10 sub_step_ul">
+                                        {notempty name="step2.sub"}
+                                            {foreach name="step2.sub" item="sub2"}
+                                                <li class="mb10" data-id="{$sub2.id}">
+                                                    <p class="input-append">
+                                                        <a href="javascript:;" class="add-on text-error del_sub_step"><i class="icon-trash"></i></a>
+                                                        <span class="add-on">阶段名称</span><input type="text" class="stepv step_s_name" value="{$sub2.name}">
+                                                        <span class="add-on">计划时间</span><input type="date" class="stepv step_s_time1" value="{$sub2.plan_time[0]}">
+                                                        <span class="add-on">-</span><input type="date" class="stepv step_s_time2" value="{$sub2.plan_time[1]}">
+                                                        <span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>
+                                                        <span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>
+                                                    </p>
+                                                </li>
+                                            {/foreach}
+                                        {/notempty}
+                                    </ol>
+                                    <p><a href="javascript:;" class="btn btn-primary mini add_sub_step" style="margin-left: 20%;"><i class="icon-plus-sign"></i>子阶段</a></p>
+                                </li>
+                                {/foreach}
+                                {/empty}
+                            </ol>
+
+                            <a href="javascript:;" class="btn btn-success add_main_step"><i class="icon-plus-sign"></i> 新增主阶段</a>
+
+                        </div>
+                    </td>
+                </tr>
+                {/in}
+                <tr><td colspan="2">
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" id="subbtn">保存信息</button>
+                        <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+                    </div>
+                </td></tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+<script type="text/javascript">
+    var del_url = "{:url('Projectstep/del')}?p_id={$p_id}",
+        stepact = '{$act}',
+        mindate = '{$mindate}';
+</script>

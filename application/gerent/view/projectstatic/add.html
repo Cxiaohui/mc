@@ -1,0 +1,73 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目展示内容</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr><th>{$p_info.name}</th></tr>
+            <tr>
+                <th>展示类型</th>
+                <td>
+                    <select id="type">
+                        {foreach name="doc_type" item="dy" key="dk"}
+                        <option value="{$dk}"{if $type==$dk} selected{/if}>{$dy}</option>
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th>方案文档</th>
+                <td class="up_box">
+
+                    {notempty name="info.docs"}
+                    {foreach name="info.docs" item="dc"}
+                    {if in_array($dc.file_type,$img_ext)}
+                    <p><a href="{$qn_host}{$dc.file_path}" target="_blank"><img src="{$qn_host}{$dc.file_path}" style="height: 200px;"/></a></p>
+                    <p>{$dc.file_name} </p>
+                    {else /}
+                    <h4><i class="icon-file-alt"></i> <a href="{$qn_host}{$dc.file_path}" target="_blank">{$dc.file_name}</a> </h4>
+                    {/if}
+
+                    <hr/>
+                    {/foreach}
+                    {/notempty}
+
+
+                    <div class="mcdoc_upload_box">
+                        <input type="file" class="select"/>
+
+                        <div class="mcdoc_ppress">
+                            <div class="mcdoc_press">0%</div>
+                        </div>
+                    </div>
+
+                    <a href="javascript:;" id="add_more_ups" class="btn btn-primary mini"><i class="icon-plus-sign"></i> 再上传一个</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="subbtn">保存资料</button>
+            <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var uptoken = '{$uptoken}',
+        pid = {$id},
+        qu_host = "{:config('qiniu.host')}";
+</script>

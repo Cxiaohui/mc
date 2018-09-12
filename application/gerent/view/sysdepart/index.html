@@ -1,0 +1,49 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">部门列表</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                        <a href="javascript:;" data-url="{:url('Sysdepart/add')}" class="btn btn-primary pull-right openlayerwin"><i class="icon-plus"></i>添加新部门</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>公司</th>
+                <th>部门名称</th>
+                <th>操作</th>
+            </tr>
+            {empty name="companys"}
+            <tr><td colspan="4">木有找到相关的信息</td></tr>
+            {else/}
+            {foreach name="companys" id="da"}
+            <tr><td></td><td>{$da.name}</td><td></td><td></td></tr>
+            {notempty name="da.departs"}
+            {foreach name="da.departs" id="pda"}
+            <tr>
+                <td>{$pda.id}</td>
+                <td></td>
+                <td>{$pda.name}</td>
+                <td>
+                    <a href="javascript:;" data-url="{:url('Sysdepart/edit',array('id'=>$pda['id']))}" class="btn mini openlayerwin"><i class="icon-edit"></i>编辑</a>
+                    <a href="javascript:;" data-href="{:url('Sysdepart/del',array('id'=>$pda['id']))}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+                </td>
+            </tr>
+            {/foreach}
+            {/notempty}
+
+            {/foreach}
+            {/empty}
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,17 @@
+{__NOLAYOUT__}
+<!-- Navbar================================================== -->
+<div class="navbar navbar-inverse top-nav">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/index.html" style="margin-top:15px;">{:config('company.short_name')}</a>
+            <!-- 顶级菜单 begin-->
+            <div class="nav-collapse">
+                <ul class="nav">
+                    {volist name="groups" id="gp"}
+                    <li><a href="{:url($gp['link'])}"{if $cgp==$gp.id} class="active"{/if}><i class="{$gp['icon']}"></i>{$gp['name']}</a></li>
+                    {/volist}
+                </ul>
+            </div><!-- 顶级菜单 end-->
+        </div>
+    </div>
+</div>

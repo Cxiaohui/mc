@@ -1,0 +1,137 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span12">
+                        <h3 class="page-header text-info">
+                            <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 返回</a>
+                            {if $p_id>0}[{$project.name}]{/if} {$types[$type]}消息设置</h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal left-align" method="post" action="" id="postform">
+            {if $info}
+            <input type="hidden" name="id" value="{$info.id}"/>
+            {/if}
+            <input type="hidden" name="ref" value="{$ref}"/>
+            <input type="hidden" name="type" value="{$type}"/>
+            <input type="hidden" name="type_id" value="{$type_id}"/>
+            <input type="hidden" name="target_end_time" value="{$target_end_time}"/>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 接收项目</label>
+                <div class="controls">
+                    {if $p_id>0}
+                    <select id="pject_select" name="p_id" class="span6 input disabled">
+                        <option value="{$p_id}" selected>{$project.name}</option>
+                    </select>
+                    {else/}
+                    <select id="pject_select" name="p_id" class="span6 input">
+                        <option value="">-请选择项目-</option>
+                        {foreach name="all_projects" item="pject"}
+                        <option value="{$pject.id}">{$pject.name}</option>
+                        {/foreach}
+                    </select>
+                    {/if}
+
+                    <div  id="geter_box" class="well span6" style="margin-left: 0; display: none;">
+                        <p>接收者：</p>
+                        <div id="geter_list"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 提醒标题</label>
+                <div class="controls">
+                    <input type="text" name="title" value="{$title}" class="span6 input" placeholder=""/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 提醒文案</label>
+                <div class="controls">
+                    <textarea name="message" class="span6" rows="2" placeholder="">{$message}</textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">消息运行</label>
+                <div class="controls">
+                    {if $can_send_one}
+                    <label class="radio radio-inline"><input type="radio" name="run_type" value="1" >立即提醒</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {else/}
+                    <label class="radio radio-inline"><input type="radio" name="" value="" disabled>立即提醒</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {/if}
+                    {if $target_end_time}
+                    <label class="radio radio-inline"><input type="radio" name="run_type" value="2" {if $info&&$info.run_type==2}checked{/if}>单次定时提醒</label>
+                    {/if}
+                    <label class="radio radio-inline"><input type="radio" name="run_type" value="3" {if $info&&$info.run_type==3}checked{/if}>多次定时提醒</label>
+                    <p class="text-error">立即提醒在单项内，每日仅可使用1次</p>
+                </div>
+            </div>
+
+            <div class="well setting2" style="display:  {if $info&&$info.run_type!=2}none{/if};">
+                <h5>单次定时提醒设置</h5>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 提醒时间</label>
+                <div class="controls">
+                    <select name="once_run_time_option" class="input">{foreach name="oncetimes" item="onct" key="okey"}
+                        <option value="{$okey}" {if $info&&$info.once_run_time_option==$okey}selected{/if}>{$onct}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            </div>
+
+            <div class="well setting3" style="display: {if $info&&$info.run_type!=3}none{/if};">
+                <h5>多次定时提醒设置</h5>
+                <div class="control-group">
+                    <label class="control-label"><span class="error">*</span> 时间范围</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input type="date" name="begin_time" value="{if $info}{$info.begin_time}{/if}" class="input" placeholder="开始时间"/>
+                            <span class="add-on"> - </span>
+                            <input type="date" name="end_time" value="{if $info}{$info.end_time}{/if}" class="input" placeholder="结束时间"/>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label"><span class="error">*</span> 运行频率</label>
+                    <div class="controls">
+                        <div class="input-append">
+                        <input type="number" name="run_rate_day" value="{if $info}{$info.run_rate_day}{else/}1{/if}" class="input" style="width:80px;"/>
+                            <span class="add-on">天推送 1 次，在当天的</span>
+                            <select name="run_rate_time" class="input" style="width:80px;">
+                                {foreach name="runtimes" item="rt" key="rkey"}
+                                <option value="{$rt}" {if $rt==$run_rate_time}selected{/if}>{$rt}</option>
+                                {/foreach}
+                            </select>
+                            <span class="add-on">点</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" id="subform">{if $can_send_one}
+                    {if $info&&$info.run_type!=1}保存设置{else/}立即发送提醒{/if}
+
+                    {else/}保存设置{/if}</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var get_member_url = '{$get_member_url}',
+        pushid = {if $info}{$info.id}{else/}0{/if},
+        p_id = {$p_id};
+</script>

@@ -1,0 +1,58 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">消息设置列表</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                        <a href="{:url('Pusher/add')}" class="btn btn-primary pull-right"><i class="icon-plus"></i>添加新消息</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>消息标题</th>
+                <th>相关项目</th>
+                <th>消息接收者</th>
+                <th>消息类型</th>
+                <th>添加时间</th>
+                <th style="width:130px;">操作</th>
+            </tr>
+            {empty name="data"}
+            <tr><td colspan="7">木有找到相关的信息</td></tr>
+            {else/}
+            {volist name="data" id="da"}
+            <tr><td>{$da.title}</td>
+                <td><a href="{:url('Project/info',['id'=>$da.p_id])}" target="_blank">{$da.p_name}</a></td>
+                <td>{$da.geter_users}</td>
+                <td>{$run_types[$da.run_type]}</td>
+                <td>{$da.addtime}</td>
+                <td>
+                    <a href="{:url('Pusher/edit',['id'=>$da.id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                    <a href="javascript:;" data-href="{:url('Pusher/del',['id'=>$da.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+
+                </td></tr>
+            {/volist}
+            {/empty}
+
+            </tbody>
+
+        </table>
+
+
+        {if $pagenav}
+        <div class="row-fluid">
+            <div class="span6"><div class="dataTables_info">{$pagenav.txt}</div></div>
+            <div class="span6"><div class="dataTables_paginate paging_bootstrap pagination"><ul>{$pagenav.links}</ul></div></div>
+        </div>
+        {/if}
+
+
+
+    </div>
+</div>

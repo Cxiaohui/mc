@@ -1,0 +1,10 @@
+{__NOLAYOUT__}
+{foreach name="data" item="da"}
+<optgroup label="{$da.name}">
+    {notempty name="da.members"}
+    {foreach name="da.members" item="mber"}
+    <option value ="{$mber.user_id}"{if $selected==$mber.user_id} selected{/if}>{$mber.name}[{$mber.post}]</option>
+    {/foreach}
+    {/notempty}
+</optgroup>
+{/foreach}

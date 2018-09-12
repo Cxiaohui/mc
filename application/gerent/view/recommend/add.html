@@ -1,0 +1,78 @@
+{__NOLAYOUT__}
+{include file="common/layerheader"/}
+<div class="container">
+
+    <div class="row-fluid">
+        <fieldset class="default padd10">
+            <legend>设置</legend>
+
+
+            <form class="form-horizontal mt10" action="{:url('recommend/add')}" method="post" id="postform">
+                {if $info}
+                <input type="hidden" name="id" value="{$info.id}"/>
+                {/if}
+                <input type="hidden" name="stable" value="{$stable}"/>
+                <input type="hidden" name="sid" value="{$sid}"/>
+                <input type="hidden" name="type" value="1"/>
+                <div>
+                    <!--<div class="mb10">
+                        <span class="b"><span class="text-error">*</span> 展示文字：</span>
+                        <input type="text" name="title" value="" placeholder="展示的文字"/>
+                    </div>-->
+                    <div class="mb10">
+                        <span class="b"><span class="text-error">*</span>展示图片：</span>
+                        <input type="hidden" name="pic" id="picinput" value="{if $reminfo}{$reminfo.pic}{/if}">
+                        <div class="uploadimgbox" style="width: 150px;height:100px;display:inline-block">
+                            <img src="{if $reminfo}{$reminfo.pic}{else/}{$defimg}{/if}" id="picimg" class="defimg" alt="展示图片">
+                        </div>
+                        <div class="row-fluid">
+                            <div id="filePicker" class="mt5 pull-left"></div>
+                            <div class="mt10 ml10 text-error pull-left" id="logomesg">仅允许jpg和png格式，1.5M内,大小 750x320(px)</div>
+                        </div>
+
+                        <div id="progressbar" class="progress progress-success progress-striped mt5 span3 ml0" style="display:none">
+                            <span class="bar" style="width: 0%;">0%</span>
+                        </div>
+                    </div>
+                    {if $sid}
+                    <div class="mb10">
+                        <span class="b"><span class="text-error">*</span> 跳转链接：</span>
+                        <label class="label label-inline"><input type="radio" name="retype" value="1" {if !$iscustom}checked{/if}/>随资源</label>
+                        <label class="label label-inline"><input type="radio" name="retype" value="2" {if $iscustom}checked{/if}/>自定义</label>
+                    </div>
+                    <div class="mb10{if !$iscustom} hide{/if}" id="custombox">
+                        <span class="b">自定义链接：</span>
+                        <input type="url" name="url" value="{if $reminfo}{$reminfo.url}{/if}" placeholder="http://开头"/>
+                    </div></div>
+                {else/}
+                <input type="hidden" name="retype" value="2"/>
+                <div class="mb10">
+                    <span class="b"><span class="text-error">*</span> 跳转链接：</span>
+                    <input type="url" name="url" value="{if $reminfo}{$reminfo.url}{/if}" placeholder="http://开头"/>
+                </div>
+                {/if}
+
+                <div class="mb10">
+                    <span class="b">开始时间：</span>
+                    <input type="date" name="betime" value="{$betime}"/>
+                </div>
+                <div class="mb10">
+                    <span class="b">结束时间：</span>
+                    <input type="date" name="entime" value="{if $info}{$info['entime']}{/if}"/>
+                    <div class="help-inline">不设则表示一直展示</div>
+                </div>
+
+                <div id="page-mesg"></div>
+                <div class="form-actions">
+                    <input type="button" class="btn btn-primary" value="确定保存" id="savedata"/>
+                    <a href="javascript:;" class="btn" onclick="closePlayer();">关闭</a>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript">
+    var uppath = "{:url('Up/index')}";
+</script>
+
+{include file="common/layerfooter"/}

@@ -1,0 +1,94 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目阶段信息</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr><td colspan="7">{$p_info.name}</td></tr>
+
+            {if $count==0}
+            <tr><td colspan="7">
+                <a href="{:url('Projectstep/add')}?p_id={$p_info.id}" class="btn btn-primary">创建阶段信息</a>
+            </td></tr>
+            {else /}
+            <tr><th colspan="3">项目阶段信息<a href="{:url('Projectstep/edit')}?p_id={$p_info.id}" class="btn btn-primary mini">&nbsp;&nbsp; 编辑</a></th>
+                <th colspan="4"><a href="{:url('Project/info',['id'=>$p_info.id])}" class="btn mini btn-primary"><i class="icon-info-sign"></i>项目基本信息</a></th>
+            </tr>
+            {/if}
+            {notempty name="type1_steps"}
+            <tr><th colspan="7">设计阶段</th></tr>
+            <tr>
+                <th>ID</th>
+                <th style="width: 150px;">阶段名称</th>
+                <th style="width: 150px;">计划时间</th>
+                <th>项目负责人操作</th>
+                <th style="width: 100px;">状态</th>
+                <th style="width: 100px;">客户操作</th>
+                <th style="width: 100px;">操作</th>
+            </tr>
+            {foreach name="type1_steps" item="stp1"}
+                <tr>
+                    <td>{$stp1.id}</td>
+                    <td><?php if($stp1['level'] > 1){
+                        echo str_repeat('--',$stp1['level']),'|&nbsp;';}
+                        ?>{$stp1.name}</td>
+                    <td>{$stp1.plan_time}</td>
+                    <td>{if $stp1.b_user_name}
+                        {$stp1.b_user_name}:{$stp1.b_user_mesg}
+                        {/if}
+                    </td>
+                    <td>{$status[$stp1.status]}</td>
+                    <td>{$stp1.c_oper}</td>
+                    <td>{if $stp1.sub_count==0}
+                        <a href="{:url('Projectstep/docinfo',['stepid'=>$stp1.id])}" class="btn mini"><i class="icon-info-sign"></i>查看详情</a>
+                        <a href="{:url('Pusher/add')}?p_id={$stp1.p_id}&type=1&type_id={$stp1.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                    {/if}</td>
+                </tr>
+            {/foreach}
+            {/notempty}
+            {notempty name="type2_steps"}
+            <tr><th colspan="7">施工阶段</th></tr>
+            <tr>
+                <th>ID</th>
+                <th>阶段名称</th>
+                <th>计划时间</th>
+                <th>项目负责人操作</th>
+                <th>状态</th>
+                <th>客户操作</th>
+                <th>操作</th>
+            </tr>
+            {foreach name="type2_steps" item="stp2"}
+            <tr>
+                <td>{$stp2.id}</td>
+                <td><?php if($stp2['level'] > 1){
+                    echo str_repeat('--',$stp2['level']),'|&nbsp;';}
+                    ?>{$stp2.name}</td>
+                <td>{$stp2.plan_time}</td>
+                <td>{if $stp2.b_user_name}
+                    {$stp2.b_user_name}:{$stp2.b_user_mesg}
+                    {/if}
+                </td>
+                <td>{$status[$stp2.status]}</td>
+                <td>{$stp2.c_oper}</td>
+                <td>{if $stp2.sub_count==0}
+                    <a href="{:url('Projectstep/docinfo',['stepid'=>$stp2.id])}" class="btn mini"><i class="icon-info-sign"></i>查看详情</a>
+                    <a href="{:url('Pusher/add')}?p_id={$stp2.p_id}&type=6&type_id={$stp2.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                {/if}</td>
+            </tr>
+            {/foreach}
+            {/notempty}
+            </tbody>
+        </table>
+
+    </div>
+</div>

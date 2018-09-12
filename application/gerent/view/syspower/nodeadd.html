@@ -1,0 +1,105 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">添加权限节点</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal left-align" id="postform" method="post" action="{:url('Syspower/nodeadd')}">
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 中文名称</label>
+                <div class="controls">
+                    <input type="text" name="title" value="" class="input" placeholder="有意义的名称标识"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 英文名称</label>
+                <div class="controls">
+                    <input type="text" name="name" value="" class="input" placeholder="模块/控制/方法名"/>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">是否做为菜单</label>
+                <div class="controls">
+                    <label class="radio radio-inline"><input type="radio" name="ismenu" value="1">是</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="ismenu" value="0" checked>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">使用控制</label>
+                <div class="controls">
+                    <label class="radio radio-inline"><input type="radio" name="status" value="1" checked>启用</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="status" value="0">禁用</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 父节点</label>
+                <div class="controls">
+                    <select name="pid">
+                        {empty name="pids"}
+                        <option value="0">根节点</option>
+                        {else/}
+                            {volist name="pids" id="pd"}
+                                <option value="{$pd['id']}">{php}if($pd['level'] > 1){
+                            echo str_repeat('--',$pd['level']),'|&nbsp;';}{/php}{$pd['title']}</option>
+                            {/volist}
+                        {/empty}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 类型</label>
+                <div class="controls">
+                    <select name="level">
+                        <option value="">请选择</option>
+                        {volist name="ntype" id="type" key="nk"}
+                        <option value="{$nk}">{$type}</option>
+                        {/volist}
+                    </select>
+                    <span class="muted"></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 所属栏目</label>
+                <div class="controls">
+                    <select name="gid">
+                        <option value="0">请选择</option>
+                        {volist name="groups" id="gp"}
+                            <option value="{$gp.id}">{$gp.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">图标</label>
+                <div class="controls">
+                    <input type="text" name="icon" value="" class="input" placeholder="模块一般要个图标"/>
+                    <div class="help-inline">填写图标的class名称，参考 <a href="/icon.html" target="_blank"><i class="icon-hand-right"></i> 图标列表</a> </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">备注</label>
+                <div class="controls"><textarea name="remark" class="span4" rows="4" placeholder="备注信息，选填"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="submitbtn">确定添加</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div>

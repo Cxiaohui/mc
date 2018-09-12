@@ -1,0 +1,92 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">添加/编辑角色</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal left-align" method="post" action="{:url('Syspower/roleadd')}" id="roleform">
+            {notempty name="info"}
+            <input type="hidden" name="id" value="{$info.id}"/>
+            {/notempty}
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 角色名称</label>
+                <div class="controls">
+                    <input type="text" name="name" value="{if $info}{$info.name}{/if}" class="input" placeholder="有意义的名称"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">使用控制</label>
+                <div class="controls">
+                    <label class="radio radio-inline"><input type="radio" name="status" value="1" {if !$info || $info['status']==1}checked{/if}>启用</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="status" value="0" {if $info && $info['status']==0}checked{/if}>禁用</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">备注</label>
+                <div class="controls"><textarea name="remark" class="span6" rows="2" placeholder="备注信息，选填">{if $info}{$info.remark}{/if}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">权限配置</label>
+                <div class="controls">
+                    <table class="table responsive">
+                        <thead>
+                        <tr>
+                            <th class="span2">模块</th>
+                            <th>主操项</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <input type="hidden" name="acc[]" value="{$nodes['id']}"/>
+                        {volist name="nodes['sub']" id="nd"}
+                            <tr>
+                                <td><label class="label label-success">
+                                    <input type="checkbox" name="acc[]" value="{$nd['id']}" class="accchk" id="{$nd['id']}"{php}if($info && in_array($nd['id'],$info['acc'])){echo ' checked';}{/php}/>{$nd['title']}
+                                </label> </td>
+                                <td>{notempty name="nd['sub']"}
+
+                                    {volist name="nd['sub']" id="lv2"}
+                                        <p>
+                                            <label class="label label-info">
+                                                <input type="checkbox" name="acc[]" value="{$lv2['id']}" class="accchk" id="{$nd['id']}-{$lv2['id']}"{php}if($info && in_array($lv2['id'],$info['acc'])){echo ' checked';}{/php}/>{$lv2['title']}
+                                            </label>
+
+                                            {notempty name="lv2['sub']"}
+                                                {volist name="lv2['sub']" id="lv3"}
+                                                    <label class="label">
+                                                        <input type="checkbox" name="acc[]" value="{$lv3['id']}" class="accchk" id="{$nd['id']}-{$lv2['id']}-{$lv3['id']}"{php}if($info && in_array($lv3['id'],$info['acc'])){echo ' checked';}{/php}/>{$lv3['title']}
+                                                    </label>&nbsp;
+                                                {/volist}
+                                            {/notempty}
+
+                                        </p>
+                                    {/volist}
+                                {/notempty}
+                                </td>
+
+                            </tr>
+
+                        {/volist}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" id="subform">确定保存</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目阶段详情</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr><td colspan="4">{$p_info.name}</td></tr>
+            <tr><th style="width: 100px;">项目名称</th><td>{$p_info.name}</td></tr>
+            <tr><th>阶段名称</th><td>{$info.name}</td></tr>
+            <tr><th>计划时间</th><td>{$info.plan_time}</td></tr>
+            <tr><th>实际时间</th><td>{$info.realtime}</td></tr>
+            <tr><th>状态</th><td>{$status[$info.status]}</td></tr>
+            <tr><th>操作</th><td>
+                <a href="{:url('Projectstep/docedit',array('stepid'=>$info.id))}" class="btn btn-primary"><i class="icon-upload-alt"></i>上传文档</a>
+            </td></tr>
+            <tr>
+                <th>相关文档</th>
+                <td>{notempty name="docs"}
+                    {foreach name="docs" item="dc"}
+                    <div class="docli">
+                    {if in_array($dc.file_type,$img_ext)}
+                        <p><a href="{$qn_host}{$dc.file_path}" target="_blank"><img src="{$qn_host}{$dc.file_path}" style="height: 200px;"/></a></p>
+                        <p>{$dc.file_name} </p>
+                        {else /}
+                    <div class="docli">
+                    <h4><i class="icon-file-alt"></i> <a href="{$qn_host}{$dc.file_path}" target="_blank">{$dc.file_name}</a></h4>
+                    {/if}
+                        <a href="javascript:;" class="text-error del_mcfile" data-type="1" data-id="{$dc.id}"><i class="icon-trash"></i> 删除</a>
+                    <hr/>
+                    </div>
+                    {/foreach}
+                    {/notempty}
+
+                </td>
+            </tr>
+            <tr>
+                <th>客户操作</th>
+                <td>
+                    {if $info.pass_time>0}
+                    <p>--------------[{$info.pass_time}]---------------<br/>
+                        <label class="label label-success">通过</label>
+                    </p>
+                    {/if}
+                    {notempty name="modify"}
+                        {foreach name="modify" item="md"}
+
+                        <p>--------------[{$md.addtime}]---------------<br/>
+                            {$md.content}<br/>
+                        {if $md.img}
+                            <a href="{$md.img}" target="_blank"><img src="{$md.img}" style="max-height: 150px;"/></a>
+                            {/if}
+                        </p>
+                        {/foreach}
+                    {/notempty}
+
+                </td>
+            </tr>
+            <tr><th>操作日志</th>
+            <td>
+                {notempty name="plogs"}
+                {foreach name="plogs" item="plg"}
+                <p>{$plg.oper_desc}--{$plg.oper_user_name}[{$plg.addtime}]</p>
+                {/foreach}
+                {/notempty}
+            </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,228 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <form class="form-horizontal left-align" method="post" action="{:url('Project/add')}">
+            {notempty name="info"}
+            <input type="hidden" name="id" value="{$info.id}"/>
+            {/notempty}
+            <input type="hidden" name="ref" value="{$ref}"/>
+            <input type="hidden" name="owner_user_id" value="{$cuser_id}"/>
+
+            <table class="stat-table responsive table table-stats table-striped table-bordered">
+                <tbody>
+                <tr><th colspan="4">项目基本信息</th></tr>
+                <tr>
+                    <td class="align-r"><span class="error">*</span>项目名称</td><td>
+                    <input type="text" name="name" value="{if $info}{$info.name}{/if}" class="input" placeholder=""/>
+                </td>
+                    <td class="align-r"><span class="error">*</span>项目范围</td><td>
+                    <select name="type">
+                        <option value="">-请选择-</option>
+                        {foreach name="types" key="pk" item="pty"}
+                        <option value="{$pk}"{if $info&&$info.type==$pk}selected{/if}>{$pty}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                </tr>
+                <tr>
+                    <td class="align-r"><span class="error">*</span>项目户型</td><td>
+                    <input type="text" name="house_type" value="{if $info}{$info.house_type}{/if}" class="input" placeholder=""/>
+                </td>
+                    <td class="align-r"><span class="error">*</span>项目面积</td><td>
+                        <div class="input-append">
+                            <input type="text" name="acreage" value="{if $info}{$info.acreage}{/if}" class="input" placeholder=""/>
+                            <span class="add-on">㎡</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td class="align-r"><span class="error">*</span>装修风格</td><td colspan="3">
+                    <input type="text" name="decoration_style" value="{if $info}{$info.decoration_style}{/if}" class="input" placeholder=""/>
+                </td></tr>
+                <tr><td class="align-r"><span class="error">*</span>项目地址</td><td colspan="3">
+                    <input type="text" name="address" value="{if $info}{$info.address}{/if}" class="input span6" placeholder=""/>
+                </td></tr>
+                <tr><td class="align-r">项目备注</td><td colspan="3">
+                    <textarea class=" span8" name="p_remarks" id="p_remarks" style="min-height:300px;" placeholder="备注信息，选填">{if $info}{$info.marks.p_remarks}{/if}</textarea>
+                </td></tr>
+                <tr><th colspan="4">项目主要负责人信息</th></tr>
+                <tr><td class="align-r"><span class="error">*</span>项目经理</td><td>
+                    <!--manager_user_id-->
+                    <select name="manager_user_id">
+                        <option value="">-请选择-</option>
+                        {if $info}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>$info.manager_user_id])}
+                        {else /}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>0])}
+                        {/if}
+                    </select>
+                    {notempty name="aroles"}
+                    <select name="manager_role_id">
+                        <option value="">-操作角色-</option>
+                        {if $info}
+                        {:create_select($aroles,'id',['name','remark'],$info.manager_role_id)}
+                        {else /}
+                        {:create_select($aroles,'id',['name','remark'],0)}
+                        {/if}
+                    </select>
+                    {/notempty}
+                </td><td class="align-r"><span class="error">*</span>客户经理</td><td>
+                    <select name="customer_manager_user_id">
+                        <option value="">-请选择-</option>
+                        {if $info}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>$info.customer_manager_user_id])}
+                        {else /}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>0])}
+                        {/if}
+                    </select>
+                    {notempty name="aroles"}
+                    <select name="customer_manager_role_id">
+                        <option value="">-操作角色-</option>
+                        {if $info}
+                        {:create_select($aroles,'id',['name','remark'],$info.customer_manager_role_id)}
+                        {else /}
+                        {:create_select($aroles,'id',['name','remark'],0)}
+                        {/if}
+                    </select>
+                    {/notempty}
+                </td></tr>
+                <tr><td class="align-r"><span class="error">*</span>设计师</td><td>
+                    <select name="desgin_user_id">
+                        <option value="">-请选择-</option>
+                        {if $info}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>$info.desgin_user_id])}
+                        {else /}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>0])}
+                        {/if}
+                    </select>
+                    {notempty name="aroles"}
+                    <select name="desgin_role_id">
+                        <option value="">-操作角色-</option>
+                        {if $info}
+                        {:create_select($aroles,'id',['name','remark'],$info.desgin_role_id)}
+                        {else /}
+                        {:create_select($aroles,'id',['name','remark'],0)}
+                        {/if}
+                    </select>
+                    {/notempty}
+                </td>
+                    <td class="align-r"><span class="error">*</span>设计师助理</td><td>
+                        <select name="desgin_assistant_user_id">
+                            <option value="">-请选择-</option>
+                            {if $info}
+                            {:widget('Cwidgets/select_group_admins',['selected'=>$info.desgin_assistant_user_id])}
+                            {else /}
+                            {:widget('Cwidgets/select_group_admins',['selected'=>0])}
+                            {/if}
+                        </select>
+                        {notempty name="aroles"}
+                        <select name="desgin_assistant_role_id">
+                            <option value="">-操作角色-</option>
+                            {if $info}
+                            {:create_select($aroles,'id',['name','remark'],$info.desgin_assistant_role_id)}
+                            {else /}
+                            {:create_select($aroles,'id',['name','remark'],0)}
+                            {/if}
+                        </select>
+                        {/notempty}
+                    </td>
+                </tr>
+
+                <tr><td class="align-r"><span class="error">*</span>项目质检</td><td>
+                    <select name="supervision_user_id">
+                        <option value="">-请选择-</option>
+                        {if $info}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>$info.supervision_user_id])}
+                        {else /}
+                        {:widget('Cwidgets/select_group_admins',['selected'=>0])}
+                        {/if}
+                    </select>
+                    {notempty name="aroles"}
+                    <select name="supervision_role_id">
+                        <option value="">-操作角色-</option>
+                        {if $info}
+                        {:create_select($aroles,'id',['name','remark'],$info.supervision_role_id)}
+                        {else /}
+                        {:create_select($aroles,'id',['name','remark'],0)}
+                        {/if}
+                    </select>
+                    {/notempty}
+                </td>
+                    <td class="align-r"><span class="error">*</span>装修管家</td><td>
+                        <select name="decorate_butler_user_id">
+                            <option value="">-请选择-</option>
+                            {if $info}
+                            {:widget('Cwidgets/select_group_admins',['selected'=>$info.decorate_butler_user_id])}
+                            {else /}
+                            {:widget('Cwidgets/select_group_admins',['selected'=>0])}
+                            {/if}
+                        </select>
+                        {notempty name="aroles"}
+                        <select name="decorate_butler_role_id">
+                            <option value="">-操作角色-</option>
+                            {if $info}
+                            {:create_select($aroles,'id',['name','remark'],$info.decorate_butler_role_id)}
+                            {else /}
+                            {:create_select($aroles,'id',['name','remark'],0)}
+                            {/if}
+                        </select>
+                        {/notempty}
+                    </td>
+                </tr>
+
+
+                <tr><th colspan="4">业主信息</th></tr>
+                <tr><td class="align-r"><span class="error">*</span>业主名称</td><td>
+                    <input type="text" name="owner_name" value="{if $info}{$info.owner_name}{/if}" class="input" placeholder=""/>
+                </td>
+                    <td class="align-r"><span class="error">*</span>业主电话</td><td>
+                        <input type="text" name="owner_mobile" value="{if $info}{$info.owner_mobile}{/if}" class="input" placeholder=""/>
+                    </td>
+                </tr>
+
+                <tr><td class="align-r"><span class="error">*</span>联系地址</td><td colspan="3">
+                    <input type="text" name="owner_address" value="{if $info}{$info.owner_address}{/if}" class="input  span6" placeholder=""/>
+                </td></tr>
+                <tr><td class="align-r">业主备注信息</td><td colspan="3">
+                    <textarea class="span8" name="owner_remarks" id="owner_remarks" style="min-height:300px;" placeholder="备注信息，选填">{if $info}{$info.marks.owner_remarks}{/if}</textarea>
+                </td></tr>
+                <!--<tr><th colspan="4">项目阶段信息</th></tr>
+                <tr><td colspan="4">
+                    <div class="">
+                        <ol class="project_steps">
+                        </ol>
+                        <div>
+                            <a href="javascript:;" id="add_main_step" class="btn btn-success"><i class="icon-plus-sign"></i> 新增主阶段</a>
+
+                        </div>
+                    </div>
+                </td></tr>-->
+                </tbody>
+            </table>
+
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="subbtn">保存资料</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+<script type="text/javascript">
+    var up_url = "{:url('Up/index')}",
+        ed_url = "{:url('Ueditor/index')}";
+</script>

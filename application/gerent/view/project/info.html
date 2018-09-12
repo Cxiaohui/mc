@@ -1,0 +1,87 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目详情</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <table class="stat-table responsive table table-stats table-striped table-bordered">
+                <tbody>
+                <tr><th colspan="2">项目基本信息</th>
+                    <th colspan="2"><a href="{:url('Projectstep/info')}?p_id={$info.id}" class="btn mini btn-primary"><i class="icon-info-sign"></i>查看项目阶段信息</a></th></tr>
+                <tr>
+                    <td class="align-r"><span class="error">*</span>项目名称</td><td>{$info.name}</td>
+                    <td class="align-r"><span class="error">*</span>项目范围</td><td>{$types[$info.type]}</td>
+                </tr>
+                <tr>
+                    <td class="align-r"><span class="error">*</span>项目户型</td><td>{$info.house_type}</td>
+                    <td class="align-r"><span class="error">*</span>项目面积</td><td>{$info.acreage}㎡</td>
+                </tr>
+                <tr><td class="align-r"><span class="error">*</span>装修风格</td><td colspan="3">{$info.decoration_style}</td></tr>
+                <tr><td class="align-r"><span class="error">*</span>项目地址</td><td colspan="3">{$info.address}</td></tr>
+                <tr><td class="align-r">项目备注</td><td colspan="3">{$info.marks.p_remarks}</td></tr>
+                <tr><th colspan="4">项目主要负责人信息</th></tr>
+                <tr><td class="align-r"><span class="error">*</span>项目经理</td><td>
+                    {$admins[$info.manager_user_id]}
+                    <!--{/*[{$aroles[$info.manager_role_id]}]*/}-->
+                    </td>
+                    <td class="align-r"><span class="error">*</span>客户经理</td><td>
+                        {$admins[$info.customer_manager_user_id]}
+                        <!--{/*[{$aroles[$info.customer_manager_role_id]}]*/}-->
+
+                </td></tr>
+                <tr><td class="align-r"><span class="error">*</span>设计师</td><td>
+                    {$admins[$info.desgin_user_id]}
+                    <!--{/*[{$aroles[$info.desgin_role_id]}]*/}-->
+                </td>
+                    <td class="align-r"><span class="error">*</span>设计师助理</td><td>
+                        {$admins[$info.desgin_assistant_user_id]}
+                        <!--{/*[{$aroles[$info.desgin_assistant_role_id]}]*/}-->
+
+                    </td>
+                </tr>
+
+                <tr><td class="align-r"><span class="error">*</span>项目质检</td><td>
+                    {$admins[$info.supervision_user_id]}
+                    <!--{/*[{$aroles[$info.supervision_role_id]}]*/}-->
+
+                </td>
+                    <td class="align-r"><span class="error">*</span>装修管家</td><td>
+                        {$admins[$info.decorate_butler_user_id]}
+                        <!--{/*[{$aroles[$info.decorate_butler_role_id]}]*/}-->
+
+                    </td>
+                </tr>
+
+
+                <tr><th colspan="4">业主信息</th></tr>
+                <tr><td class="align-r"><span class="error">*</span>业主名称</td><td>{$info.owner_name}</td>
+                    <td class="align-r"><span class="error">*</span>业主电话</td><td>{$info.owner_mobile}</td>
+                </tr>
+
+                <tr><td class="align-r"><span class="error">*</span>联系地址</td><td colspan="3">{$info.owner_address}</td></tr>
+                <tr><td class="align-r">业主备注信息</td><td colspan="3">{$info.marks.owner_remarks}</td></tr>
+                {notempty name="plogs"}
+                <tr><th colspan="4">操作日志</th></tr>
+                <tr><th>操作时间</th><th>操作人</th><th colspan="2">操作事项</th></tr>
+                {foreach name="plogs" item="plg"}
+                <tr>
+                    <td>{$plg.addtime}</td>
+                    <td>{$plg.oper_user_name}</td>
+                    <td colspan="2">{$plg.oper_desc}</td>
+                </tr>
+                {/foreach}
+                {/notempty}
+                </tbody>
+            </table>
+
+    </div>
+</div>

@@ -1,0 +1,204 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">添加后台用户</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="form-horizontal left-align" method="post" action="{:url('Sysuser/add')}">
+            {notempty name="info"}
+            <input type="hidden" name="id" value="{$info.id}"/>
+            {/notempty}
+            <input type="hidden" name="ref" value=""/>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 帐号</label>
+                <div class="controls">
+                    <input type="text" name="log" value="{if $info}{$info.log}{/if}" class="input" placeholder="登录账号"/>
+                </div>
+            </div>
+            {empty name="info"}
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 密码</label>
+                <div class="controls">
+                    <input type="password" name="pwd" class="input" placeholder="登录密码"/>
+                </div>
+            </div>
+            {/empty}
+            <div class="control-group">
+            <label class="control-label"><span class="error">*</span> 姓名</label>
+            <div class="controls">
+                <input type="text" name="name" value="{if $info}{$info.name}{/if}" class="input" placeholder="人员的姓名"/>
+            </div>
+        </div>
+            <div class="control-group">
+                <label class="control-label"> 英文名</label>
+                <div class="controls">
+                    <input type="text" name="en_name" value="{if $info}{$info.en_name}{/if}" class="input" placeholder=""/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">性别</label>
+                <div class="controls">
+                    <label class="radio radio-inline"><input type="radio" name="sex" value="1" {if !$info || $info['sex']==1}checked{/if}>男</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="sex" value="2" {if $info && $info['sex']==2}checked{/if}>女</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 手机号码</label>
+                <div class="controls">
+                    <input type="text" name="mobile" value="{if $info}{$info.mobile}{/if}" class="input" placeholder="手机号码"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 后台权限角色</label>
+                <div class="controls">
+                    <select name="role">
+                    <option value="">-请选择-</option>
+                    {volist name="roles" id="role"}
+                        <option value="{$role.id}-{$role.name}" {if $info && $info['role_id']==$role['id']}selected{/if}>{$role.name}&nbsp;&nbsp;[{$role.remark}]</option>
+                    {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 所属公司</label>
+                <div class="controls">
+                    <select name="cpid">
+                        <option value="">-请选择-</option>
+                        {foreach name="company" item="cpy"}
+                        <option value="{$cpy.id}"{if $info&&$info['cpid']==$cpy.id} selected{/if}>{$cpy.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 部门岗位</label>
+                <div class="controls">
+                    <select name="department">
+                        <option value="">-请选择-</option>
+                        {volist name="departs" id="dep"}
+                        <option value="{$dep.id}-{$dep.name}" {if $info && $info['depart_id']==$dep['id']}selected{/if}>{$dep.name}</option>
+                        {/volist}
+                        </select>
+                    <input type="text" name="post" list="post_list" value="{if $info}{$info.post}{/if}" class="input" placeholder="职位"/>
+                    <datalist id="post_list">
+                        <option value="总经理"/>
+                        <option value="经理"/>
+                        <option value="设计师"/>
+                        <option value="设计师助理"/>
+                        <option value="工程"/>
+                        <option value="主管"/>
+                        <option value="职员"/>
+                    </datalist>
+
+                </div>
+            </div>
+
+            <!--<div class="control-group">
+                <label class="control-label">负责区域</label>
+                <div class="controls" id="areasbox">
+                    <select name="mproveid" class="lv1select" data-val=""></select>
+                    <select name="mcityid" class="lv2select" data-val=""></select>
+                    <div class="help-inline">不选择，表示全国区域</div>
+                </div>
+            </div>-->
+
+            <noempty name="info">
+                <div class="control-group">
+                    <label class="control-label">在职状态</label>
+                    <div class="controls">
+                        <label class="radio radio-inline"><input type="radio" name="is_work" value="1" {if !$info || $info['is_work']==1}checked{/if}>在职</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio radio-inline"><input type="radio" name="is_work" value="0" {if $info && $info['is_work']==0}checked{/if}>离职</label>
+                    </div>
+                </div>
+            </noempty>
+            <div class="control-group">
+                <label class="control-label">其他联系方式</label>
+                <div class="controls">
+                    <input type="text" name="contact" value="{if $info}{$info.contact}{/if}" class="input span4" placeholder="联系方式，选填"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">备注</label>
+                <div class="controls"><textarea class="span4" name="remark" rows="8" placeholder="备注信息，选填">{if $info}{$info.remark}{/if}</textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">允许登录B端</label>
+                <div class="controls">
+                    <label class="radio radio-inline"><input type="radio" name="allow_lg_b" value="0" {if !$info || $info['allow_lg_b']==0}checked{/if}>禁止</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="allow_lg_b" value="1" {if $info && $info['allow_lg_b']==1}checked{/if}>允许</label>
+                    <p class="help-inline">[允许登录则统一使用手机号码做账号]</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> B端权限选择</label>
+                <div class="controls">
+                    <select name="b_power_tag">
+                        <option value="">-请选择-</option>
+                        {foreach name="b_powers" item="bpw" key="bpk"}
+                        <option value="{$bpk}}" {if $info && $info['b_power_tag']==$bpk}selected{/if}>{$bpw}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 加入团队</label>
+                <div class="controls">
+                    <select name="is_join_team">
+                        <option value="0">不加入</option>
+                        {foreach name="teams" item="tem"}
+                        <option value="{$tem.id}" {if $info && $info['team_id']==$tem.id}selected{/if}>{$tem.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 头像</label>
+                <div class="controls">
+                    <input type="hidden" name="head_pic" id="logoinput" value="{if $info}{$info.head_pic}{/if}">
+                    <div class="uploadimgbox" style="width: 200px;height:150px;">
+                        <img src="{if $info}{:c_img($info.head_pic,3)}{else/}/data/image/default.png{/if}" id="logoimg" class="defimg" alt="logo">
+                    </div>
+                    <div class="row-fluid">
+                        <div id="filePicker" class="mt5 pull-left"></div>
+                        <div class="mt10 ml10 text-error pull-left">仅允许jpg和png格式，1.5M内，大小 600x600（px）</div>
+                    </div>
+
+                    <div id="progressbar" class="progress progress-success progress-striped mt5 span3 ml0" style="display:none">
+                        <span class="bar" style="width: 0%;">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">岗位描述</label>
+                <div class="controls">
+                    <input type="text" name="post_desc" value="{if $info}{$info.post_desc}{/if}" class="input span4" placeholder="简要说明岗位描述，加入团队后必填"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">岗位职责</label>
+                <div class="controls"><textarea class="span4" name="post_duties" rows="8" placeholder="岗位职责，加入团队后必填">{if $info}{$info.post_duties}{/if}</textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="subbtn">保存资料</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div><!-- 主体 end-->
+<script type="text/javascript">
+    var up_url = "{:url('Up/index')}";
+</script>

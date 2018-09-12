@@ -1,0 +1,106 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">添加客户</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="form-horizontal left-align" method="post" action="{:url('User/add')}">
+            {notempty name="info"}
+            <input type="hidden" name="id" value="{$info.id}"/>
+            {/notempty}
+            <input type="hidden" name="ref" value=""/>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 客户所属公司</label>
+                <div class="controls">
+                    <select name="cpid">
+                        <option value="">-请选择-</option>
+                        {foreach name="company" item="cpy"}
+                        <option value="{$cpy.id}"{if $info&&$info['cpid']==$cpy.id} selected{/if}>{$cpy.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 姓名</label>
+                <div class="controls">
+                    <input type="text" name="uname" value="{if $info}{$info.uname}{/if}" class="input" placeholder=""/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 手机号码</label>
+                <div class="controls">
+                    <input type="text" name="mobile" value="{if $info}{$info.mobile}{/if}" class="input" placeholder="手机号码,作为登录账号，请正确填写"/>
+                </div>
+            </div>
+            {empty name="info"}
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 密码</label>
+                <div class="controls">
+                    <input type="password" name="lgpwd" class="input" placeholder="登录密码"/>
+                </div>
+            </div>
+            {/empty}
+
+            <div class="control-group">
+                <label class="control-label">性别</label>
+                <div class="controls">
+                    <label class="radio radio-inline"><input type="radio" name="gender" value="1" {if !$info || $info['gender']==1}checked{/if}>男</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="gender" value="2" {if $info && $info['gender']==2}checked{/if}>女</label>
+                </div>
+            </div>
+
+            <noempty name="info">
+                <div class="control-group">
+                    <label class="control-label">账号状态设置</label>
+                    <div class="controls">
+                        <label class="radio radio-inline"><input type="radio" name="status" value="1" {if !$info || $info['status']==1}checked{/if}>允许登录</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio radio-inline"><input type="radio" name="status" value="0" {if $info && $info['status']==0}checked{/if}>禁止登录</label>
+                    </div>
+                </div>
+            </noempty>
+
+
+
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 头像</label>
+                <div class="controls">
+                    <input type="hidden" name="head_pic" id="logoinput" value="{if $info}{$info.head_pic}{/if}">
+                    <div class="uploadimgbox" style="width: 200px;height:150px;">
+                        <img src="{if $info}{:c_img($info.head_pic,2)}{else/}/data/image/default.png{/if}" id="logoimg" class="defimg" alt="logo">
+                    </div>
+                    <div class="row-fluid">
+                        <div id="filePicker" class="mt5 pull-left"></div>
+                        <div class="mt10 ml10 text-error pull-left">仅允许jpg和png格式，1.5M内，大小 600x600（px）</div>
+                    </div>
+
+                    <div id="progressbar" class="progress progress-success progress-striped mt5 span3 ml0" style="display:none">
+                        <span class="bar" style="width: 0%;">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">备注</label>
+                <div class="controls"><textarea class="span4" name="remark" rows="8" placeholder="备注信息，选填">{if $info}{$info.remark}{/if}</textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="subbtn">保存资料</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div><!-- 主体 end-->
+<script type="text/javascript">
+    var up_url = "{:url('Up/index')}";
+</script>

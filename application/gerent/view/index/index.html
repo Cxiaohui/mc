@@ -1,0 +1,74 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">后台首页</h3></div>
+                    <div class="span9">
+                        <h5 class="text-info pull-right"><i class="icon-time"></i> {$date}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="content-widgets white">
+                    <div class="widget-head green">
+                        <h3><i class="icon-user"></i>欢迎使用{:config('company.short_name')}管理后台 </h3>
+                    </div>
+                    <div class="widget-container">
+                        <ul class="sample-noty">
+                            <li>登录者：{$Think.session.name}</li>
+                            <li>登录账号：{$Think.session.username}</li>
+                            {if $Think.session.info.lgtime>0}
+                            <li>上次登录时间：{$Think.session.info.lgtime|date="Y-m-d H:i",###}</li>
+                            <li>上次登录IP：{$Think.session.info.loginip}&nbsp;&nbsp;<a href="https://www.baidu.com/s?wd={$Think.session.info.loginip}" target="_blank">查询IP</a></li>
+                            {/if}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="span4">
+                <div class="content-widgets white">
+                    <div class="widget-head green">
+                        <h3><i class="icon-user"></i>项目 </h3>
+                    </div>
+                    <div class="widget-container">
+                        <ul class="sample-noty">
+                            <li><a href="{:url('cool_hosp/Lgn/index')}" target="_blank">商家后台</a> </li>
+                            <li><a href="{:url('cool_wx/index/index')}?areaid=144" target="_blank">H5</a> </li>
+                            <li>
+                                <img src="/static/admin/images/h5_rq.png" style="width:180px;"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div> -->
+            <!--<div class="span4">
+            <pre><?php
+            print_r($_SESSION);
+           ?></pre>
+
+            </div>-->
+
+            <!--<div class="span2">
+                <div class="content-widgets blue-white">
+                    <div class="widget-head blue">
+                        <h3><i class="icon-globe"></i>禅道</h3>
+                    </div>
+                    <div class="widget-container align-c">
+                        <img src="/public/admin/images/zt-logo.png"/>
+                        <div class="mt10 mb10"> 登录禅道,提需求/BUG</div>
+                        <a href="http://192.168.199.2/c/www/" target="_blank" class="btn btn-large btn-primary mb10">去登录</a>
+                    </div>
+                </div>
+            </div>-->
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,72 @@
+
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">咨询详情</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <!--<tr><th colspan="2">基本信息</th></tr>-->
+
+            <tr><th class="align-r">姓名</th>
+                <td>{$info.name}</td>
+            </tr>
+            <tr><th class="align-r">联系电话</th>
+                <td>{$info.mobile}</td>
+            </tr>
+            <tr><th class="span3 align-r">咨询内容</th>
+                <td>{$info.content}</td>
+            </tr>
+            <tr><th class="align-r">提交时间</th>
+                <td>{$info.addtime}</td>
+            </tr>
+            {if $info.do_status>0}
+            <tr><th colspan="2">处理记录</th></tr>
+
+            <!--<tr><th class="align-r">处理状态</th>
+                <td>{$info.do_status}</td>
+            </tr>-->
+            <tr><th class="align-r">处理结果</th>
+                <td>{$info.do_remark}</td>
+            </tr>
+            <tr><th class="align-r">处理时间</th>
+                <td>{$info.do_time}</td>
+            </tr>
+            <tr><th class="align-r">处理人</th>
+                <td>{$info.do_user_name}</td>
+            </tr>
+            {else /}
+            <tr><th colspan="2">操作</th></tr>
+            <tr><th class="align-r">处理结果</th><td>
+                <form class="form-horizontal mt10" action="{:url('Consultation/do_it')}" method="post" id="postform">
+                    {if $info}
+                    <input type="hidden" name="id" value="{$info.id}"/>
+                    {/if}
+                    <div class="mb10">
+                        <textarea class="span6" rows="4" name="do_remark" required maxlength="200" placeholder="将处理结果写在这里,200字内"></textarea>
+                    </div>
+                    <div id="page-mesg"></div>
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary mini" value="保存"/>
+                    </div>
+                </form>
+            </td></tr>
+            {/if}
+            </tbody>
+
+        </table>
+        <div class="row-fluid">
+            <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 返回</a>
+        </div>
+
+    </div>
+</div>

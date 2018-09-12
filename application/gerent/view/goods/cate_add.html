@@ -1,0 +1,26 @@
+{__NOLAYOUT__}
+{include file="common/layerheader"/}
+<div class="container">
+
+    <div class="row-fluid">
+        <fieldset class="default padd10">
+            <legend>添加/编辑商品分类</legend>
+            <form class="form-horizontal mt10" action="{:url('Goods/cate_add')}" method="post" id="postform">
+                {if $info}
+                <input type="hidden" name="id" value="{$info.id}"/>
+                {/if}
+                <div class="mb10">
+                    <span class="b">名称：</span>
+                    <input type="text" name="name" value="{if $info}{$info.name}{/if}" placeholder="分类名称"/>
+                </div>
+                <div id="page-mesg"></div>
+                <div class="form-actions">
+                    <input type="button" class="btn btn-primary" value="确定保存" id="savedata"/>
+                    <a href="javascript:;" class="btn" onclick="closePlayer();">取消</a>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+
+{include file="common/layerfooter"/}

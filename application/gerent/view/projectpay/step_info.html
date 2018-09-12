@@ -1,0 +1,42 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">项目付款信息</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr><td colspan="2">{$p_info.name}</td></tr>
+            <tr><th>阶段 </th><td>{$info.name}</td></tr>
+            <tr><th>应付金额 </th><td>{$info.payable}</td></tr>
+            <tr><th>应付时间 </th><td>{$info.payable_time}</td></tr>
+            {if $info.paied>0}
+            <tr><th>实付金额 </th><td>{$info.paied}</td></tr>
+            <tr><th>实付时间 </th><td>{$info.paied_time}</td></tr>
+            <tr><th>备注 </th><td>{$info.remark}</td></tr>
+            {else /}
+            <form action="" method="post">
+            <input type="hidden" name="id" value="{$p_info.id}"/>
+            <tr><th>实付金额 </th><td><input type="text" name="paied" class="input"/> </td></tr>
+            <tr><th>实付时间 </th><td><input type="datetime-local" class="input" name="paied_time"/></td></tr>
+            <tr><th>备注 </th><td>
+                <textarea name="remark" rows="2" class="span6"></textarea>
+            </td></tr>
+            <tr><td colspan="2">
+                <button type="submit" class="btn btn-primary" id="save_btn"><i class="icon-save"></i> 保存付款信息</button>
+
+            </td></tr>
+            </form>
+            {/if}
+            </tbody>
+        </table>
+    </div>
+</div>
