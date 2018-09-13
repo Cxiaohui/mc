@@ -51,7 +51,37 @@ class Pusher extends Common{
     }
 
     public function info($id=0){
+        if(!$id || $id<=0){
+            $this->error('访问错误');
+        }
 
+        $info = $this->m->get_info(['id'=>$id,'isdel'=>0]);
+        if(!$info){
+            $this->error('该消息设置不存在');
+        }
+
+        if($info['type']==1){
+            $this->error('立即发送的没有定时任务详情');
+        }
+
+        $get_users = explode(',',$info['geter_users']);
+        $get_userids = explode(',',$info['geter_user_ids']);
+        $get_user_map = [];
+        foreach($get_userids as $k=>$v){
+            $get_user_map[$v] = $get_users[$k];
+        }
+
+        $run_time = (new Pushruntime())->get_order_list(['not_id'=>$id,'isdel'=>0],'id,jpush_user_id,runtime,donetime,result',['id'=>'asc'],0);
+
+        //print_r($runtime);
+        $this->assign('info',$info);
+        $this->assign('get_user_map',$get_user_map);
+        $this->assign('run_time',$run_time);
+        $this->assign('runtimes',$this->run_times());
+        $this->assign('oncetimes',$this->once_times());
+        $this->assign('types',$this->types());
+        $this->assign('run_types',$this->run_types());
+        return $this->fetch('info');
     }
 
     public function add($id=0){
@@ -136,9 +166,9 @@ class Pusher extends Common{
         $this->assign('runtimes',$this->run_times());
         $this->assign('oncetimes',$this->once_times());
         $this->assign('types',$this->types());
+
         return $this->fetch('add');
     }
-
 
     public function edit($id=0){
         if(!$id || $id<=0){
@@ -231,7 +261,7 @@ class Pusher extends Common{
         return ['err'=>0,'msg'=>'success','data'=>$data];
     }
 
-
+    //=================================
 
     private function save_push_data(){
         $post = input('post.');

@@ -1,0 +1,86 @@
+
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span4"><h3 class="page-header">消息提醒详情</h3></div>
+                    <div class="span8">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <!--<tr><th colspan="2">基本信息</th></tr>-->
+            <tr><th class="span3 align-r">相关项目</th>
+                <td><a href="{:url('Project/info',['id'=>$info.p_id])}" target="_blank">{$info.p_name}</a></td>
+            </tr>
+            <tr><th class="span3 align-r">消息接收人</th>
+                <td>{$info.geter_users}</td>
+            </tr>
+            <tr><th class="span3 align-r">消息标题</th>
+                <td>{$info.title}</td>
+            </tr>
+            <tr><th class="span3 align-r">消息内容</th>
+                <td>{$info.message}</td>
+            </tr>
+            <tr><th class="align-r">提醒类型</th>
+                <td>{$run_types[$info.run_type]}</td>
+            </tr>
+            {if $info.run_type==1}
+            <tr><th class="align-r">运行时间设置</th>
+                <td>{$info.addtime}</td>
+            </tr>
+            {elseif $info.run_type==2}
+            <tr><th class="align-r">运行时间设置</th>
+                <td>
+                    {$oncetimes[$info.once_run_time_option]}
+
+                </td>
+            </tr>
+            {elseif $info.run_type==3}
+            <tr><th class="align-r">运行时间设置</th>
+                <td>
+                    从{$info.begin_time}到{$info.end_time}这段时间内<br/>
+                    每{$info.run_rate_day}天提醒一次，提醒时间:当天{$info.run_rate_time}
+                </td>
+            </tr>
+            {/if}
+
+            </tbody>
+
+        </table>
+        {notempty name="run_time"}
+        <p class="text-info">消息定时列表</p>
+
+            <!-- responsive table table-stats table-striped table-bordered-->
+        <!--style="max-height: 400px;overflow: scroll;"-->
+            <div>
+                <table class="table stat-table responsive">
+                    <tr><th>接收人</th><th>计划提醒时间</th><th>状态</th><th>运行结果</th></tr>
+                    {foreach name="run_time" item="runt"}
+                    <tr>
+                        <td>{$get_user_map[$runt.jpush_user_id]}</td>
+                        <td>{$runt.runtime}</td>
+                        <td>{if $runt.donetime>0}
+                            已提醒
+                            {else/}
+                            未提醒
+                            {/if}</td>
+                        <td>{$runt.result}</td>
+                    </tr>
+
+                    {/foreach}
+                </table>
+            </div>
+        {/notempty}
+        <div class="row-fluid">
+            <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 返回</a>
+        </div>
+
+    </div>
+</div>
