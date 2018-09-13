@@ -27,7 +27,7 @@ class Pushget extends Common{
 
         if(empty($list)){
             mlog::write($time.':empty list',$this->log_file);
-            return false;
+            exit();
         }
 
         foreach($list as $lt){
