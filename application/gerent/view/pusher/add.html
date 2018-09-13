@@ -63,7 +63,7 @@
                 <label class="control-label">消息运行</label>
                 <div class="controls">
                     {if $can_send_one}
-                    <label class="radio radio-inline"><input type="radio" name="run_type" value="1" >立即提醒</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio radio-inline"><input type="radio" name="run_type" value="1" {if !$info}checked{/if}>立即提醒</label>&nbsp;&nbsp;&nbsp;&nbsp;
                     {else/}
                     <label class="radio radio-inline"><input type="radio" name="" value="" disabled>立即提醒</label>&nbsp;&nbsp;&nbsp;&nbsp;
                     {/if}
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="well setting2" style="display:  {if $info&&$info.run_type!=2}none{/if};">
+            <div class="well setting2" style="display:  {if $info&&$info.run_type==2}{else/}none{/if};">
                 <h5>单次定时提醒设置</h5>
             <div class="control-group">
                 <label class="control-label"><span class="error">*</span> 提醒时间</label>
@@ -88,7 +88,7 @@
             </div>
             </div>
 
-            <div class="well setting3" style="display: {if $info&&$info.run_type!=3}none{/if};">
+            <div class="well setting3" style="display: {if $info&&$info.run_type==3}{else/}none{/if};">
                 <h5>多次定时提醒设置</h5>
                 <div class="control-group">
                     <label class="control-label"><span class="error">*</span> 时间范围</label>
