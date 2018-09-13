@@ -17,7 +17,7 @@ class Pushget extends Common{
     public function getRunList(){
         $time = date('Y-m-d H').':00:00';
         //echo $time;
-        $time = '2018-09-20 09:00:00';
+        //$time = '2018-09-20 09:00:00';
         $list = (new Pushruntime())->get_list(
             ['runtime'=>$time,'donetime'=>['neq',0],'isdel'=>0],
             'id,not_id,jpush_user_id,message,metas',
