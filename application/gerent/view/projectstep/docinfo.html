@@ -28,6 +28,9 @@
                     {foreach name="docs" item="dc"}
                     <div class="docli">
                     {if in_array($dc.file_type,$img_ext)}
+                        {if $dc.is_primary==1}
+                        <p>主图</p>
+                        {/if}
                         <p><a href="{$qn_host}{$dc.file_path}" target="_blank"><img src="{$qn_host}{$dc.file_path}" style="height: 200px;"/></a></p>
                         <p>{$dc.file_name} </p>
                         {else /}

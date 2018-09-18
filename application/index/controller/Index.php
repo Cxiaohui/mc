@@ -23,6 +23,20 @@ class Index extends \app\common\controller\Base
         \think\Queue::later(2,'app\gerent\job\Pushqueue',$data['data']);
     }
 
+    public function test_not(){
+        //通知业主
+        $ndata = [
+            'p_id'=>11,
+            'type'=>1,
+            'target_id'=>86,
+            'user_type'=>2,
+            'user_id'=>5,//业主
+            'title'=>'再测试',
+            'content'=>'再测试下提醒功能'
+        ];
+        Notice::add($ndata);
+    }
+
     public function t220(){
         (new Pushruntime())->update_data(
             ['id'=>2],

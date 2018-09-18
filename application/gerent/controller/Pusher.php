@@ -60,9 +60,9 @@ class Pusher extends Common{
             $this->error('该消息设置不存在');
         }
 
-        if($info['type']==1){
+        /*if($info['type']==1){
             $this->error('立即发送的没有定时任务详情');
-        }
+        }*/
 
         $get_users = explode(',',$info['geter_users']);
         $get_userids = explode(',',$info['geter_user_ids']);
@@ -303,9 +303,12 @@ class Pusher extends Common{
 
         //print_r($save_data);
         $n_id = 0;
+        $act = 'add';
         if(isset($post['id']) && $post['id']>0){
             $n_id = $post['id'];
             unset($post['id']);
+            //$old_info = $this->m->get_info(['id'=>$n_id],'id,run_type');
+            $act = 'update';
             $this->m->update_data(['id'=>$n_id],$save_data);
         }else{
             $save_data['addtime'] = $this->datetime;
@@ -321,9 +324,14 @@ class Pusher extends Common{
             $lpush->update_type_id($n_id);
             $lpush->tag_send_one();
         }
-        
-        
-        
+
+
+        $pushruntime = new Pushruntime();
+
+        if($act=='update'){
+            $pushruntime->update_data(['not_id'=>$n_id],['isdel'=>1]);
+        }
+
         // 立即发送
         if($save_data['run_type']==1){
             //...
@@ -344,9 +352,7 @@ class Pusher extends Common{
             $this->success('消息已经发送发',$ref);
         }
 
-        $pushruntime = new Pushruntime();
 
-        $pushruntime->update_data(['not_id'=>$n_id],['isdel'=>1]);
 
         //单次任务
         if($save_data['run_type']==2 && $post['target_end_time']){

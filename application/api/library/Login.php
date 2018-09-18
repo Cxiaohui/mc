@@ -25,14 +25,14 @@ class Login{
 
     static public function b_mobile_check($moible){
         $cuser = new Buser();
-        $uinfo = $cuser->get_info(['mobile'=>$moible,'isdel'=>0],'id,status,name,en_name,mobile,b_power_tag,head_pic,jpush_tag,im_token');
+        $uinfo = $cuser->get_info(['mobile'=>$moible,'isdel'=>0],'id,status,name,en_name,mobile,allow_lg_b,b_power_tag,head_pic,jpush_tag,im_token');
         if(!$uinfo){
             return ['err'=>1,'msg'=>'该用户不存在'];
         }
         if($uinfo['status']!=1){
             return ['err'=>1,'msg'=>'账号异常，请联系管理人员'];
         }
-        if($uinfo['b_power_tag']==0){
+        if($uinfo['allow_lg_b']==0 || $uinfo['b_power_tag']==0){
             return ['err'=>1,'msg'=>'无权限，请联系管理人员'];
         }
 

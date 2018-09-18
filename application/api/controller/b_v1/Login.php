@@ -87,12 +87,15 @@ class Login extends Common{
 
         //api token
         $user['head_pic'] = c_img($user['head_pic'],3,600);
-        $api_token = Apitoken::get_api_token($this->user_type,$user['id']);
-        if($api_token['api_token']){
+        $user['api_token'] = Apitoken::create_save_api_token($this->user_type,$user['id']);
+
+
+        /*$api_token = Apitoken::get_api_token($this->user_type,$user['id']);
+         if($api_token['api_token']){
             $user['api_token'] = $api_token['api_token'];
         }else{
             $user['api_token'] = Apitoken::create_save_api_token($this->user_type,$user['id']);
-        }
+        }*/
 
 
         return $user;

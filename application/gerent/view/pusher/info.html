@@ -16,34 +16,34 @@
         <table class="stat-table responsive table table-stats table-striped table-bordered">
             <tbody>
             <!--<tr><th colspan="2">基本信息</th></tr>-->
-            <tr><th class="span3 align-r">相关项目</th>
+            <tr><th style="width:120px;">相关项目</th>
                 <td><a href="{:url('Project/info',['id'=>$info.p_id])}" target="_blank">{$info.p_name}</a></td>
             </tr>
-            <tr><th class="span3 align-r">消息接收人</th>
+            <tr><th>消息接收人</th>
                 <td>{$info.geter_users}</td>
             </tr>
-            <tr><th class="span3 align-r">消息标题</th>
+            <tr><th>消息标题</th>
                 <td>{$info.title}</td>
             </tr>
-            <tr><th class="span3 align-r">消息内容</th>
-                <td>{$info.message}</td>
+            <tr><th>消息内容</th>
+                <td><p style="word-break:break-all;word-wrap:break-word;">{$info.message}</p></td>
             </tr>
-            <tr><th class="align-r">提醒类型</th>
+            <tr><th>提醒类型</th>
                 <td>{$run_types[$info.run_type]}</td>
             </tr>
             {if $info.run_type==1}
-            <tr><th class="align-r">运行时间设置</th>
+            <tr><th>运行时间设置</th>
                 <td>{$info.addtime}</td>
             </tr>
             {elseif $info.run_type==2}
-            <tr><th class="align-r">运行时间设置</th>
+            <tr><th>运行时间设置</th>
                 <td>
                     {$oncetimes[$info.once_run_time_option]}
 
                 </td>
             </tr>
             {elseif $info.run_type==3}
-            <tr><th class="align-r">运行时间设置</th>
+            <tr><th>运行时间设置</th>
                 <td>
                     从{$info.begin_time}到{$info.end_time}这段时间内<br/>
                     每{$info.run_rate_day}天提醒一次，提醒时间:当天{$info.run_rate_time}
@@ -61,15 +61,15 @@
         <!--style="max-height: 400px;overflow: scroll;"-->
             <div>
                 <table class="table stat-table responsive">
-                    <tr><th>接收人</th><th>计划提醒时间</th><th>状态</th><th>运行结果</th></tr>
+                    <tr><th style="width:120px;">接收人</th><th style="width: 130px;">计划提醒时间</th><th style="width: 100px;">状态</th><th>运行结果</th></tr>
                     {foreach name="run_time" item="runt"}
                     <tr>
                         <td>{$get_user_map[$runt.jpush_user_id]}</td>
                         <td>{$runt.runtime}</td>
                         <td>{if $runt.donetime>0}
-                            已提醒
+                            <span class="text-success">已提醒</span>
                             {else/}
-                            未提醒
+                            <span class="text-default">未提醒</span>
                             {/if}</td>
                         <td>{$runt.result}</td>
                     </tr>

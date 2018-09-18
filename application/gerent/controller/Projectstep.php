@@ -202,7 +202,7 @@ class Projectstep extends Common{
         if(!$info){
             $this->error('该阶段不存在');
         }
-        $docs = (new Projectdoc())->get_list(['p_id'=>$info['p_id'],'p_step_id'=>$stepid,'isdel'=>0],'id,file_type,file_name,file_path',0);
+        $docs = (new Projectdoc())->get_list(['p_id'=>$info['p_id'],'p_step_id'=>$stepid,'isdel'=>0],'id,file_type,is_primary,file_name,file_path',0);
         $p_info = $this->mpj->get_info(['id'=>$info['p_id']],'id,name');
 
         $modify = (new Stepmodify())->get_list(['p_id'=>$info['p_id'],'p_step_id'=>$stepid],'img,content,addtime');

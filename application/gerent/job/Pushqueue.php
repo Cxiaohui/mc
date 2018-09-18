@@ -72,15 +72,23 @@ class Pushqueue{
 
 
     public function updatePush($data,$res){
-        $nid = isset($data['notice_id'])?$data['notice_id']:0;
-        (new Pushruntime())->update_data(
-            ['id'=>$data['id']],
-            [
-                'metas'=>Db::raw('CONCAT(metas,'.$nid.')'),//['exp','CONCAT(metas,'.$nid.')'],
-                'donetime'=>date('Y-m-d H:i:s'),
-                'result'=>substr(json_encode($res),0,200)
-            ]
-        );
+        try{
+            $nid = isset($data['notice_id'])?$data['notice_id']:0;
+            (new Pushruntime())->update_data(
+                ['id'=>$data['id']],
+                [
+                    'metas'=>Db::raw('CONCAT(metas,'.$nid.')'),//['exp','CONCAT(metas,'.$nid.')'],
+                    'donetime'=>date('Y-m-d H:i:s'),
+                    'result'=>substr(str_replace('/home/wwwroot','',json_encode($res)),0,200)
+                ]
+            );
+        }catch (\Exception $e){
+            mlog::write('updatePush Error : '
+                . $e->getFile() . '-' . $e->getLine() . PHP_EOL
+                . $e->getMessage(),
+                $this->log_file);
+        }
+
     }
 
     /**

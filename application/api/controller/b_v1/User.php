@@ -66,7 +66,7 @@ class User extends Common{
         if(empty($update)){
             return $this -> response(['code' => 201, 'msg' => '无更新']);
         }
-        $update['uptime'] = $this->datetime;
+        //$update['uptime'] = $this->datetime;
 
         (new Buser())->update_data(['id'=>$this->user_id],$update);
 

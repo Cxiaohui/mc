@@ -196,7 +196,6 @@ class Project extends Common{
                         unset($docs[$k]);
                     }
                 }
-
             }
         }
         //logs
@@ -233,7 +232,7 @@ class Project extends Common{
         }
         $message = input('post.message','','trim');
         $primary_img = input('post.primary_img','','trim');
-        $imgs = input('post.imgs/a',[],'trim');
+        $imgs = input('post.imgs','','trim');
 
 
         $this->_check_project_power($p_id);
@@ -245,6 +244,7 @@ class Project extends Common{
             return $this->response(['code' => 201, 'msg' => '阶段信息不存在']);
         }
         $isupdate = false;
+        $log_mesg = '[上传]'.$step_info['name'].'现场照片';
         if($message){
             $step_update = [
                 'status'=>2,
@@ -259,6 +259,7 @@ class Project extends Common{
                 return $this->response(['code' => 201, 'msg' => '保存信息失败']);
             }
             $isupdate = true;
+            $log_mesg = $message;
         }
 
         $doc_inserts = [];
@@ -282,6 +283,7 @@ class Project extends Common{
             ];
         }
         if(!empty($imgs)){
+            $imgs = explode(',',$imgs);
             foreach($imgs as $img){
                 $ext = strtolower(pathinfo($img)['extension']);
                 $doc_inserts[] = [
@@ -307,7 +309,7 @@ class Project extends Common{
         if($isupdate){
             Plog::add_one($p_id,$step_id,$step_info['type'],
                 ['id'=>$this->user_id,'name'=>$this->user['name'],'type'=>1],
-                '[上传]'.$step_info['name'].'现场照片'
+                $log_mesg
             );
 
         }
