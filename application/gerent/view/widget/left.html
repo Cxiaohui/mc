@@ -14,46 +14,32 @@
     </div>
     <div class="left-nav clearfix">
         <div class="left-primary-nav">
-
-            <!--有子菜单的一级菜单-->
-            <ul id="myTab">
+            <ul id="mc-left-menu">
                 {notempty name="nodes"}
-                {volist name="nodes" id="nd"}
-                <li {if strtolower($nd['name'])==$contr } class="active"{/if}><a href="#{$nd['name']}{$nd['id']}" class="{$nd['icon']}" title="{$nd['title']}"></a></li>
-                {/volist}
+                {foreach name="nodes" item="nd"}
+                <li {if strtolower($nd['name'])==$contr } class="active"{/if} >
+                    <a href="javascript:;" class="{$nd['icon']} lv1"> {$nd['title']} {notempty name="nd.sub"}<i class="{if strtolower($nd['name'])==$contr } icon-chevron-down{else/}icon-chevron-up{/if} "></i> {/notempty}</a>
+                    {notempty name="nd.sub"}
+                    <ul class="accordion-nav"{if strtolower($nd['name'])!=$contr} style="display:none;"{/if}>
+                        {foreach name="nd.sub" item="nv2"}
+                        <li{if strtolower($nd['name'])==$contr&&strtolower($nv2['name'])==$act} class="active"{/if}><a href="{:url($nd['name'].'/'.$nv2['name'])}"> {$nv2['title']}</a></li>
+                        {notempty name="nv2.sub"}
+                            {foreach name="nv2.sub" item="nv3"}
+                <li{if strtolower($nd['name'])==$contr&&strtolower($nv3['name'])==$act} class="active"{/if}><a href="{:url($nd['name'].'/'.$nv3['name'])}"> {$nv3['title']}</a></li>
+                            {/foreach}
+                        {/notempty}
+                        {/foreach}
+                    </ul>
+                    {/notempty}
+                </li>
+                {/foreach}
                 {/notempty}
             </ul>
+
         </div>
         <!--窄屏菜单显示控制按钮-->
         <div class="responsive-leftbar">
             <i class="icon-list"></i>
-        </div>
-        <div class="left-secondary-nav tab-content">
-            <div class="tab-pane" id="index0">
-                <h4 class="side-head">后台首页</h4>
-            </div>
-            {notempty name="nodes"}
-                {volist name="nodes" id="nv"}
-                    <div class="tab-pane{if strtolower($nv['name'])==$contr} active{/if}" id="{$nv['name']}{$nv['id']}">
-                        <h4 class="side-head">{$nv['title']}</h4>
-                        <ul class="accordion-nav">
-                            {notempty name="nv.sub"}
-                                {volist name="nv['sub']" id="nv2"}
-                                    <li{if strtolower($nv2['name'])==$act} class="active"'{/if}><a href="{:url($nv['name'].'/'.$nv2['name'])}"><i class="icon-file"></i> {$nv2['title']}</a></li>
-
-                            {notempty name="nv2.sub"}
-                            {volist name="nv2['sub']" id="nv3"}
-                            <li{if strtolower($nv3['name'])==$act} class="active"'{/if}><a href="{:url($nv['name'].'/'.$nv3['name'])}"><i class="icon-file"></i> {$nv3['title']}</a></li>
-                            {/volist}
-                            {/notempty}
-                                {/volist}
-                            {/notempty}
-                        </ul>
-                    </div>
-                {/volist}
-            {/notempty}
-
-
         </div>
     </div>
 </div><!-- 左侧菜单 end-->

@@ -26,10 +26,10 @@ $(function () {
 
 $(function () {
 
-    $('#myTab a').click(function (e) {
+    /*$('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
-    });
+    });*/
 	$('#myTab1 a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -42,11 +42,22 @@ $(function () {
         e.preventDefault();
         $(this).tab('show');
     });
-    $('.left-primary-nav li a').tooltip({
+    /*$('.left-primary-nav li a').tooltip({
         placement: 'right'
-    });
+    });*/
 	$('.row-action .btn').tooltip({
         placement: 'top'
+    });
+
+	$('#mc-left-menu a.lv1').on('click',function(){
+	    var _this = $(this),
+            _thisi = _this.children('i');
+	    if(_thisi.hasClass('icon-chevron-down')){
+            _thisi.removeClass('icon-chevron-down').addClass('icon-chevron-up');
+        }else{
+            _thisi.removeClass('icon-chevron-up').addClass('icon-chevron-down');
+        }
+	    _this.next('ul.accordion-nav').toggle();
     });
 });
 

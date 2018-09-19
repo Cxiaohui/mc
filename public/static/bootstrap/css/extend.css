@@ -529,3 +529,18 @@ span.tag a {
 .mcdoc_upload_box{min-width: 200px;margin-bottom: 20px;border: 1px solid #999;padding: 20px;}
 .mcdoc_ppress{height: 4px;width:100%;background: #eee;}
 .mcdoc_press{height: 4px;width:0%;background: green;font-size: 12px;text-align: center;color: #666;}
+/*新的左侧菜单样式*/
+.leftbar{width:220px;}
+.main-wrapper{margin-left: 220px;}
+.admin-info{padding-right: 0;}
+.admin-meta ul{margin: 0 0 0 8px;}
+.left-primary-nav{background: #e1e1e1;}
+.left-primary-nav,.left-primary-nav ul li{width:220px;height: auto;border-bottom: 1px solid #ddd;}
+.left-primary-nav ul>li>a{position:relative;width:190px;font-size: 16px;color: #666;height: 40px;line-height: 40px;text-align: left;padding-left: 30px;border-top: 1px solid #999;border-bottom: 1px solid #999;}
+.left-primary-nav ul>li>a>i{position: absolute;right: 10px;top: 10px;}
+.left-primary-nav ul>li>a:hover {background:#f1f1f1;color:#da3610;}
+.left-primary-nav ul >li.active >a{color:#fff;background:#00859d;}
+.left-primary-nav ul li.active .accordion-nav a{color: #666;}
+.left-primary-nav ul li .accordion-nav > li{height: 35px;}
+.left-primary-nav ul li .accordion-nav > li > a{width:220px;padding:0;text-align: center;font-size: 14px;height: 35px;line-height: 35px;border: none;background: #eee;}
+.left-primary-nav ul li .accordion-nav > li.active >a{background:#fff;color:  #da3610;}
