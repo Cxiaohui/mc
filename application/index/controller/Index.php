@@ -562,5 +562,12 @@ class Index extends \app\common\controller\Base
         ];
         file_put_contents('/Users/chenxh/Documents/www/we7.log',print_r($log_data,1),FILE_APPEND);
     }
+
+
+    public function t23(){
+        \extend\Mylog::write('is a test ');
+        sleep(1);
+        \app\common\library\Mylog::write('is a test too');
+    }
 }
 
