@@ -14,8 +14,12 @@ class Mylog{
         if(is_array($mseg)){
             $mseg = print_r($mseg,1);
         }
-        //$mseg = str_replace('/home/wwwroot/','',$mseg);
-        $file_name = LOG_PATH.$fname.'-'.date('Y-m-d').'.log';
+        $path = LOG_PATH.$fname;
+        if(!is_dir($path)){
+            mkdir($path,0777,true);
+        }
+        $file_name = $path.'/'.date('Y-m-d').'.log';
+
         error_log(date('Y-m-d H:i:s').PHP_EOL.$mseg.PHP_EOL,3,$file_name);
     }
 
