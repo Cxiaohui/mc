@@ -26,14 +26,15 @@ class Notice extends Common
         $page = input('get.page',1,'int');
         $pagesize = input('get.pagesize',20,'int');
 
-        $w = ['user_type'=>1,'user_id'=>$this->user_id];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
+        //print_r($w);
         $count = $this->M->get_count($w);
         if($count<=0){
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>[]]);
         }
         $limit = $this->get_page_list($count,$page,$pagesize);
         if(!$limit){
-            return $this->response(['code'=>201,'msg'=>'没有数据','data'=>[]]);
+            return $this->response(['code'=>201,'msg'=>'没有数据.','data'=>[]]);
         }
         $list = $this->M->get_list($w,'id,p_id,type,target_id,status,title,content,addtime',$limit['limit']);
         $status = $this->nstatus('');
@@ -57,7 +58,7 @@ class Notice extends Common
     }
 
     public function undo_count_get(){
-        $w = ['user_type'=>1,'user_id'=>$this->user_id,'status'=>0];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id,'status'=>0];
         $count = $this->M->get_count($w);
         return $this->response(['code'=>200,'msg'=>'成功','data'=>[
             'undo_count'=>$count
@@ -69,7 +70,7 @@ class Notice extends Common
         if(!$id || $id<=0){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
-        $info = $this->M->get_info(['id'=>$id,'user_type'=>1,'user_id'=>$this->user_id]);
+        $info = $this->M->get_info(['id'=>$id,'user_type'=>$this->user_type_int,'user_id'=>$this->user_id]);
         if(!$info){
             return $this->response(['code'=>201,'msg'=>'该消息不存在']);
         }
@@ -87,7 +88,7 @@ class Notice extends Common
         if(!$id || $id<=0){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
-        $w = ['id'=>$id,'user_type'=>1,'user_id'=>$this->user_id];
+        $w = ['id'=>$id,'user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
         $info = $this->M->get_info($w,'id,type,status');
         if(!$info){
             return $this->response(['code'=>201,'msg'=>'该消息不存在']);

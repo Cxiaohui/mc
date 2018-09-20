@@ -33,11 +33,11 @@ class Report extends Common{
             return $this->response(['code' => 201, 'msg' => '该项目不存在']);
         }
         $preport = new Projectreport();
-        $list = $preport->get_list(['p_id'=>$p_id,'status'=>['in','1,2,3,4'],'isdel'=>0],'id,name,status');
+        $list = $preport->get_list(['p_id'=>$p_id,'status'=>['in','0,1,2,3,4'],'isdel'=>0],'id,name,status');
         if(empty($list)){
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
-        $status = [1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
+        $status = [0=>'待确认',1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
         foreach($list as $k=>$v){
             $list[$k]['status_name'] = $status[$v['status']];
         }
@@ -146,26 +146,26 @@ class Report extends Common{
 
         $res = $pr->update_data($prw,$update);
         if($res){
-            //todo 添加日志
+            // 添加日志
             Plog::add_one($p_id,$id,3,
                 ['type'=>1,'id'=>$this->user_id,'name'=>$this->user['name']],
                 '[通过]验收报告<<'.$pr_info['name'].'>>');
-            //todo 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'
+            // 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'
             $nwhere = [
                 'p_id'=>$p_id,
                 'type'=>5,
                 'target_id'=>$id,
-                'user_type'=>1,
+                'user_type'=>$this->user_type_int,
                 'user_id'=>$this->user_id
             ];
 
             LN::set_done($nwhere);
-            //todo 通知确认
+            // 通知确认
             $ndata = [
                 'p_id'=>$p_id,
                 'type'=>5,
                 'target_id'=>$id,
-                'user_type'=>1,
+                'user_type'=>$this->user_type_int,
                 //'user_id'=>$p_info['owner_user_id'],//业主
                 'title'=>'验收报告确认提醒',
                 'content'=>'验收报告<<'.$pr_info['name'].'>>等待确认'
@@ -226,17 +226,17 @@ class Report extends Common{
 
         $res = (new Projectreportmodify())->add_data($data);
         if($res){
-            //todo 添加日志
+            // 添加日志
             Plog::add_one($p_id,$id,3,
                 ['type'=>1,'id'=>$this->user_id,'name'=>$this->user['name']],
                 '[修改]验收报告<<'.$pr_info['name'].'>>:'.$content);
-            //todo 通知相关人员查看修改信息
+            // 通知相关人员查看修改信息
 
             $ndata = [
                 'p_id'=>$p_id,
                 'type'=>5,
                 'target_id'=>$id,
-                'user_type'=>1,
+                'user_type'=>$this->user_type_int,
                 //'user_id'=>$p_info['owner_user_id'],//业主
                 'title'=>'验收报告被驳回',
                 'content'=>'验收报告<<'.$pr_info['name'].'>>:'.$content

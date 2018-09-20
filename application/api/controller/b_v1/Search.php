@@ -17,8 +17,8 @@ class Search extends Common{
 
     /**
      * B端支持搜索项目
-     * todo 1，如果当前账号是项目中配的权限，是否只搜索与自己相关的项目？
-     * todo 2，搜索结果中的图片，取项目哪里图片呢？
+     *  1，如果当前账号是项目中配的权限，是否只搜索与自己相关的项目？
+     *  2，搜索结果中的图片，取项目哪里图片呢？
      */
     public function index_get(){
         $keyword = input('get.kwd','','trim');

@@ -25,6 +25,7 @@ class Projectimgroup{
             mlog::write('success:', $this->log_file);
 
         } catch (\Exception $e) {
+            $job->delete();
             mlog::write('Error:' . $e->getFile() . '-' . $e->getLine() . PHP_EOL . '-' . $e->getMessage(), $this->log_file);
         }
     }
@@ -39,15 +40,21 @@ class Projectimgroup{
      */
     public function do_job($data){
         //mlog::write('Projectimgroup', $this->log_file);
-        $yim = new YunIM();
-        $res = [];
-        if($data['act']=='add'){
-            $res = $yim->createGroupByProject($data['p_id']);
 
-        }elseif($data['act']=='edit'){
-            $res = $yim->updateGroupByProject($data['p_id']);
+        try{
+            $yim = new YunIM();
+            $res = [];
+            if($data['act']=='add'){
+                $res = $yim->createGroupByProject($data['p_id']);
+
+            }elseif($data['act']=='edit'){
+                $res = $yim->updateGroupByProject($data['p_id']);
+            }
+
+            mlog::write('imgroup:'.json_encode($res),$this->log_file);
+        }catch (\Exception $e){
+            throw new \Exception($e);
         }
 
-        mlog::write('imgroup:'.json_decode($res),$this->log_file);
     }
 }

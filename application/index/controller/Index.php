@@ -4,6 +4,11 @@ namespace app\index\controller;
 use app\common\library\Notice;
 use think\image\Exception,
     think\Db,
+    app\common\model\Projectoffer,
+    app\common\model\Projectofferdoc,
+    app\common\model\Projectreport,
+    app\common\model\Projectreportdoc,
+    app\common\library\Qiniu,
     app\gerent\model\Pushruntime;
 
 class Index extends \app\common\controller\Base
@@ -21,6 +26,136 @@ class Index extends \app\common\controller\Base
             return false;
         }
         \think\Queue::later(2,'app\gerent\job\Pushqueue',$data['data']);
+    }
+    public function push_test(){
+        $uid = input('get.uid',0,'int');
+        $key = input('get.key',0,'int');
+        if(!$uid){
+            return 'empty uid';
+        }
+        /**
+         *    type   说明            跳转
+        1    首页             0
+        2    项目设计阶段详情   阶段id
+        3    项目施工阶段详情   阶段id
+        4    项目付款信息      项目id
+        5    预约             预约消息详情id
+        6    施工预算          某个方案id
+        7    验收方案          某个方案id
+        8    事务提醒详情       提醒id
+         */
+        $test_data = [
+            'https://mokchuen.iytime.com/mch5/mochuan/DetailsPage.html?id=16',
+            'mochuan://com.aysd.mochuan?type=1',
+            'mochuan://com.aysd.mochuan?type=2&p_id=1&id=12',
+            'mochuan://com.aysd.mochuan?type=3&p_id=1&id=17',
+            'mochuan://com.aysd.mochuan?type=4&p_id=1',
+            'https://mokchuen.iytime.com/mch5/mochuan/PaymentSchedule.html?p_id=1',
+            'mochuan://com.aysd.mochuan?type=5&id=3',
+            'mochuan://com.aysd.mochuan?type=6&p_id=1&id=1',
+            'mochuan://com.aysd.mochuan?type=7&p_id=1&id=1',
+            'mochuan://com.aysd.mochuan?type=8&p_id=1&id=1',
+        ];
+        $data = [
+            'to_user_type'=>'c',
+            'to_user_id'=>$uid,
+            'message'=>'莫川测试推送',
+            'extras'=>[
+                'url'=>$test_data[$key]
+            ]
+        ];
+        /* try{
+             \app\common\library\Jpush::send('c',$uid,'莫川测试推送',['url'=>$test_data[$key]]);
+         }catch (Exception $e){
+             print_r($e);
+         }*/
+
+        \think\Queue::later(2,'app\gerent\job\Pushqueue',$data);
+        echo $test_data[$key];
+    }
+
+    public function test_imgmegre(){
+        $data = ['type'=>'report','id'=>4];
+
+        \think\Queue::later(2,'app\gerent\job\Compleximg',$data);
+    }
+
+    public function test_qn_donw(){
+        $w_url='http://pa5ijfg62.bkt.clouddn.com/reports/mcdocs-3b82b6e2e9f62bcaac7bb7dfe0be9c18.jpg?watermark/1/image/aHR0cDovL3BhNWlqZmc2Mi5ia3QuY2xvdWRkbi5jb20vL3NpZ25pbWcvc2lnbl9pbWcuZ2lm/dissolve/99/gravity/SouthEast/dx/15/dy/15/ws/0.8/wst/0';
+        try{
+            \app\common\library\Qiniu::download_upload_watermark($w_url);
+        }catch (\Exception $e){
+            print_r([
+                $e->getMessage()
+            ]);
+        }
+    }
+
+    public function test_comp(){
+        $data = ['type'=>'report','id'=>4];
+
+        $types = ['offer','report'];
+        if(!in_array($data['type'],$types) && !$data['id']){
+            return false;
+        }
+        $m=null;
+        $mdoc = null;
+        $w = [];
+        switch($data['type']){
+            case 'offer':
+                $m = new Projectoffer();
+                $mdoc = new Projectofferdoc();
+                $w = ['p_offer_id'=>$data['id']];
+                break;
+            case 'report':
+                $m = new Projectreport();
+                $mdoc = new Projectreportdoc();
+                $w = ['p_rep_id'=>$data['id']];
+                break;
+        }
+
+        $info = $m->get_info(['id'=>$data['id']],'id,sign_img');
+        if(!$info || !$info['sign_img']){
+            print_r('info not found');
+            return false;
+        }
+        //mlog::write($info,$this->log_file);
+        $w['isdel']  = 0;
+        $docs = $mdoc->get_list($w,'id,file_type,file_path',0);
+
+        if(empty($docs)){
+            print_r('empty doc');
+            return false;
+        }
+        try{
+            $img_exts = config('img_ext');
+            $img_exts[] = 'pdf';
+            foreach($docs as $doc){
+                if(!in_array($doc['file_type'],$img_exts)){
+                    print_r('not image or pdf;file_type='.$doc['file_type'].';'.json_encode($data).';doc id='.$doc['id']);
+                    continue;
+                }
+                print_r([$doc,$info]);
+                $w_url = Qiniu::watermark_url($doc['file_path'],$info['sign_img']);
+                if(!$w_url){
+                    print_r('watermark_url=>false;data:'.json_encode($data).';doc id='.$doc['id']);
+                    continue;
+                }
+                print_r('$w_url='.$w_url);
+                exit;
+                $q_key = Qiniu::download_upload_watermark($w_url);
+                if(!$q_key){
+                    print_r('download_upload_watermark=>false;data:'.json_encode($data).';doc id='.$doc['id']);
+                    continue;
+                }
+                print_r('$q_key='.$q_key);
+                echo 'SUCCESS';
+                //$mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$q_key]);
+            }
+        }catch(\Exception $e){
+            throw new \Exception($e);
+
+        }
     }
 
     public function test_not(){
@@ -62,52 +197,6 @@ class Index extends \app\common\controller\Base
         }
     }
 
-    public function push_test(){
-        $uid = input('get.uid',0,'int');
-        $key = input('get.key',0,'int');
-        if(!$uid){
-            return 'empty uid';
-        }
-        /**
-         *    type   说明            跳转
-                1    首页             0
-                2    项目设计阶段详情   阶段id
-                3    项目施工阶段详情   阶段id
-                4    项目付款信息      项目id
-                5    预约             预约消息详情id
-                6    施工预算          某个方案id
-                7    验收方案          某个方案id
-                8    事务提醒详情       提醒id
-         */
-        $test_data = [
-            'https://mokchuen.iytime.com/mch5/mochuan/DetailsPage.html?id=16',
-            'mochuan://com.aysd.mochuan?type=1',
-            'mochuan://com.aysd.mochuan?type=2&p_id=1&id=12',
-            'mochuan://com.aysd.mochuan?type=3&p_id=1&id=17',
-            'mochuan://com.aysd.mochuan?type=4&p_id=1',
-            'https://mokchuen.iytime.com/mch5/mochuan/PaymentSchedule.html?p_id=1',
-            'mochuan://com.aysd.mochuan?type=5&id=3',
-            'mochuan://com.aysd.mochuan?type=6&p_id=1&id=1',
-            'mochuan://com.aysd.mochuan?type=7&p_id=1&id=1',
-            'mochuan://com.aysd.mochuan?type=8&p_id=1&id=1',
-        ];
-        $data = [
-            'to_user_type'=>'c',
-            'to_user_id'=>$uid,
-            'message'=>'莫川测试推送',
-            'extras'=>[
-                'url'=>$test_data[$key]
-            ]
-        ];
-       /* try{
-            \app\common\library\Jpush::send('c',$uid,'莫川测试推送',['url'=>$test_data[$key]]);
-        }catch (Exception $e){
-            print_r($e);
-        }*/
-
-        \think\Queue::later(2,'app\gerent\job\Pushqueue',$data);
-        echo $test_data[$key];
-    }
 
 
     public function t1(){

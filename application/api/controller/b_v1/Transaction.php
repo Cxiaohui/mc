@@ -25,11 +25,11 @@ class Transaction extends Common {
     public function index_get(){
 
         //未处理的消息数
-        $w = ['user_type'=>2,'user_id'=>$this->user_id,'status'=>0];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id,'status'=>0];
         $mn = new MN();
         $undo_count = $mn->get_count($w);
         //最新的一个未处理消息
-        $w = ['user_type'=>2,'user_id'=>$this->user_id];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
         $last_notice = $mn->get_list($w,'id,status,title,addtime',1);
         if(count($last_notice)==1){
             $last_notice[0]['addtime'] = formatTime(strtotime($last_notice[0]['addtime']));
@@ -39,7 +39,7 @@ class Transaction extends Common {
         $my_ps = (new Projectadmin())->get_list(['b_user_id' => $this->user_id], 'p_id', 0);
 
         if (!empty($my_ps)) {
-            $my_pids = array2to1($my_ps, 'id');
+            $my_pids = array2to1($my_ps, 'p_id');
             $where = ' p_id in (' . implode(',',$my_pids) . ')';
 
             $last_doc = Docs::get_all_project_docs($where,1);

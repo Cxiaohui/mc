@@ -60,18 +60,13 @@ class Teams extends Common{
 
     }
 
-    /**
-     * 编辑文章分类
-     */
     public function cate_edit($id=0){
         if(!$id || $id<=0){
             $this->error('访问错误');
         }
         return $this->cate_add($id);
     }
-    /**
-     * 删除文章分类
-     */
+
     public function cate_del($id=0){
         if(!$id || $id<=0){
             $this->error('访问错误');

@@ -10,6 +10,7 @@ use Qiniu\Auth,
     \Qiniu\Config as QConfig,
     Qiniu\Storage\BucketManager,
     Qiniu\Storage\UploadManager;
+use think\image\Exception;
 
 
 class Qiniu{
@@ -39,7 +40,7 @@ class Qiniu{
         $dtx = pathinfo($src, PATHINFO_EXTENSION);
         $q_key = config('qiniu.file_key_prefix').$res['dir'].md5($src).'.'.$dtx;
 
-        echo $src,'----',$q_key;
+        //echo $src,'----',$q_key;
         return self::upload_file(config('qiniu.bucket1'),$src,$q_key);
     }
 
@@ -56,6 +57,10 @@ class Qiniu{
     }
 
     static public function upload_file($bucket,$file_path,$save_name){
+        if(!is_readable($file_path)){
+            throw new \Exception("文件不可读：$file_path");
+        }
+
         $uptoken = self::get_uptoken($bucket);
         $uploadMgr = new UploadManager();
         list($ret, $err) = $uploadMgr->putFile($uptoken, $save_name, $file_path);
@@ -106,7 +111,10 @@ class Qiniu{
         if(strpos($logo,$q_host)===false){
             $logo = $q_host.$logo;
         }
-
+        /*print_r([
+            '$src'=>$src,
+            '$logo'=>$logo
+        ]);*/
         $def_parms = [
             'dissolve'=>99,
             'gravity'=>'SouthEast',
@@ -116,10 +124,10 @@ class Qiniu{
             'wst'=>0
         ];
         $parms = array_merge($def_parms,$input_parms);
-
+        $base64_image = str_replace('+','-',str_replace('/','_',base64_encode($logo)));
         $w_parms = [
             '?watermark/1',
-            '/image/'.base64_encode($logo),
+            '/image/'.$base64_image,
             '/dissolve/'.$parms['dissolve'],
             '/gravity/'.$parms['gravity'],
             '/dx/'.$parms['dx'],
@@ -133,27 +141,37 @@ class Qiniu{
     }
 
     static public function download_upload_watermark($wurl){
-        $path = './data/'.str_replace(config('qiniu.host'),'',substr($wurl,0,strrpos($wurl,'?')));
-        //echo $path;
-        $pathinfo = pathinfo($path);
+        try{
+            $path = './data/'.str_replace(config('qiniu.host'),'',substr($wurl,0,strrpos($wurl,'?')));
+            //echo $path;
+            $pathinfo = pathinfo($path);
 
-        if(!is_dir($pathinfo['dirname'])){
-            mkdir($pathinfo['dirname'],0777,true);
+            if(!is_dir($pathinfo['dirname'])){
+                mkdir($pathinfo['dirname'],0777,true);
+            }
+
+            $new_name = 'mcdocs-'.md5($pathinfo['filename'].'-sign').'.'.$pathinfo['extension'];
+            $res = \extend\Http::curl_get($wurl);
+            if(strpos($res,'error')!==false){
+                throw new \Exception('获取新图片失败00，$wurl='.$wurl);
+            }
+            if(!$res){
+                throw new \Exception('获取新图片失败01,$wurl='.$wurl);
+            }
+
+            $save_name = $pathinfo['dirname'].'/'.$new_name;
+            @file_put_contents($save_name,$res);
+
+            if(file_exists($save_name)){
+                $q_key = str_replace('./data/','',$save_name);
+                self::upload_file(config('qiniu.bucket1'),$save_name,$q_key);
+
+                return $q_key;
+            }
+
+        }catch (\Exception $e){
+            throw new Exception($e);
         }
-
-        $new_name = 'mcdocs-'.md5($pathinfo['filename'].'-sign').'.'.$pathinfo['extension'];
-        $res = \extend\Http::curl_get($wurl);
-        //echo $res;
-        $save_name = $pathinfo['dirname'].'/'.$new_name;
-        @file_put_contents($save_name,$res);
-
-        if(file_exists($save_name)){
-            $q_key = str_replace('./data/','',$save_name);
-            self::upload_file(config('qiniu.bucket1'),$save_name,$q_key);
-
-            return $q_key;
-        }
-
         return false;
     }
 }

@@ -25,7 +25,7 @@ class Login{
 
     static public function b_mobile_check($moible){
         $cuser = new Buser();
-        $uinfo = $cuser->get_info(['mobile'=>$moible,'isdel'=>0],'id,status,name,en_name,mobile,allow_lg_b,b_power_tag,head_pic,jpush_tag,im_token');
+        $uinfo = $cuser->get_info(['mobile'=>$moible,'isdel'=>0],'id,status,name,name as uname,en_name,mobile,allow_lg_b,b_power_tag,head_pic,jpush_tag,im_token');
         if(!$uinfo){
             return ['err'=>1,'msg'=>'该用户不存在'];
         }

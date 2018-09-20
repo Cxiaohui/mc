@@ -149,27 +149,27 @@ class Offer extends Common{
         //$update = ['status'=>3,'passtime'=>$this->datetime,'sign_img'=>$sign_img];
         $res = $poffer->update_data($w,$update);
         if($res){
-            //todo 添加日志
+            // 添加日志
             //add log
             Plog::add_one($p_id,$id,4,
                 ['type'=>1,'id'=>$this->user_id,'name'=>$this->user['name']],
                 '[通过]施工预算<<'.$pr_info['name'].'>>');
-            //todo 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'
+            // 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'
             $nwhere = [
                 'p_id'=>$p_id,
                 'type'=>4,
                 'target_id'=>$id,
-                'user_type'=>1,
+                'user_type'=>$this->user_type_int,
                 'user_id'=>$this->user_id
             ];
 
             LN::set_done($nwhere);
-            //todo 通知确认
+            // 通知确认
             $ndata = [
                 'p_id'=>$p_id,
                 'type'=>4,
                 'target_id'=>$id,
-                'user_type'=>1,
+                'user_type'=>$this->user_type_int,
                 //'user_id'=>$p_info['owner_user_id'],//业主
                 'title'=>'施工预算确认提醒',
                 'content'=>'施工预算<<'.$pr_info['name'].'>>等待确认'
@@ -231,18 +231,18 @@ class Offer extends Common{
 
         $res = (new Projectoffermodify())->add_data($data);
         if($res){
-            //todo 添加日志
+            // 添加日志
             Plog::add_one($p_id,$id,4,
                 ['type'=>1,'id'=>$this->user_id,'name'=>$this->user['name']],
                 '[修改]施工预算<<'.$pr_info['name'].'>>:'.$content);
 
-            //todo 通知相关人员查看修改信息
+            // 通知相关人员查看修改信息
 
             $ndata = [
                 'p_id'=>$p_id,
                 'type'=>4,
                 'target_id'=>$id,
-                'user_type'=>1,
+                'user_type'=>$this->user_type_int,
                 //'user_id'=>$p_info['owner_user_id'],//业主
                 'title'=>'施工预算被驳回',
                 'content'=>'施工预算<<'.$pr_info['name'].'>>:'.$content
