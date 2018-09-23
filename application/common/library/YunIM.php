@@ -20,7 +20,7 @@ class YunIM
     /**
      * @var ServerAPI
      */
-    protected $im_obj = null;
+    public $im_obj = null;
 
     //按项目来创建群
     /*
@@ -276,13 +276,20 @@ class YunIM
             return ['err' => 0, 'msg' => 'ok', 'name'=>$uinfo['uname'],'token' => $uinfo['im_token']];
         }
         $head_pic = c_img($uinfo['head_pic'], 2, 120);
-
-        $res = $this->imobj()->createUserId($this->build_im_userid($uinfo['id'], 'C'), $uinfo['uname'], '{}', $head_pic);
+        $accid = $this->build_im_userid($uinfo['id'], 'C');
+        $res = $this->imobj()->createUserId($accid, $uinfo['uname'], '{}', $head_pic);
 
         if ($res['code'] == 200) {
 
             $muser->update_data(['id' => $user_id], ['im_token' => $res['info']['token']]);
             return ['err' => 0, 'msg' => 'ok', 'name'=>$uinfo['uname'],'token' => $res['info']['token']];
+        }else{
+            $res = $this->imobj()->updateUserToken($accid);
+            if ($res['code'] == 200) {
+
+                $muser->update_data(['id' => $user_id], ['im_token' => $res['info']['token']]);
+                return ['err' => 0, 'msg' => 'ok', 'name'=>$uinfo['uname'],'token' => $res['info']['token']];
+            }
         }
 
         return ['err' => 1, 'msg' => '创建失败c', 'code' => $res['code']];
@@ -300,13 +307,20 @@ class YunIM
             return ['err' => 0, 'msg' => 'ok', 'name'=>$uinfo['name'],'token' => $uinfo['im_token']];
         }
         $head_pic = c_img($uinfo['head_pic'], 3, 120);
-
-        $res = $this->imobj()->createUserId($this->build_im_userid($uinfo['id'], 'B'), $uinfo['name'], '{}', $head_pic);
+        $accid = $this->build_im_userid($uinfo['id'], 'B');
+        $res = $this->imobj()->createUserId($accid, $uinfo['name'], '{}', $head_pic);
 
         if ($res['code'] == 200) {
 
             $m->update_admin(['id' => $user_id], ['im_token' => $res['info']['token']]);
             return ['err' => 0, 'msg' => 'ok', 'name'=>$uinfo['name'],'token' => $res['info']['token']];
+        }else{
+            $res = $this->imobj()->updateUserToken($accid);
+            if ($res['code'] == 200) {
+
+                $m->update_admin(['id' => $user_id], ['im_token' => $res['info']['token']]);
+                return ['err' => 0, 'msg' => 'ok', 'name'=>$uinfo['name'],'token' => $res['info']['token']];
+            }
         }
 
         return ['err' => 1, 'msg' => '创建失败b', 'code' => $res['code']];
@@ -318,8 +332,9 @@ class YunIM
         if($pim_info && $pim_info['token']){
             return ['err' => 0, 'msg' => 'ok', 'name'=>$pim_info['name'],'token' => $pim_info['token']];
         }
+        $accid = $this->build_im_userid($p_id, 'P');
         $name = config('company.short_name');
-        $res = $this->imobj()->createUserId($this->build_im_userid($p_id, 'P'), $name);
+        $res = $this->imobj()->createUserId($accid, $name);
         if ($res['code'] == 200) {
             $pm->save_data([
                 'p_id'=>$p_id,
@@ -329,6 +344,19 @@ class YunIM
             ]);
             //$m->update_admin(['id' => $user_id], ['im_token' => $res['info']['token']]);
             return ['err' => 0, 'msg' => 'ok', 'name'=>$name,'token' => $res['info']['token']];
+        }else{
+            $res = $this->imobj()->updateUserToken($accid);
+
+            if ($res['code'] == 200) {
+                $pm->save_data([
+                    'p_id'=>$p_id,
+                    'im_userid'=>$this->build_im_userid($p_id, 'P'),
+                    'name'=>$name,
+                    'token'=>$res['info']['token']
+                ]);
+                //$m->update_admin(['id' => $user_id], ['im_token' => $res['info']['token']]);
+                return ['err' => 0, 'msg' => 'ok', 'name'=>$name,'token' => $res['info']['token']];
+            }
         }
 
         return ['err' => 1, 'msg' => '创建失败p', 'code' => $res['code']];
@@ -338,7 +366,7 @@ class YunIM
     {
         return strtolower($type) . '_' . $user_id;
     }
-    protected function imobj()
+    public function imobj()
     {
         if (is_null($this->im_obj)) {
             $config = config('yunxin');

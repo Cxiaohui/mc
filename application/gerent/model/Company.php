@@ -13,8 +13,12 @@ class Company extends General{
     public function get_list($where,$filed='*',$limit=0){
         return $this->_get_list($this->t,$where,['sort'=>'asc'],$filed,$limit);
     }
-    //todo 20180923
-    public function get_company_depart(){
-
+    // 20180923
+    public function get_company_depart($w=''){
+        $sql = 'select c.id as cpid,c.name as company_name,d.id as dp_id,d.name as depart_name from mc_admin_department as d left join mc_admin_company as c on c.id=d.cpid';
+        if($w){
+            $sql .= ' where '.$w;
+        }
+        return $this->query_sql($sql);
     }
 }

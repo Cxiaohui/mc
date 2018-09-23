@@ -19,6 +19,12 @@ class Index extends \app\common\controller\Base
         return '^_^';
     }
 
+    public function test_im(){
+        $yim = new \app\common\library\YunIM();
+        $res = $yim->imobj()->updateUserToken('b_5');
+        var_dump($res);
+    }
+
     public function test_pushq(){
         $info = (new Pushruntime())->get_info(['id'=>3]);
         $data = \app\common\library\Notice::addNoticeFromPush($info);

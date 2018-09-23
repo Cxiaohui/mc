@@ -11,7 +11,8 @@ use think\image\Exception;
 
 class Jpush{
 
-    static protected $jpush_client=null;
+    static protected $jpush_client_c=null;
+    static protected $jpush_client_b=null;
 
 
     static public function send($to_user_type,$to_userid,$message,$extras=[],$title='新消息'){
@@ -24,7 +25,8 @@ class Jpush{
 
     static public function push_mesg($alias,$message,$extras=[],$title='新消息'){
         try {
-            $response = self::init_obj()->push()
+            $type = substr($alias,0,1);
+            $response = self::init_obj($type)->push()
                 ->setPlatform(array('ios', 'android'))
                 // 一般情况下，关于 audience 的设置只需要调用 addAlias、addTag、addTagAnd  或 addRegistrationId
                 // 这四个方法中的某一个即可，这里仅作为示例，当然全部调用也可以，多项 audience 调用表示其结果的交集
@@ -93,15 +95,36 @@ class Jpush{
     }
 
     static public function del_alias($user_id,$type){
-        return self::init_obj()->device()->deleteAlias(self::create_alias($user_id,$type));
+        return self::init_obj($type)->device()->deleteAlias(self::create_alias($user_id,$type));
     }
 
-    static public function init_obj(){
-
-        if(is_null(self::$jpush_client)){
-            self::$jpush_client = new JPush_SDK(config('jpush.AppKey'), config('jpush.Secret'),config('jpush.log_file'));
+    static public function init_obj($type='c'){
+        $type = strtolower($type);
+        if(in_array($type,['b','c'])){
+            $type = 'c';
         }
-        return self::$jpush_client;
+        if($type=='c'){
+            $config = config('jpush');
+            if(is_null(self::$jpush_client_c)){
+                self::$jpush_client_c = new JPush_SDK(
+                    $config['AppKey'],
+                    $config['Secret'],
+                    $config['log_file']);
+            }
+            return self::$jpush_client_c;
+        }
+
+        if($type=='b'){
+            if(is_null(self::$jpush_client_b)){
+                $config = config('jpush_b');
+                self::$jpush_client_b = new JPush_SDK(
+                    $config['AppKey'],
+                    $config['Secret'],
+                    $config['log_file']);
+            }
+
+            return self::$jpush_client_b;
+        }
 
     }
 

@@ -317,6 +317,12 @@ return [
         'Secret'=>'56b431efc4a3c9768e8a7054',
         'log_file'=>LOG_PATH.DS.'jpush.log'
     ],
+    'jpush_b'=>[
+        'apns_production'=>false,
+        'AppKey'=>'4c4d20022b6ad23b8fc86b74',
+        'Secret'=>'9d7a2746b76987b60c525623',
+        'log_file'=>LOG_PATH.DS.'jpush_b.log'
+    ],
     'qiniu'=>[
         'host'=>'http://content.iytime.com/',
         'file_key_prefix'=>'mcdocs-',

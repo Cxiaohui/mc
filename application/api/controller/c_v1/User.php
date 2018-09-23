@@ -73,6 +73,8 @@ class User extends Common{
 
         (new Cuser())->update_data(['id'=>$this->user_id],$update);
 
+        //todo 更新头像后再更新IM的头像
+
         return $this -> response(['code' => 200, 'msg' => '更新成功']);
     }
 

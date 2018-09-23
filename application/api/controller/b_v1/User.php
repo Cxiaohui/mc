@@ -70,6 +70,8 @@ class User extends Common{
 
         (new Buser())->update_data(['id'=>$this->user_id],$update);
 
+        //todo 更新头像后再更新IM的头像
+
         return $this -> response(['code' => 200, 'msg' => '更新成功']);
     }
 
@@ -79,9 +81,14 @@ class User extends Common{
     protected function get_user_info(){
         $info = (new Buser())->get_info(['id'=>$this->user_id],'id,name,name as uname,en_name,sex as gender,mobile,head_pic,depart_id,remark');
         $info['head_pic'] = c_img($info['head_pic'],3,600);
-        //todo 20180923 部门信息
-        $info['company_name'] = '';
-        $info['depart_name'] = '';
+        // 20180923 部门信息
+        $company = [];
+        if($info['depart_id']>0){
+            $company = (new \app\gerent\model\Company())->get_company_depart('d.id='.$info['depart_id'].' limit 1');
+        }
+
+        $info['company_name'] = $company?$company[0]['company_name']:'无';
+        $info['depart_name'] = $company?$company[0]['depart_name']:'无';
         return $info;
     }
 }

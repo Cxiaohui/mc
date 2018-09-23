@@ -28,6 +28,6 @@ class Users extends Validate{
 
     protected $scene = [
         'add'=>['cpid','uname','mobile','lgpwd'],
-        'edit'  =>  ['cpid','uname','mobile']
+        'edit'  =>  ['cpid','uname']
     ];
 }

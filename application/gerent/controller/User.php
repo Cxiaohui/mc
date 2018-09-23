@@ -12,7 +12,9 @@ use extend\Str,
     app\gerent\model\Company,
     app\gerent\model\User as mUser;
 class User extends Common{
-
+    /**
+     * @var mUser
+     */
     protected $Um;
 
     public function _initialize($check_login=true)
@@ -131,6 +133,13 @@ class User extends Common{
             $this->error($vAdmin->getError());
         }else{
             unset($post['ref']);
+
+            if(isset($post['id']) && $post['id']>0){
+                $exists = $this->Um->get_count(['id'=>['neq',$post['id']],'mobile'=>$post['mobile']]);
+                if($exists>0){
+                    $this->error('新的手机号已经存在，请换一个');
+                }
+            }
 
             $s_res = $this->Um->save_user_data($post);
             if($s_res){
