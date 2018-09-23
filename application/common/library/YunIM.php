@@ -7,7 +7,7 @@
  */
 namespace app\common\library;
 
-use \extend\netease\ServerAPI,
+use app\common\library\netease\ServerAPI,
     app\gerent\model\User,
     app\gerent\model\Systable,
     app\common\model\Project,
