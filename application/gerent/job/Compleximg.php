@@ -24,7 +24,10 @@ class Compleximg{
     {
         try {
             try{
-                $this->do_job($data);
+                $res = $this->do_job($data);
+                if(!$res){
+                    $job->delete();
+                }
             }catch (\Exception $e){
                 $job->delete();
                 mlog::write('Error : '
@@ -138,7 +141,6 @@ class Compleximg{
             }
         }catch(\Exception $e){
             throw new \Exception($e);
-
         }
 
     }
