@@ -57,8 +57,9 @@ class Compleximg{
      */
     public function do_job($data){
         mlog::write(json_encode($data),$this->log_file);
-        $types = ['offer','report'];
-        if(!in_array($data['type'],$types) && !$data['id']){
+        $types = ['offer','report','static-1','static-2','static-3'];
+        if(!in_array($data['type'],$types)){
+            mlog::write('error type:'.$data['type'],$this->log_file);
             return false;
         }
         $m=null;
@@ -66,11 +67,19 @@ class Compleximg{
         $w = [];
         switch($data['type']){
             case 'offer':
+                if(!$data['id']){
+                    mlog::write('error id',$this->log_file);
+                    return false;
+                }
                 $m = new Projectoffer();
                 $mdoc = new Projectofferdoc();
                 $w = ['p_offer_id'=>$data['id']];
                 break;
             case 'report':
+                if(!$data['id']){
+                    mlog::write('error id',$this->log_file);
+                    return false;
+                }
                 $m = new Projectreport();
                 $mdoc = new Projectreportdoc();
                 $w = ['p_rep_id'=>$data['id']];
@@ -78,6 +87,10 @@ class Compleximg{
             case 'static-1':
             case 'static-2':
             case 'static-3':
+                if(!$data['p_id']){
+                    mlog::write('error p_id',$this->log_file);
+                    return false;
+                }
                 list($a,$type) = explode('-',$data['type']);
                 $m = new Projectstatic();
                 $mdoc = new Projectstaticdocs();

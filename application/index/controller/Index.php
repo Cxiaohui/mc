@@ -77,13 +77,18 @@ class Index extends \app\common\controller\Base
     }
 
     public function test_imgmegre(){
-        $data = ['type'=>'report','id'=>4];
-        $Compleximg = new \app\gerent\job\Compleximg();
-        $Compleximg->do_job($data);
+        $type = input('get.type','');
+        $id = input('get.id',0);
+        $p_id = input('get.p_id',0);
+        //$data = ['type'=>'report','id'=>4];
+        $data = ['type'=>$type,'id'=>$id,'p_id'=>$p_id];
+        //$Compleximg = new \app\gerent\job\Compleximg();
+        //$Compleximg->do_job($data);
         //$Compleximg->fire(,$data);
 
         //\think\Queue::later(2,'app\gerent\job\Compleximg',$data);
-        //\think\Queue::push('app\gerent\job\Compleximg',$data);
+        $res = \think\Queue::later(1,'app\gerent\job\Compleximg',$data);
+        var_dump($res);
     }
 
     public function test_qn_donw(){
@@ -343,7 +348,7 @@ class Index extends \app\common\controller\Base
 
     function t13(){
         $yim = new \app\common\library\YunIM();
-        $res = $yim->sendTestMsg('p_1','560928224',1,'今天是'.date('Y-m-d H:i'));
+        $res = $yim->sendTestMsg('p_4','624712007',1,'今天是'.date('Y-m-d H:i'));
         //http://pa5ijfg62.bkt.clouddn.com/doc/testestesteststtte.docx
         //$res = $yim->sendTestMsg('p_1','560928224',1,'今天是'.date('Y-m-d H:i'));
         print_r($res);
