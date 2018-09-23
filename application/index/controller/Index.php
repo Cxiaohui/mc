@@ -80,6 +80,7 @@ class Index extends \app\common\controller\Base
         $type = input('get.type','');
         $id = input('get.id',0);
         $p_id = input('get.p_id',0);
+        $ss = input('get.ss',0);
         //$data = ['type'=>'report','id'=>4];
         $data = ['type'=>$type,'id'=>$id,'p_id'=>$p_id];
         //$Compleximg = new \app\gerent\job\Compleximg();
@@ -87,8 +88,14 @@ class Index extends \app\common\controller\Base
         //$Compleximg->fire(,$data);
 
         //\think\Queue::later(2,'app\gerent\job\Compleximg',$data);
-        $res = \think\Queue::later(1,'app\gerent\job\Compleximg',$data);
-        var_dump($res);
+        if($ss){
+            $Compleximg = new \app\gerent\job\Compleximg();
+            $Compleximg->do_job($data);
+        }else{
+            $res = \think\Queue::later(1,'app\gerent\job\Compleximg',$data);
+            var_dump($res);
+        }
+
     }
 
     public function test_qn_donw(){
