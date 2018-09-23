@@ -12,6 +12,8 @@ use think\queue\Job,
     app\common\model\Projectofferdoc,
     app\common\model\Projectreport,
     app\common\model\Projectreportdoc,
+    app\common\model\Projectstatic,
+    app\common\model\Projectstaticdocs,
     app\common\library\Qiniu,
     app\common\library\Mylog as mlog;
 
@@ -70,6 +72,14 @@ class Compleximg{
                 $mdoc = new Projectreportdoc();
                 $w = ['p_rep_id'=>$data['id']];
                 break;
+            case 'static-1':
+            case 'static-2':
+            case 'static-3':
+                list($a,$type) = explode('-',$data['type']);
+                $m = new Projectstatic();
+                $mdoc = new Projectstaticdocs();
+                $w = ['type'=>$type];
+                break;
         }
 
         $info = $m->get_info(['id'=>$data['id']],'id,sign_img');
@@ -79,7 +89,7 @@ class Compleximg{
         }
         //mlog::write($info,$this->log_file);
         $w['isdel']  = 0;
-        $docs = $mdoc->get_list($w,'id,file_type,file_path',0);
+        $docs = $mdoc->get_list($w,'id,file_type,file_path,sign_complex_path',0);
 
         if(empty($docs)){
             mlog::write('empty doc',$this->log_file);
@@ -90,6 +100,11 @@ class Compleximg{
             //$img_exts[] = 'pdf';
             $q_host = config('qiniu.host');
             foreach($docs as $doc){
+                if($doc['sign_complex_path']){
+                    mlog::write('sign_complex_path',$this->log_file);
+                    continue;
+                }
+
                 if(!in_array($doc['file_type'],$img_exts)){
                     mlog::write('not image or pdf;file_type='.$doc['file_type'].';'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;
@@ -102,7 +117,10 @@ class Compleximg{
                 }
                 $pic_info = json_decode($pic_info,1);
                 //水印宽度180px
-                $ws = sprintf("%.2f",180/$pic_info['width']);
+                $ws = '0.3';
+                if($pic_info['width']>0){
+                    $ws = sprintf("%.2f",180/$pic_info['width']);
+                }
 
                 $w_url = Qiniu::watermark_url($doc['file_path'],$info['sign_img'],['ws'=>$ws,'dissolve'=>80,'wst'=>2]);
                 if(!$w_url){

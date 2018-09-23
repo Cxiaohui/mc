@@ -96,12 +96,17 @@ class Report extends Common{
             }
         }
 
-        $docs = (new Projectreportdoc())->get_list(['p_id'=>$p_id,'p_rep_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,addtime');
+        $docs = (new Projectreportdoc())->get_list(['p_id'=>$p_id,'p_rep_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,sign_complex_path,addtime');
         if(!empty($docs)){
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
-                $docs[$dk]['file_url'] = $qiniu_host.$dv['file_path'];
+                if($dv['sign_complex_path']){
+                    $docs[$dk]['file_url'] = $qiniu_host.$dv['sign_complex_path'];
+                }else{
+                    $docs[$dk]['file_url'] = $qiniu_host.$dv['file_path'];
+                }
+                //$docs[$dk]['file_url'] = $qiniu_host.$dv['file_path'];
                 unset($docs[$dk]['file_path']);
             }
         }

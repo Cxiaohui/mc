@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\library\Notice;
 use think\image\Exception,
     think\Db,
+    think\queue\Job,
     app\common\model\Projectoffer,
     app\common\model\Projectofferdoc,
     app\common\model\Projectreport,
@@ -27,6 +28,7 @@ class Index extends \app\common\controller\Base
         }
         \think\Queue::later(2,'app\gerent\job\Pushqueue',$data['data']);
     }
+
     public function push_test(){
         $uid = input('get.uid',0,'int');
         $key = input('get.key',0,'int');
@@ -76,8 +78,12 @@ class Index extends \app\common\controller\Base
 
     public function test_imgmegre(){
         $data = ['type'=>'report','id'=>4];
+        $Compleximg = new \app\gerent\job\Compleximg();
+        $Compleximg->do_job($data);
+        //$Compleximg->fire(,$data);
 
-        \think\Queue::later(2,'app\gerent\job\Compleximg',$data);
+        //\think\Queue::later(2,'app\gerent\job\Compleximg',$data);
+        //\think\Queue::push('app\gerent\job\Compleximg',$data);
     }
 
     public function test_qn_donw(){
@@ -229,8 +235,6 @@ class Index extends \app\common\controller\Base
         }
     }
 
-
-
     public function t1(){
         $rs = \app\common\library\Sms::verify_send('15811835212');
         //$rs = \app\common\library\Sms::send('15811835212','你好，可以认识一下吗？');
@@ -283,18 +287,19 @@ class Index extends \app\common\controller\Base
         return $this->fetch('qiniu_js');
     }
 
-        public function t5(){
+    public function t5(){
             echo request()->host(true);
         }
 
-        public function t7(){
+    public function t7(){
             $im = new \app\common\library\YunIM();
             //$res = $im->createGroupByProject(1);
             //$im->removeGroup(1,560880533);
             $im->queryGroup([560928224]);
             //print_r($res);
         }
-        public function t8(){
+
+    public function t8(){
             $pic_list = [
                 'http://img104.job1001.com/upload/faceimg/20140305/5176438df39012880af6da07c725d91f_1394001874.jpeg',
                 'http://img104.job1001.com/upload/faceimg/20131121/90d8df2365743b0830f57ed3090c3311_1385026102.gif',
@@ -309,13 +314,13 @@ class Index extends \app\common\controller\Base
             $img = new \extend\Imgjoin($pic_list,'./data/imgjoin115.jpg');
             $img->do_work();
         }
+
     public function t9(){
         $buserids= [2,3,4];
         $cuserids=[1];
         $tid=434954385;
         \app\common\library\Imgjoin::create_group_icon($buserids,$cuserids,$tid);
     }
-
 
     public function t10(){
         $yim = new \app\common\library\YunIM();
@@ -335,6 +340,7 @@ class Index extends \app\common\controller\Base
         $res = $yim->queryGroupMsg('560928224','c_1');
         print_r($res);
     }
+
     function t13(){
         $yim = new \app\common\library\YunIM();
         $res = $yim->sendTestMsg('p_1','560928224',1,'今天是'.date('Y-m-d H:i'));
@@ -382,8 +388,8 @@ class Index extends \app\common\controller\Base
         //$data = ['bid'=>22,'user_id'=>5,'transaction_id'=>'4005752001201706308157752886'];
         try{
             //\app\common\library\Mylog::write(date('Y-m-d H:i:s'),'mytest');
-            //\think\Queue::push('app\gerent\job\Mytest',[]);
-            \think\Queue::later(2,'app\gerent\job\Projectimgroup',['p_id'=>4,'act'=>'add']);
+            \think\Queue::push('app\gerent\job\Mytest',[]);
+            //\think\Queue::later(2,'app\gerent\job\Projectimgroup',['p_id'=>4,'act'=>'add']);
             //\think\Queue::push('app\gerent\job\Stepstatus',[]);
             //\think\Queue::later(5,'app\gerent\job\Projectpaycheck',[]);
             //\think\Queue::later(8,'app\gerent\job\Booking',[]);
@@ -595,11 +601,10 @@ class Index extends \app\common\controller\Base
         file_put_contents('/Users/chenxh/Documents/www/we7.log',print_r($log_data,1),FILE_APPEND);
     }
 
-
     public function t23(){
-        \extend\Mylog::write('is a test ');
+        \extend\Mylog::write('is a test ','compleximg_status');
         sleep(1);
-        \app\common\library\Mylog::write('is a test too');
+        \app\common\library\Mylog::write('is a test too','compleximg_status');
     }
 }
 

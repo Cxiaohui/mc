@@ -117,8 +117,9 @@ class Show extends Common{
         if(!$res){
             return $this->response(['code'=>201,'msg'=>'操作失败，请稍后再试']);
         }
+        //添加一个定时任务，合成图片
+        \think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'static-'.$info['type'],'id'=>0]);
         //add log
-
         Plog::add_one($p_id,$info['id'],$this->log_type[$info['type']],['type'=>2,'id'=>$this->user_id,'name'=>'业主'],'[通过]');
 
         return $this->response(['code'=>200,'msg'=>'操作成功']);
@@ -143,7 +144,7 @@ class Show extends Common{
 
 
         $w = ['p_id'=>$p_id,'type'=>$type,'isdel'=>0];
-        $data = (new Projectstaticdocs())->get_list($w,'id,file_type,file_name,file_path,addtime',0);
+        $data = (new Projectstaticdocs())->get_list($w,'id,file_type,file_name,file_path,sign_complex_path,addtime',0);
 
         if(empty($data)){
             return $this->response(['code'=>201,'msg'=>'没有数据']);
@@ -152,7 +153,12 @@ class Show extends Common{
         if(!empty($data)){
 
             foreach($data as $k=>$da){
-                $data[$k]['file_url'] = $q_host.$da['file_path'];
+                //$data[$k]['file_url'] = $q_host.$da['file_path'];
+                if($da['sign_complex_path']){
+                    $data[$k]['file_url'] = $q_host.$da['sign_complex_path'];
+                }else{
+                    $data[$k]['file_url'] = $q_host.$da['file_path'];
+                }
                 $data[$k]['addtime'] = date("Y-m-d",strtotime($da['addtime']));
                 unset($data[$k]['file_path']);
             }
