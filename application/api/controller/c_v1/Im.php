@@ -42,7 +42,7 @@ class Im extends Common{
     public function list_get(){
         $m = new mIM();
         $w = [
-            'user_type'=>2,
+            'user_type'=>$this->user_type_int,
             'user_id'=>$this->user_id,
             'isdel'=>0
         ];
@@ -85,7 +85,7 @@ class Im extends Common{
         $m = new mIM();
         //me
         $save_data = [
-            'user_type' => 2,
+            'user_type' => $this->user_type_int,
             'user_id' => $this->user_id,
             'im_type' => 1,
             'target_type'=>$target_type=='b'?1:2,
@@ -98,7 +98,7 @@ class Im extends Common{
             'user_type' => $target_type=='b'?1:2,
             'user_id' => $target_id,
             'im_type' => 1,
-            'target_type'=>2,
+            'target_type'=>$this->user_type_int,
             'target_tag' => $this->user_id,
             'name' => $res['name']
         ];

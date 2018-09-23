@@ -13,4 +13,8 @@ class Company extends General{
     public function get_list($where,$filed='*',$limit=0){
         return $this->_get_list($this->t,$where,['sort'=>'asc'],$filed,$limit);
     }
+    //todo 20180923
+    public function get_company_depart(){
+
+    }
 }

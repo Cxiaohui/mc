@@ -126,7 +126,7 @@ class Compleximg{
                     continue;
                 }
                 //根据图片，计算ws的值
-                $pic_info = \extend\Http::curl_get($q_host.$doc['file_path'].'?imageInfo');
+                $pic_info = \app\common\library\Http::curl_get($q_host.$doc['file_path'].'?imageInfo');
                 if(!$pic_info){
                     mlog::write('image info not found;data:'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;

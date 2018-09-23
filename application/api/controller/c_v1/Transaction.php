@@ -25,12 +25,12 @@ class Transaction extends Common {
     public function index_get(){
 
         //未处理的消息数
-        $w = ['user_type'=>2,'user_id'=>$this->user_id,'status'=>0];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id,'status'=>0];
         $mn = new MN();
         $undo_count = $mn->get_count($w);
         //最新的一个未处理消息
         $last_notice = null;
-        $w = ['user_type'=>2,'user_id'=>$this->user_id];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
         $notice = $mn->get_list($w,'id,status,title,addtime',1);
         if(count($notice)==1){
             $notice[0]['addtime'] = formatTime(strtotime($notice[0]['addtime']));

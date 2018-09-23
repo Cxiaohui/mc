@@ -63,7 +63,12 @@ class Projectstatic extends Common{
             if(!empty($data)){
 
                 foreach($data as $k=>$da){
-                    $da['file_url'] = $q_host.$da['file_path'];
+                    if($da['sign_complex_path']){
+                        $da['file_url'] = $q_host.$da['sign_complex_path'];
+                    }else{
+                        $da['file_url'] = $q_host.$da['file_path'];
+                    }
+
                     if($da['type'] == $tk){
                         $list[$tk]['list'][] = $da;
                         unset($data[$k]);

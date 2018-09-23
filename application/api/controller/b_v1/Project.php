@@ -343,7 +343,7 @@ class Project extends Common{
         ];
         LN::add($ndata);
 
-        $type = $step_info['type']==1?2:3;
+        /*$type = $step_info['type']==1?2:3;
         $data = [
             'to_user_type'=>get_user_type_str(2),
             'to_user_id'=>$p_info['owner_user_id'],
@@ -353,7 +353,7 @@ class Project extends Common{
             ]
         ];
 
-        \think\Queue::later(2,'app\gerent\job\Pushqueue',$data);
+        \think\Queue::later(2,'app\gerent\job\Pushqueue',$data);*/
         return $this->response(['code' => 200, 'msg' => '已通知业主']);
     }
 

@@ -58,7 +58,7 @@ class Notice extends Common
     }
 
     public function undo_count_get(){
-        $w = ['user_type'=>2,'user_id'=>$this->user_id,'status'=>0];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id,'status'=>0];
         $count = $this->M->get_count($w);
         return $this->response(['code'=>200,'msg'=>'成功','data'=>[
             'undo_count'=>$count
@@ -70,9 +70,14 @@ class Notice extends Common
         if(!$id || $id<=0){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
-        $info = $this->M->get_info(['id'=>$id,'user_type'=>2,'user_id'=>$this->user_id]);
+        $w = ['id'=>$id,'user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
+        $info = $this->M->get_info($w);
         if(!$info){
             return $this->response(['code'=>201,'msg'=>'该消息不存在']);
+        }
+        // type=0,2付款，3预约 自动设为已处理
+        if(in_array($info['status'],[0,2,3])){
+            $this->M->update_data($w,['status'=>1]);
         }
         $status = $this->nstatus($info['status']);
         $info['status_name'] = $status[0];
@@ -88,7 +93,7 @@ class Notice extends Common
         if(!$id || $id<=0){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
-        $w = ['id'=>$id,'user_type'=>2,'user_id'=>$this->user_id];
+        $w = ['id'=>$id,'user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
         $info = $this->M->get_info($w,'id,type,status');
         if(!$info){
             return $this->response(['code'=>201,'msg'=>'该消息不存在']);

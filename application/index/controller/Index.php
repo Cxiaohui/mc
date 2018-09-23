@@ -111,8 +111,9 @@ class Index extends \app\common\controller\Base
 
     public function test_watermark(){
         //$pic = 'http://content.iytime.com/app/20180720/mcdocs-15320765630.jpg';
-        $pic = 'http://content.iytime.com/reports/mcdocs-42c4330750b9ed2e2dfec73560c5d809.pdf';
-        $logo = 'http://content.iytime.com/signimg/300.180WX20180923-121233@2x.png';
+        $pic = 'http://content.iytime.com/reports/mcdocs-9c21713ff766e5b994692d19ad63a489.jpg';
+        //$logo = 'http://content.iytime.com/project/1/mcdocs-20180923155318.png';
+        $logo = 'http://content.iytime.com/project/20180923/11/8/mcdocs-1537689265.png';
 
 
         $pic_info = \extend\Http::curl_get($pic.'?imageInfo');
@@ -126,7 +127,7 @@ class Index extends \app\common\controller\Base
         if($pic_info['width']>200){
             $ws = sprintf("%.2f",180/$pic_info['width']);
         }
-
+        //echo $ws;
 
         $w_url = \app\common\library\Qiniu::watermark_url($pic,$logo,['ws'=>$ws,'dissolve'=>80,'wst'=>2]);
         echo $w_url;
@@ -336,14 +337,14 @@ class Index extends \app\common\controller\Base
 
     public function t10(){
         $yim = new \app\common\library\YunIM();
-        $res = $yim->createCUserID(3);
+        $res = $yim->createCUserID(2);
         print_r($res);
     }
 
     public function t11(){
         $yim = new \app\common\library\YunIM();
 
-        $res = $yim->addIntoGroup('560928224','p_1',['c_3']);
+        $res = $yim->addIntoGroup('624712007','p_4',['c_2']);
         print_r($res);
     }
 

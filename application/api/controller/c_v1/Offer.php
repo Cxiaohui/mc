@@ -194,17 +194,17 @@ class Offer extends Common{
 
         $res = (new Projectoffermodify())->add_data($data);
         if($res){
-            //todo 添加日志
+            // 添加日志
             Plog::add_one($p_id,$id,4,
                 ['type'=>2,'id'=>$this->user_id,'name'=>'业主'],
                 '[修改]施工预算<<'.$pr_info['name'].'>>:'.$content);
-            //todo 通知相关人员查看修改信息
+            // 通知相关人员查看修改信息
             $ndata = [
                 'p_id'=>$p_id,
                 'type'=>4,
                 'target_id'=>$pr_info['id'],
                 'user_type'=>1,
-                'user_id'=>$p_info['manager_user_id'],//todo B端人员id
+                'user_id'=>$p_info['manager_user_id'],// B端人员id
                 'title'=>'施工预算被驳回',
                 'content'=>'施工预算<<'.$pr_info['name'].'>>:'.$content
             ];

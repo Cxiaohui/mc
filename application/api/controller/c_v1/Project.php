@@ -58,7 +58,7 @@ class Project extends Common{
             return $this->response(['code' => 201, 'msg' => '该项目不存在']);
         }
         $pstep = new Projectstep();
-        $pdoc = new Projectdoc();
+        //$pdoc = new Projectdoc();
         //获取所有主阶段信息,各阶段时间
 
         $main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
@@ -226,7 +226,7 @@ class Project extends Common{
         $step_info['plan_day'] = ceil((strtotime($plan_time[1])-strtotime($plan_time[0]))/(24*3600))+1;
         $step_info['plan_time'] = implode('-',$plan_time);
         $primary_doc = [];
-        $docs = (new Projectdoc())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id],'id,is_primary,file_type,file_name,file_path,addtime',0);
+        $docs = (new Projectdoc())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],'id,is_primary,file_type,file_name,file_path,addtime',0);
         if(!empty($docs)){
             $q_host = config('qiniu.host');
             $img_ext = config('img_ext');
@@ -359,7 +359,7 @@ class Project extends Common{
                 $pstep->update_data(['id'=>$step_info['pid'],'p_id'=>$puts['p_id']],$update);
             }
         }
-        //todo 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'
+        // 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'
         $nwhere = [
             'p_id'=>$puts['p_id'],
             'type'=>$step_info['type']==1?1:6,

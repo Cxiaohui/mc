@@ -77,8 +77,11 @@ class User extends Common{
     //
 
     protected function get_user_info(){
-        $info = (new Buser())->get_info(['id'=>$this->user_id],'id,name,en_name,sex as gender,mobile,head_pic,remark');
+        $info = (new Buser())->get_info(['id'=>$this->user_id],'id,name,name as uname,en_name,sex as gender,mobile,head_pic,depart_id,remark');
         $info['head_pic'] = c_img($info['head_pic'],3,600);
+        //todo 20180923 部门信息
+        $info['company_name'] = '';
+        $info['depart_name'] = '';
         return $info;
     }
 }

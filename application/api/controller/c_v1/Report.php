@@ -192,17 +192,17 @@ class Report extends Common{
 
         $res = (new Projectreportmodify())->add_data($data);
         if($res){
-            //todo 添加日志
+            // 添加日志
             Plog::add_one($p_id,$id,3,
                 ['type'=>2,'id'=>$this->user_id,'name'=>'业主'],
                 '[修改]验收报告<<'.$pr_info['name'].'>>:'.$content);
-            //todo 通知相关人员查看修改信息
+            // 通知相关人员查看修改信息
             $ndata = [
                 'p_id'=>$p_id,
                 'type'=>5,
                 'target_id'=>$id,
                 'user_type'=>1,
-                'user_id'=>$p_info['manager_user_id'],//todo B端人员id
+                'user_id'=>$p_info['manager_user_id'],// B端人员id
                 'title'=>'验收报告被驳回',
                 'content'=>'<<'.$pr_info['name'].'>>:'.$content
             ];

@@ -802,3 +802,32 @@ CREATE TABLE `mc_push_runtime` (
   PRIMARY KEY (`id`),
   KEY `not_id` (`not_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='推送运行列表';
+
+-- 采购信息
+create table mc_purchase(
+  id
+  p_id
+  name
+  `addtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+ `isdel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标记',
+ PRIMARY key(id),
+ key(p_id)
+
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
+
+create table mc_purchase_docs(
+  id
+  pu_id
+  `file_type` varchar(6) NOT NULL DEFAULT '' COMMENT '文档类型',
+  `file_name` varchar(128) NOT NULL DEFAULT '' COMMENT '文档名称',
+  `file_path` varchar(128) NOT NULL DEFAULT '' COMMENT '文档地址',
+  `file_hash` varchar(128) NOT NULL DEFAULT '',
+  `sign_complex_path` varchar(255) NOT NULL DEFAULT '',
+  `qiniu_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0未上传，1未下载，2本地和七牛都有备份',
+  `addtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+ `isdel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标记',
+ PRIMARY key(id),
+ key(pu_id)
+
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
+
