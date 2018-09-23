@@ -5,7 +5,7 @@
  * Date: 2018/7/9
  * Time: 16:25
  */
-namespace app\api\controller\c_v1;
+namespace app\api\controller\b_v1;
 use app\common\model\Projectstaticdocs,
     app\common\model\Projectstatic as pstatic,
     app\common\model\Projectstaticmodify as smodify,
@@ -48,9 +48,11 @@ class Show extends Common{
         if(!$post['p_id'] || !$post['id'] || !$post['content']){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
-        if(!$this->check_project_onwer($post['p_id'])){
+        $this->_check_project_power($post['p_id']);
+        /*if(!$this->check_project_onwer($post['p_id'])){
             return $this->response(['code'=>201,'msg'=>'该项目无法访问']);
-        }
+        }*/
+
         $pstatic = new pstatic();
         $where = ['id'=>$post['id']];
         $info = $pstatic->get_info($where,'id,p_id,name,type,status');
@@ -80,7 +82,6 @@ class Show extends Common{
         (new smodify())->add_data($modify_data);
 
         //add log
-
         Plog::add_one($post['p_id'],$info['id'],$this->log_type[$info['type']],['type'=>2,'id'=>$this->user_id,'name'=>'业主'],'[修改]'.$post['content']);
 
         return $this->response(['code'=>200,'msg'=>'修改意见已提交成功']);
@@ -97,9 +98,10 @@ class Show extends Common{
         if (!$id || $id <= 0 || !$p_id || $p_id <= 0 ) {
             return $this->response(['code' => 201, 'msg' => '参数有误']);
         }
-        if (!$this->check_project_onwer($p_id)) {
+        $this->_check_project_power($p_id);
+        /*if (!$this->check_project_onwer($p_id)) {
             return $this->response(['code' => 201, 'msg' => '该项目无法访问']);
-        }
+        }*/
 
         $pstatic = new pstatic();
         $where = ['id'=>$id];
@@ -118,7 +120,6 @@ class Show extends Common{
             return $this->response(['code'=>201,'msg'=>'操作失败，请稍后再试']);
         }
         //add log
-
         Plog::add_one($p_id,$info['id'],$this->log_type[$info['type']],['type'=>2,'id'=>$this->user_id,'name'=>'业主'],'[通过]');
 
         return $this->response(['code'=>200,'msg'=>'操作成功']);
@@ -135,12 +136,10 @@ class Show extends Common{
         if(!$p_id || $p_id<=0 ){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
-
-        if(!$this->check_project_onwer($p_id)){
+        $this->_check_project_power($p_id);
+        /*if(!$this->check_project_onwer($p_id)){
             return $this->response(['code'=>201,'msg'=>'该项目无法访问']);
-        }
-
-
+        }*/
 
         $w = ['p_id'=>$p_id,'type'=>$type,'isdel'=>0];
         $data = (new Projectstaticdocs())->get_list($w,'id,file_type,file_name,file_path,addtime',0);

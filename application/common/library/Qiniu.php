@@ -150,7 +150,7 @@ class Qiniu{
                 mkdir($pathinfo['dirname'],0777,true);
             }
 
-            $new_name = 'mcdocs-'.md5($pathinfo['filename'].'-sign').'.'.$pathinfo['extension'];
+            $new_name = 'mcdocs-'.md5($pathinfo['filename'].'-'.time().'-sign').'.'.$pathinfo['extension'];
             $res = \extend\Http::curl_get($wurl);
             if(strpos($res,'error')!==false){
                 throw new \Exception('获取新图片失败00，$wurl='.$wurl);

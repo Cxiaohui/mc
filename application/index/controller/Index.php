@@ -91,6 +91,38 @@ class Index extends \app\common\controller\Base
         }
     }
 
+    public function test_watermark(){
+        //$pic = 'http://content.iytime.com/app/20180720/mcdocs-15320765630.jpg';
+        $pic = 'http://content.iytime.com/reports/mcdocs-42c4330750b9ed2e2dfec73560c5d809.pdf';
+        $logo = 'http://content.iytime.com/signimg/300.180WX20180923-121233@2x.png';
+
+
+        $pic_info = \extend\Http::curl_get($pic.'?imageInfo');
+        if(!$pic_info){
+            echo 'false';
+        }
+        $pic_info = json_decode($pic_info,1);
+
+        //print_r($pic_info);exit;
+        $ws = 0.11;
+        if($pic_info['width']>200){
+            $ws = sprintf("%.2f",180/$pic_info['width']);
+        }
+
+
+        $w_url = \app\common\library\Qiniu::watermark_url($pic,$logo,['ws'=>$ws,'dissolve'=>80,'wst'=>2]);
+        echo $w_url;
+        exit;
+        try{
+            $q_key = \app\common\library\Qiniu::download_upload_watermark($w_url);
+            echo 'http://content.iytime.com/'.$q_key;
+        }catch (\Exception $e){
+            print_r([
+                $e->getMessage()
+            ]);
+        }
+    }
+
     public function test_comp(){
         $data = ['type'=>'report','id'=>4];
 

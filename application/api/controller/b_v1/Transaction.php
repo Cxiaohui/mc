@@ -55,8 +55,8 @@ class Transaction extends Common {
 
         return $this->response(['code' => 200, 'msg' => '成功', 'data' => [
             'undo_count'=>$undo_count,
-            'last_notice'=>(count($last_notice)==1)?$last_notice[0]:[],
-            'last_doc'=>(count($last_doc)==1)?$last_doc[0]:[],
+            'last_notice'=>(count($last_notice)==1)?$last_notice[0]:new \stdClass(),
+            'last_doc'=>(count($last_doc)==1)?$last_doc[0]:new \stdClass(),
         ]]);
     }
 }

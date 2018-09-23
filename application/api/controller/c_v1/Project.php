@@ -245,7 +245,7 @@ class Project extends Common{
             }
         }
         //logs,'p_step_type'=>$step_info['type']
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'p_step_type'=>$step_info['type']],'id,oper_user_name,oper_desc,addtime');
 
         $data = [
             'step_info'=>$step_info,

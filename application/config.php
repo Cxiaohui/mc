@@ -318,7 +318,7 @@ return [
         'log_file'=>LOG_PATH.DS.'jpush.log'
     ],
     'qiniu'=>[
-        'host'=>'http://pa5ijfg62.bkt.clouddn.com/',
+        'host'=>'http://content.iytime.com/',
         'file_key_prefix'=>'mcdocs-',
         'AccessKey'=>'5NIES5Sut-V3VD0SH-y0ZHjNQQiIJ-CzBGu0sgDK',
         'SecretKey'=>'UgsbJ1V7g3jJPg92FuaPFNBkayPct_XppE7kfOVV',

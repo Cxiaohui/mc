@@ -87,13 +87,24 @@ class Compleximg{
         }
         try{
             $img_exts = config('img_ext');
-            $img_exts[] = 'pdf';
+            //$img_exts[] = 'pdf';
+            $q_host = config('qiniu.host');
             foreach($docs as $doc){
                 if(!in_array($doc['file_type'],$img_exts)){
                     mlog::write('not image or pdf;file_type='.$doc['file_type'].';'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;
                 }
-                $w_url = Qiniu::watermark_url($doc['file_path'],$info['sign_img']);
+                //根据图片，计算ws的值
+                $pic_info = \extend\Http::curl_get($q_host.$doc['file_path'].'?imageInfo');
+                if(!$pic_info){
+                    mlog::write('image info not found;data:'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
+                    continue;
+                }
+                $pic_info = json_decode($pic_info,1);
+                //水印宽度180px
+                $ws = sprintf("%.2f",180/$pic_info['width']);
+
+                $w_url = Qiniu::watermark_url($doc['file_path'],$info['sign_img'],['ws'=>$ws,'dissolve'=>80,'wst'=>2]);
                 if(!$w_url){
                     mlog::write('watermark_url=>false;data:'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;

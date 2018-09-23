@@ -199,17 +199,16 @@ class Project extends Common{
             }
         }
         //logs
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'p_step_type'=>$step_info['type']],'id,oper_user_name,oper_desc,addtime');
 
         $data =  [
             'step_info'=>$step_info,
             //将主图与其他图分开传
             'doc_title'=>$step_info['type']==1?"设计资料":'施工照片',
-
             'doc_count'=>count($docs),
             'docs'=>$docs,
             'project_log'=>$plogs,
-            //todo 加上拍照说明文章的链接
+            //加上拍照说明文章的链接
             'photo_desn_url'=>''
         ];
         if($primary_doc){
