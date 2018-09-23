@@ -78,7 +78,7 @@ class Compleximg{
                 list($a,$type) = explode('-',$data['type']);
                 $m = new Projectstatic();
                 $mdoc = new Projectstaticdocs();
-                $w = ['type'=>$type];
+                $w = ['p_id'=>$data['p_id'],'type'=>$type];
                 break;
         }
 
