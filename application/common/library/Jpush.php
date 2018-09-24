@@ -25,18 +25,25 @@ class Jpush{
 
     static public function push_mesg($alias,$message,$extras=[],$title='新消息'){
         try {
-            $type = substr($alias,0,1);
+            $type = strtolower(substr($alias,0,1));
+            $apns_production = $type=='c' ? config('jpush.apns_production'):config('jpush_b.apns_production');
+
             $response = self::init_obj($type)->push()
-                ->setPlatform(array('ios', 'android'))
+                ->setPlatform(array('ios', 'android'));
                 // 一般情况下，关于 audience 的设置只需要调用 addAlias、addTag、addTagAnd  或 addRegistrationId
                 // 这四个方法中的某一个即可，这里仅作为示例，当然全部调用也可以，多项 audience 调用表示其结果的交集
                 // 即是说一般情况下，下面三个方法和没有列出的 addTagAnd 一共四个，只适用一个便可满足大多数的场景需求
 
-                 ->addAlias($alias)
+                if(strpos($alias,'all')!==false){
+                    $response = $response->addAllAudience();
+                }else{
+                    $response = $response->addAlias($alias);
+                }
+
                 //->addTag(array('tag1', 'tag2'))
                 // ->addRegistrationId($registration_id)
 
-                ->setNotificationAlert($title)
+            $response->setNotificationAlert($title)
                 ->iosNotification($message, array(
                     'sound' => 'sound.caf',
                     // 'badge' => '+1',
@@ -72,7 +79,7 @@ class Jpush{
                     // apns_production: 表示APNs是否生产环境，
                     // True 表示推送生产环境，False 表示要推送开发环境；如果不指定则默认为推送生产环境
 
-                    'apns_production' => config('jpush.apns_production'),
+                    'apns_production' => $apns_production,
 
                     // big_push_duration: 表示定速推送时长(分钟)，又名缓慢推送，把原本尽可能快的推送速度，降低下来，
                     // 给定的 n 分钟内，均匀地向这次推送的目标用户推送。最大值为1400.未设置则不是定速推送

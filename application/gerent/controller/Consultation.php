@@ -34,6 +34,7 @@ class Consultation extends Common{
         $this->assign('pagenav',$page);
         $this->assign('data',$data);
         $this->assign('do_status',$this->do_status(2));
+        $this->assign('ref_type',$this->types());
         $this->assign('slink',$this->filterLink($sop['p']['ds'],$do_status,['k'=>'ds','allkv'=>-1]));
         return $this->fetch('index');
     }
@@ -114,5 +115,11 @@ class Consultation extends Common{
         $this->error('处理失败');
     }
 
-
+    protected function types(){
+        return [
+            0=>'其他',
+            1=>'联系设计师',
+            2=>'约看工地'
+        ];
+    }
 }

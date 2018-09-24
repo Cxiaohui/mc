@@ -35,7 +35,9 @@ class Notice extends Common
         if(!$limit){
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>[]]);
         }
-        $list = $this->M->get_list($w,'id,p_id,type,target_id,status,title,content,addtime',$limit['limit']);
+        // 按 addtime 递减排序
+        //$list = $this->M->get_list($w,'id,p_id,type,target_id,status,title,content,addtime',$limit['limit']);
+        $list = $this->M->get_order_list($w,'id,p_id,type,target_id,status,title,content,addtime',['addtime'=>'desc'],$limit['limit']);
         $status = $this->nstatus('');
         foreach($list as $lk=>$lt){
 

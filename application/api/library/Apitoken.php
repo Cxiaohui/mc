@@ -11,12 +11,12 @@ class Apitoken{
 
     static public function check_api($user_type,$user_id,$api_token){
         $user_type = strtolower($user_type);
-        //$cache_key = self::get_cache_key($user_type,$user_id);
-        //$token = cache($cache_key);
+        $cache_key = self::get_cache_key($user_type,$user_id);
+        $token = cache($cache_key);
         //echo $token;exit;
-        /*if($token){
+        if($token){
             return $token == $api_token?$user_id:false;
-        }*/
+        }
         $w = ['user_id'=>$user_id];
         if($user_type=='c'){
             $w['user_type'] = 2;
@@ -27,7 +27,7 @@ class Apitoken{
         if(!$u_info){
             return false;
         }
-        //cache($cache_key,$u_info['api_token']);
+        cache($cache_key,$u_info['api_token']);
         return $u_info['api_token'] == $api_token?$user_id:false;
     }
 
@@ -60,6 +60,7 @@ class Apitoken{
         self::save_api_token($user_type,$user_id,$token);
 
         $cache_key = self::get_cache_key($user_type,$user_id);
+        cache($cache_key,null);
         cache($cache_key,$token);
         return $token;
     }

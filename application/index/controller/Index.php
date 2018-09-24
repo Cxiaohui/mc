@@ -25,6 +25,12 @@ class Index extends \app\common\controller\Base
         var_dump($res);
     }
 
+    public function test_qu(){
+        $bucket1 = config('qiniu.bucket1');
+        $token = \app\common\library\Qiniu::get_uptoken($bucket1);
+        echo $token;
+    }
+
     public function test_pushq(){
         $info = (new Pushruntime())->get_info(['id'=>3]);
         $data = \app\common\library\Notice::addNoticeFromPush($info);
@@ -314,7 +320,7 @@ class Index extends \app\common\controller\Base
             $im = new \app\common\library\YunIM();
             //$res = $im->createGroupByProject(1);
             //$im->removeGroup(1,560880533);
-            $im->queryGroup([560928224]);
+            $im->queryGroup([624712007]);
             //print_r($res);
         }
 
@@ -350,7 +356,7 @@ class Index extends \app\common\controller\Base
     public function t11(){
         $yim = new \app\common\library\YunIM();
 
-        $res = $yim->addIntoGroup('624712007','p_4',['c_2']);
+        $res = $yim->addIntoGroup('624712007','p_4',['b_2','b_3','b_4','b_5','b_6']);
         print_r($res);
     }
 

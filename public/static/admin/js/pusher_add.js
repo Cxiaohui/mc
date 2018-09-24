@@ -21,17 +21,101 @@ $(function(){
         var val = $(this).val();
         //console.log(val);
         if(val == '1'){
-            $('.setting2').hide();
-            $('.setting3').hide();
-            subform.html('立即发送提醒');
-        }else{
-            $('.setting'+val).show();
-            $('.setting'+(val=='2'?3:2)).hide();
-            subform.html('保存设置');
+            $('.setting1').show();
+            $('.setting2,.setting3').hide();
+            //subform.html('立即发送提醒');
+        }else if(val == '2'){
+            $('.setting2').show();
+            $('.setting1,.setting3').hide();
+        }else if(val == '3'){
+            $('.setting3').show();
+            $('.setting1,.setting2').hide();
         }
     });
 
-    subform.on('click',function(){
+    $('#subform1,#subform2,#subform3').on('click',function(){
+        console.log($(this).attr('disabled'));
+        //if()
+        return false;
+        var pject_select = $("#pject_select"),
+            geterids = $('input[name="geterid[]"]:checked'),
+            title = $('input[name="title"]'),
+            message = $('textarea[name="message"]'),
+            run_type = $('input[name="run_type"]:checked');
+
+        //console.log(run_type);
+
+        if(!checkSelectEmpty(pject_select)){
+            formValid.showErr(pject_select,'请选择相关项目');
+            return false;
+        }else{
+            formValid.showSuccess(pject_select);
+        }
+
+        //console.log(geterids.length);
+        if(geterids.length<=0){
+            formValid.showErr($('#geter_box'),'请选择接收者');
+            return false;
+        }else{
+            formValid.showSuccess($('#geter_box'));
+        }
+
+
+        if(!checkInputEmpty(title)){
+            formValid.showErr(title,'请填写提醒标题');
+            return false;
+        }else{
+            formValid.showSuccess(title);
+        }
+
+        if(!checkInputEmpty(message)){
+            formValid.showErr(message,'请填写提醒文案');
+            return false;
+        }else{
+            formValid.showSuccess(message);
+        }
+
+        if(!run_type.val()){
+            formValid.showErr(run_type,'请选择消息运行方式');
+            return false;
+        }else{
+            formValid.showSuccess(run_type);
+        }
+        //多次
+        if(run_type.val()==3){
+            var begin_time = $('input[name="begin_time"]'),
+                end_time = $('input[name="end_time"]'),
+                run_rate_day = $('input[name="run_rate_day"]'),
+                run_rate_time = $('select[name="run_rate_time"]');
+
+            if(!checkInputEmpty(begin_time)){
+                formValid.showErr(begin_time,'请填写时间范围');
+                return false;
+            }else{
+                formValid.showSuccess(begin_time);
+            }
+            if(!checkInputEmpty(end_time)){
+                formValid.showErr(end_time,'请填写时间范围');
+                return false;
+            }else{
+                formValid.showSuccess(end_time);
+            }
+            if(!checkInputEmpty(run_rate_day)){
+                formValid.showErr(run_rate_day,'请填写运行频率');
+                return false;
+            }else{
+                formValid.showSuccess(run_rate_day);
+            }
+
+            if(!checkSelectEmpty(run_rate_time)){
+                formValid.showErr(run_rate_time,'请填写运行频率');
+                return false;
+            }else{
+                formValid.showSuccess(run_rate_time);
+            }
+        }
+
+        //return false;
         $('#postform').submit();
     });
 

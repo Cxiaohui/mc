@@ -31,12 +31,13 @@
                 <th>姓名</th>
                 <th>联系电话</th>
                 <th>咨询内容</th>
+                <th>来源</th>
                 <th>状态</th>
 
                 <th>操作</th>
             </tr>
             {empty name="data"}
-            <tr><td colspan="7">木有找到相关的信息</td></tr>
+            <tr><td colspan="8">木有找到相关的信息</td></tr>
             {else/}
             {volist name="data" id="da"}
             <tr>
@@ -45,6 +46,7 @@
                 <td>{$da.name}</td>
                 <td>{$da.mobile}</td>
                 <td>{$da.content}</td>
+                <td>{$ref_type[$da.type]}</td>
                 <td>
                     {$do_status[$da.do_status]}
                 </td>

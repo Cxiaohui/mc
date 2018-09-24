@@ -100,6 +100,7 @@ class Pusher extends Common{
         $target_end_time = '';
         $run_rate_time = '09:00';
         $title = $message = '';
+        $can_send_one = true;
 
         if($id>0){
             $info = $this->m->get_info(['id'=>$id,'isdel'=>0]);
@@ -115,6 +116,10 @@ class Pusher extends Common{
             if($info['once_limit_time']>0){
                 $target_end_time = $info['once_limit_time'];
             }
+            $up_date = date('Y-m-d',strtotime($info['uptime']));
+            if($up_date==date('Y-m-d')){
+                $can_send_one = false;
+            }
         }
 
         $lpush = new lpush($p_id,$type,$type_id);
@@ -129,7 +134,10 @@ class Pusher extends Common{
                 $target_end_time = $default['limittime'];
             }
         }
-        $can_send_one = !$lpush->has_send_one();
+        if($can_send_one){
+            $can_send_one = !$lpush->has_send_one();
+        }
+
         //var_dump($can_send_one);
         if($p_id>0){
             $project =(new Project())->get_info(['id'=>$p_id],'id,name');
@@ -265,7 +273,9 @@ class Pusher extends Common{
 
     private function save_push_data(){
         $post = input('post.');
-
+        if(!$post['p_id'] || !$post['title'] || !$post['message'] || !$post['geterid'] || !$post['run_type']){
+            $this->error('提交数据有误');
+        }
         $pinfo = (new Project())->get_info(['id'=>$post['p_id'],'isdel'=>0],'id,name');
         if(!$pinfo){
             $this->error('项目信息有误');
@@ -309,6 +319,16 @@ class Pusher extends Common{
             unset($post['id']);
             //$old_info = $this->m->get_info(['id'=>$n_id],'id,run_type');
             $act = 'update';
+
+            //
+            if($save_data['run_type']==1){
+                $info = $this->m->get_info(['id'=>$n_id],'uptime');
+                $up_date = date('Y-m-d',strtotime($info['uptime']));
+                if($up_date==date('Y-m-d')){
+                    $this->error('立即提醒在单项内，每日仅可使用1次');
+                }
+            }
+
             $this->m->update_data(['id'=>$n_id],$save_data);
         }else{
             $save_data['addtime'] = $this->datetime;
