@@ -34,9 +34,7 @@ $(function(){
     });
 
     $('#subform1,#subform2,#subform3').on('click',function(){
-        console.log($(this).attr('disabled'));
-        //if()
-        return false;
+
         var pject_select = $("#pject_select"),
             geterids = $('input[name="geterid[]"]:checked'),
             title = $('input[name="title"]'),

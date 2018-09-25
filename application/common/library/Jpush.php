@@ -26,22 +26,24 @@ class Jpush{
     static public function push_mesg($alias,$message,$extras=[],$title='新消息'){
         try {
             $type = strtolower(substr($alias,0,1));
+
             $apns_production = $type=='c' ? config('jpush.apns_production'):config('jpush_b.apns_production');
 
-            $response = self::init_obj($type)->push()
-                ->setPlatform(array('ios', 'android'));
-                // 一般情况下，关于 audience 的设置只需要调用 addAlias、addTag、addTagAnd  或 addRegistrationId
-                // 这四个方法中的某一个即可，这里仅作为示例，当然全部调用也可以，多项 audience 调用表示其结果的交集
-                // 即是说一般情况下，下面三个方法和没有列出的 addTagAnd 一共四个，只适用一个便可满足大多数的场景需求
+            $response = self::init_obj($type)->push();
 
-                if(strpos($alias,'all')!==false){
-                    $response = $response->addAllAudience();
-                }else{
-                    $response = $response->addAlias($alias);
-                }
+            $response->setPlatform(array('ios', 'android'));
+            // 一般情况下，关于 audience 的设置只需要调用 addAlias、addTag、addTagAnd  或 addRegistrationId
+            // 这四个方法中的某一个即可，这里仅作为示例，当然全部调用也可以，多项 audience 调用表示其结果的交集
+            // 即是说一般情况下，下面三个方法和没有列出的 addTagAnd 一共四个，只适用一个便可满足大多数的场景需求
 
-                //->addTag(array('tag1', 'tag2'))
-                // ->addRegistrationId($registration_id)
+            if(strpos($alias,'all')!==false){
+                $response->addAllAudience();
+            }else{
+                $response->addAlias($alias);
+            }
+
+            //->addTag(array('tag1', 'tag2'))
+            // ->addRegistrationId($registration_id)
 
             $response->setNotificationAlert($title)
                 ->iosNotification($message, array(

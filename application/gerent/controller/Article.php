@@ -138,6 +138,23 @@ class Article extends Common{
         $this->error('删除失败');
     }
 
+    //=========================
+
+    public function push_list(){
+
+    }
+
+    public function push_add(){
+
+    }
+
+    public function push_edit(){
+
+    }
+
+    public function push_del(){
+
+    }
 
     //==================================
 

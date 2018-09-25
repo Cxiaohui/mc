@@ -1,0 +1,60 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span3"><h3 class="page-header">群列表</h3></div>
+                    <div class="span9">
+                        <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <table class="stat-table responsive table table-stats table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>群ID</th>
+                <th>群名称</th>
+                <th>相关项目</th>
+                <th>成员数</th>
+                <th>操作</th>
+            </tr>
+            {empty name="data"}
+            <tr><td colspan="5">木有找到相关的信息</td></tr>
+            {else/}
+            {volist name="data" id="da"}
+            <tr>
+                <td>{$da.tid}</td>
+                <td>{$da.tname}</td>
+                <td><a href="{:url('project/info',['id'=>$da.p_id])}" target="_blank">
+                    {notempty name="projects"}
+                    {$projects[$da.p_id]}
+                    {else/}
+                    {$da.tname}
+                    {/notempty}
+                    </a></td>
+                <td>{$da.size}</td>
+                <td>
+                    <a href="{:url('Im/edit',['id'=>$da.id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                    <a href="javascript:;" data-url="{:url('Im/sendmsg',['id'=>$da.id])}" class="btn mini openlayerwin"><i class="icon-comment"></i>发送消息</a>
+                    <a href="javascript:;" data-href="{:url('Im/del',['id'=>$da.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+
+                </td></tr>
+            {/volist}
+            {/empty}
+            </tbody>
+        </table>
+
+        {if $pagenav}
+        <div class="row-fluid">
+            <div class="span6"><div class="dataTables_info">{$pagenav.txt}</div></div>
+            <div class="span6"><div class="dataTables_paginate paging_bootstrap pagination"><ul>{$pagenav.links}</ul></div></div>
+        </div>
+        {/if}
+
+    </div>
+</div>

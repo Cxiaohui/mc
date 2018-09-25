@@ -27,7 +27,9 @@
             <tr><td colspan="7">木有找到相关的信息</td></tr>
             {else/}
             {volist name="data" id="da"}
-            <tr><td><a href="{:url('Pusher/info',['id'=>$da.id])}">{$da.title}</a></td>
+            <tr><td>
+                <p style="word-break:break-all;"><a href="{:url('Pusher/info',['id'=>$da.id])}">{$da.title}</a></p>
+            </td>
                 <td><a href="{:url('Project/info',['id'=>$da.p_id])}" target="_blank">{$da.p_name}</a></td>
                 <td>{$da.geter_users}</td>
                 <td>{$run_types[$da.run_type]}</td>

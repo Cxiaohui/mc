@@ -1,0 +1,106 @@
+<div class="main-wrapper">
+    <div class="container-fluid">
+        <div class="row-fluid ">
+            <div class="span12">
+                <div class="primary-head">
+
+                    <div class="span12">
+                        <h3 class="page-header text-info">
+                            <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 返回</a>
+                            IM群设置</h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal left-align" method="post" action="" id="postform">
+            {if $info}
+            <input type="hidden" name="id" value="{$info.id}"/>
+            {/if}
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 群所属项目</label>
+                <div class="controls">
+                    {if $info}
+                    <select id="pject_select" name="p_id" class="span6 input disabled">
+                        <option value="{$info.p_id}" selected>{$project.name}</option>
+                    </select>
+                    {/if}
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 群名称</label>
+                <div class="controls">
+                    <input type="text" name="tname" value="{if $info}{$info.tname}{/if}" maxlength="60" class="input span6" placeholder="最多60个字"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 群公告</label>
+                <div class="controls">
+                    <textarea name="announcement" class="span6" rows="2" maxlength="180" placeholder="最多180个字">{if $info}{$info.announcement}{/if}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="error">*</span> 群成员</label>
+                <div class="controls">
+                    <table class="table stat-table responsive table-bordered" id="member_table" style="width: 80%">
+                    <tr><th>ID</th><th>头像</th><th>姓名</th><th>手机号码</th><th>成员角色</th><th style="width: 120px;">操作</th></tr>
+                        {notempty name="members.c_users"}
+                        {foreach name="members.c_users" item="cuser"}
+                        <tr>
+                            <td>{$cuser.im_id}</td>
+                            <td><img src="{$cuser.head_pic}" style="height:50px;"/></td>
+                            <td>{$cuser.uname}</td>
+                            <td>{$cuser.mobile}</td>
+                            <td>{$cuser.role}</td>
+                            <td>
+                                <a href="javascript:;" class="kikout" data-id="{$cuser.im_id}">踢出群聊</a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        {/notempty}
+                        {notempty name="members.b_users"}
+                        {foreach name="members.b_users" item="buser"}
+                        <tr>
+                            <td>{$buser.im_id}</td>
+                            <td><img src="{$buser.head_pic}" style="height:50px;"/></td>
+                            <td>{$buser.uname}</td>
+                            <td>{$buser.mobile}</td>
+                            <td>{$buser.role}</td>
+                            <td>
+                                <a href="javascript:;" class="kikout" data-id="{$buser.im_id}">踢出群聊</a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        {/notempty}
+
+                    </table>
+                    <p class="text-error"><i class="icon-plus-sign"></i> 输入拉入该群的成员手机号</p>
+
+                    <div class="input-append">
+                        <input type="text" id="mobile" placeholder="手机号码"/>
+                        <button type="button" class="btn" id="search_member">确定</button>
+                    </div>
+                    <div class="well" id="search_result" style="width: 400px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+
+                <button type="button" class="btn btn-primary" id="subform">保存设置</button>
+                <a href="javascript:history.back();" class="btn"><i class="icon-reply"></i> 取消</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script type="text/javascript">
+var imid = {if $info}{$info.id}{else/}0{/if};
+    so_buser = "{:url('Im/search_buser')}",
+    out_url = "{:url('Im/kikoutgroup')}",
+    add_url = "{:url('Im/addintogroup')}";
+</script>

@@ -27,7 +27,8 @@
                 </tr>
                 <tr><td class="align-r"><span class="error">*</span>装修风格</td><td colspan="3">{$info.decoration_style}</td></tr>
                 <tr><td class="align-r"><span class="error">*</span>项目地址</td><td colspan="3">{$info.address}</td></tr>
-                <tr><td class="align-r">项目备注</td><td colspan="3">{$info.marks.p_remarks}</td></tr>
+                <tr><td class="align-r">项目备注</td><td colspan="3">
+                    <p style="word-break:break-all;">{$info.marks.p_remarks}</p></td></tr>
                 <tr><th colspan="4">项目主要负责人信息</th></tr>
                 <tr><td class="align-r"><span class="error">*</span>项目经理</td><td>
                     {$admins[$info.manager_user_id]}
@@ -68,7 +69,9 @@
                 </tr>
 
                 <tr><td class="align-r"><span class="error">*</span>联系地址</td><td colspan="3">{$info.owner_address}</td></tr>
-                <tr><td class="align-r">业主备注信息</td><td colspan="3">{$info.marks.owner_remarks}</td></tr>
+                <tr><td class="align-r">业主备注信息</td>
+                    <td colspan="3">
+                        <p style="word-break:break-all;">{$info.marks.owner_remarks}</p></td></tr>
                 {notempty name="plogs"}
                 <tr><th colspan="4">操作日志</th></tr>
                 <tr><th>操作时间</th><th>操作人</th><th colspan="2">操作事项</th></tr>
@@ -76,7 +79,7 @@
                 <tr>
                     <td>{$plg.addtime}</td>
                     <td>{$plg.oper_user_name}</td>
-                    <td colspan="2">{$plg.oper_desc}</td>
+                    <td colspan="2"><p style="word-break:break-all;">{$plg.oper_desc}</p></td>
                 </tr>
                 {/foreach}
                 {/notempty}

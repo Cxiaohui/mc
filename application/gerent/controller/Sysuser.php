@@ -14,6 +14,10 @@ use extend\Str,
     app\gerent\model\Systable as mSystable;
 
 class Sysuser extends Common{
+    /**
+     * @var mSystable
+     */
+    protected $admin_model;
 
     public function _initialize($check_login=true)
     {
@@ -242,8 +246,13 @@ class Sysuser extends Common{
             }else{
                 $post['team_id'] = 0;
             }
+
             $s_res = $this->admin_model->save_admin_data($post);
             if($s_res){
+                //todo 如果是编辑，且用户存在im_token,且用户更新了名称/头像，则都要更新到IM中-20180924
+
+
+
                 \app\gerent\model\Adminoperlog::instance()->save_data('编辑B用户：'.$post['name']);
                 $this->success('保存成功',url('Sysuser/index'));
             }

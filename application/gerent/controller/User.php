@@ -143,6 +143,10 @@ class User extends Common{
 
             $s_res = $this->Um->save_user_data($post);
             if($s_res){
+                //todo 如果是编辑，且用户存在im_token,且用户更新了名称/头像，则都要更新到IM中-20180924
+
+
+
                 \app\gerent\model\Adminoperlog::instance()->save_data('编辑C用户：'.$post['mobile']);
                 $this->success('保存成功',url('User/index'));
             }

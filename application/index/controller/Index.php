@@ -317,11 +317,12 @@ class Index extends \app\common\controller\Base
         }
 
     public function t7(){
+        $id = input('get.id',0);
             $im = new \app\common\library\YunIM();
             //$res = $im->createGroupByProject(1);
             //$im->removeGroup(1,560880533);
-            $im->queryGroup([624712007]);
-            //print_r($res);
+            $res = $im->queryGroup([$id]);
+            print_r($res);
         }
 
     public function t8(){
@@ -345,6 +346,42 @@ class Index extends \app\common\controller\Base
         $cuserids=[1];
         $tid=434954385;
         \app\common\library\Imgjoin::create_group_icon($buserids,$cuserids,$tid);
+    }
+    // IM
+
+    public function tt8(){
+        $type = input('get.type','c');
+        $id = input('get.id',0);
+        $yim = new \app\common\library\YunIM();
+        $accid = $yim->build_im_userid($id,$type);
+        $info = $yim->imobj()->getUinfos([$accid]);
+        print_r($info);
+    }
+
+    public function tt9(){
+        $type = input('get.type','c');
+        $id = input('get.id',0);
+        $yim = new \app\common\library\YunIM();
+        $accid = $yim->build_im_userid($id,$type);
+        $info = [];
+        if($type=='c'){
+            $info = (new \app\common\model\Cuser())->get_info(['id'=>$id],'id,uname,gender,head_pic,mobile,im_token');
+        }else if($type=='b'){
+            $info = (new \app\common\model\Buser())->get_info(['id'=>$id],'id,name as uname,sex as gender,mobile,head_pic,im_token');
+        }
+        if(!$info){
+            exit('no user');
+        }
+        $icon = 'http://content.iytime.com/app/1/20180718122251';
+        $addon = [
+            //'icon'=>$info['head_pic']?:$icon,
+            'icon'=>$icon,
+            'gender'=>$info['gender'],
+            'mobile'=>$info['mobile']
+        ];
+        //$res = $yim->imobj()->createUserId($accid,$info['uname'],'{}',$icon,$info['im_token']);
+        $res = $yim->imobj()->updateUserId($accid,$info['uname'],'{}',$addon,$info['im_token']);
+        var_dump($res);
     }
 
     public function t10(){

@@ -225,8 +225,9 @@ class Project extends Common{
 
                 $this->success('保存成功',url('Projectstep/add').'?p_id='.$p_id.'&ref='.base64_encode($ref));
             }else{
+                //编辑由IM管理中进行人工操作-20180924
                 // 编辑后检查人员是否有变化，有则更新群的信息
-                \think\Queue::later(2,'app\gerent\job\Projectimgroup',['p_id'=>$p_id,'act'=>'edit']);
+                //\think\Queue::later(2,'app\gerent\job\Projectimgroup',['p_id'=>$p_id,'act'=>'edit']);
 
                 if($ref){
                     $this->success('保存成功',$ref);

@@ -311,14 +311,23 @@ class ServerAPI{
      * @param  $token     [云信ID可以指定登录token值，最大长度128字节，并更新，如果未指定，会自动生成token，并在创建成功后返回]
      * @return $result    [返回array数组对象]
      */
-    public function updateUserId($accid,$name='',$props='{}',$token=''){
+    public function updateUserId($accid,$name='',$props='{}',$addon=[],$token=''){
         $url = 'https://api.netease.im/nimserver/user/update.action';
+
         $data= array(
             'accid' => $accid,
             'name'  => $name,
             'props' => $props,
-            'token' => $token
+            'token' => $token,
+            //'icon'  => $icon,
+            //'email' => $email,
+            //'birth' => $birth,
+            //'mobile' => $mobile,
+            //'gender' => $gender,
+            //'ex' => $ex
         );
+        $data = array_merge($data,$addon);
+
         if($this->RequestType=='curl'){
             $result = $this->postDataCurl($url,$data);
         }else{
@@ -679,7 +688,7 @@ class ServerAPI{
      * @param  $custom      [自定义高级群扩展属性，第三方可以跟据此属性自定义扩展自己的群属性。（建议为json）,最大长度1024字节.]
      * @return $result      [返回array数组对象]
      */
-    public function createGroup($tname,$owner,$members,$announcement='',$intro='',$msg='',$magree='0',$joinmode='0',$custom='0'){
+    public function createGroup($tname,$owner,$members,$announcement='',$intro='',$msg='',$magree='0',$joinmode='0',$custom='0',$addon=[]){
         $url = 'https://api.netease.im/nimserver/team/create.action';
         $data= array(
             'tname' => $tname,
@@ -692,6 +701,9 @@ class ServerAPI{
             'joinmode' => $joinmode,
             'custom' => $custom
         );
+        if(!empty($addon)){
+            $data = array_merge($data,$addon);
+        }
         if($this->RequestType=='curl'){
             $result = $this->postDataCurl($url,$data);
         }else{
@@ -780,7 +792,7 @@ class ServerAPI{
      * @param  $custom      [自定义高级群扩展属性，第三方可以跟据此属性自定义扩展自己的群属性。（建议为json）,最大长度1024字节.]
      * @return $result      [返回array数组对象]
      */
-    public function updateGroup($tid,$owner,$tname,$announcement='',$intro='',$joinmode='0',$custom=''){
+    public function updateGroup($tid,$owner,$tname,$addon=[],$announcement='',$intro='',$joinmode='0',$custom=''){
         $url = 'https://api.netease.im/nimserver/team/update.action';
         $data= array(
             'tid' => $tid,
@@ -791,6 +803,10 @@ class ServerAPI{
             'joinmode' => $joinmode,
             'custom' => $custom
         );
+        if(!empty($addon)){
+            $data = array_merge($data,$addon);
+        }
+
         if($this->RequestType=='curl'){
             $result = $this->postDataCurl($url,$data);
         }else{

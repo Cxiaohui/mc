@@ -805,8 +805,8 @@ CREATE TABLE `mc_push_runtime` (
 
 -- 采购信息
 create table mc_purchase(
-  id
-  p_id
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  p_id int(10) unsigned NOT NULL DEFAULT '0',
   name
   `addtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
  `isdel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标记',
@@ -816,8 +816,8 @@ create table mc_purchase(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
 
 create table mc_purchase_docs(
-  id
-  pu_id
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  pu_id int(10) unsigned NOT NULL DEFAULT '0',
   `file_type` varchar(6) NOT NULL DEFAULT '' COMMENT '文档类型',
   `file_name` varchar(128) NOT NULL DEFAULT '' COMMENT '文档名称',
   `file_path` varchar(128) NOT NULL DEFAULT '' COMMENT '文档地址',
@@ -830,4 +830,38 @@ create table mc_purchase_docs(
  key(pu_id)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
+
+-- IM 群
+CREATE TABLE `mc_im_groups` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `p_id` int(11) NOT NULL DEFAULT '0',
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  `tname` varchar(128) NOT NULL DEFAULT '' COMMENT '群名称',
+  `icon` varchar(225) NOT NULL DEFAULT '' COMMENT '群头像',
+  `muteType` varchar(16) NOT NULL DEFAULT '',
+  `mute` varchar(32) NOT NULL DEFAULT '',
+  `beinvitemode` tinyint(4) NOT NULL DEFAULT '0' COMMENT '被邀请人同意方式，0-需要同意(默认),1-不需要同意',
+  `joinmode` tinyint(4) NOT NULL DEFAULT '0' COMMENT '群建好后，sdk操作时，0不用验证，1需要验证,2不允许任何人加入',
+  `invitemode` tinyint(4) NOT NULL DEFAULT '0' COMMENT '谁可以邀请他人入群，0-管理员(默认),1-所有人',
+  `uptinfomode` tinyint(4) NOT NULL DEFAULT '0' COMMENT '谁可以修改群资料，0-管理员(默认),1-所有人',
+  `upcustommode` tinyint(4) NOT NULL DEFAULT '0' COMMENT '谁可以更新群自定义属性，0-管理员(默认),1-所有人',
+  `size` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `maxusers` tinyint(3) unsigned NOT NULL DEFAULT '200' COMMENT '群主ID',
+  `owner` varchar(16) NOT NULL DEFAULT '' COMMENT '群主ID',
+  `announcement` varchar(255) NOT NULL DEFAULT '' COMMENT '群公告',
+  `intro` varchar(255) NOT NULL DEFAULT '' COMMENT '群描述',
+  `members` varchar(255) NOT NULL DEFAULT '' COMMENT '群成功ID 字串',
+  `createtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updatetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `tid` (`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='IM 群';
+
+create table mc_im_group_members(
+id
+
+
+
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
+
 

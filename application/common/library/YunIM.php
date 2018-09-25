@@ -13,6 +13,7 @@ use app\common\library\netease\ServerAPI,
     app\common\model\Project,
     app\common\model\Projectim,
     app\common\library\Imgjoin,
+    app\common\model\Imgroups,
     app\common\model\IM as mIM;
 
 class YunIM
@@ -155,8 +156,6 @@ class YunIM
 
         $ower_user = $this->build_im_userid($ower_user_id, 'P');
         $members = $this->create_members($members_B,$members_C);
-        //创建成功后，获取tid,并将每个人与tid保存到IM列表信息中
-
 
         //群公告，最大长度1024字节
         $announcement = '暂无公告';
@@ -171,13 +170,23 @@ class YunIM
         }
         $tid = $rs['tid'];
         $pject->update_data(['id'=>$p_id],['imgroup_id'=>$tid]);
-
-
-        $this->save_im_list($p_id,$tid,$gname,$members_B,$members_C);
+        //保存群信息
+        $group_data = [
+            'p_id'=>$p_id,
+            'tid'=>$tid,
+            'tname'=>$gname,
+            'icon'=>'',
+            'owner'=>$ower_user,
+            'announcement'=>$announcement,
+            'intro'=>$intro,
+            'members'=>implode(',',$members)
+        ];
+        (new Imgroups())->save_groups($group_data);
+        /*$this->save_im_list($p_id,$tid,$gname,$members_B,$members_C);
         (new Projectim())->save_data([
             'p_id'=>$p_info['id'],
             'tid'=>$tid
-        ]);
+        ]);*/
         //Imgjoin::create_group_icon($members_B,$members_C,$tid);
         //发个群信息
         $this->imobj()->sendMsg($ower_user,1,$tid,0,['msg'=>'群:['.$gname.']创建成功']);
@@ -241,8 +250,8 @@ class YunIM
     }
 
     public function queryGroup($tids){
-      $ginfo =    $this->imobj()->queryGroup($tids,1);
-      print_r($ginfo);
+      return $this->imobj()->queryGroup($tids,1);
+
     }
 
     public function removeGroup($p_id,$tid=0){

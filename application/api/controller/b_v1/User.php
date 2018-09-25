@@ -7,6 +7,7 @@
  */
 namespace app\api\controller\b_v1;
 use app\common\model\Buser,
+    app\common\library\YunIM,
     app\api\library\Apitoken;
 class User extends Common{
 
@@ -67,10 +68,24 @@ class User extends Common{
             return $this -> response(['code' => 201, 'msg' => '无更新']);
         }
         //$update['uptime'] = $this->datetime;
+        $buser = new Buser();
+        $buser->update_data(['id'=>$this->user_id],$update);
 
-        (new Buser())->update_data(['id'=>$this->user_id],$update);
+        // 更新头像后再更新IM的头像
+        if($update['head_pic']){
+            $user = $buser->get_info(['id'=>$this->user_id],'id,name,im_token');
+            $im_update = [
+                'icon'=>config('qiniu.host').$update['head_pic']
+            ];
+            $yim = new YunIM();
+            $accid = $yim->build_im_userid($this->user_id,$this->user_type);
+            $res = $yim->imobj()->updateUserId($accid,$user['name'],'{}',$im_update,$user['im_token']);
 
-        //todo 更新头像后再更新IM的头像
+            \extend\Mylog::write([
+                'user_id'=>$this->user_id,
+                'res'=>$res
+            ],'b_user_headpic');
+        }
 
         return $this -> response(['code' => 200, 'msg' => '更新成功']);
     }

@@ -47,9 +47,11 @@ class Projectimgroup{
             if($data['act']=='add'){
                 $res = $yim->createGroupByProject($data['p_id']);
 
-            }elseif($data['act']=='edit'){
-                $res = $yim->updateGroupByProject($data['p_id']);
             }
+            //编辑由IM管理中进行人工操作-20180924
+            /*elseif($data['act']=='edit'){
+                $res = $yim->updateGroupByProject($data['p_id']);
+            }*/
 
             mlog::write('imgroup:'.json_encode($res),$this->log_file);
         }catch (\Exception $e){
