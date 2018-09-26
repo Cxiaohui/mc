@@ -246,12 +246,12 @@ class Projectstatic extends Common{
         return ['err'=>0,'mesg'=>'success','url'=>url('Projectstatic/info',['p_id'=>$p_id])];
     }
 
-    protected function send_notice($p_id,$type,$id,$title,$content){
+    protected function send_notice($p_id,$id,$type,$title,$content){
         //$info = $this->M->get_info(['id'=>$id],'id,status');
         $p_info = (new Project())->get_info(['id'=>$p_id],'id,owner_user_id');
         $ndata = [
             'p_id'=>$p_id,
-            'type'=>($type+1),//8效果图，9cad图，10主材
+            'type'=>($type+7),//8效果图，9cad图，10主材
             'target_id'=>$id,
             'user_type'=>2,
             'user_id'=> $p_info['owner_user_id'],
