@@ -75,7 +75,8 @@ class Pusher{
     public function get_title_message(){
         $title = '';
         $message = '';
-        if(!$this->type_id){
+
+        if($this->type!=8 && !$this->type_id){
             return [
                 'err'=>0,
                 'title'=>$title,

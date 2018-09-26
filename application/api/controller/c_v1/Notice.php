@@ -40,9 +40,9 @@ class Notice extends Common
         $list = $this->M->get_order_list($w,'id,p_id,type,target_id,status,title,content,addtime',['addtime'=>'desc'],$limit['limit']);
         $status = $this->nstatus('');
         foreach($list as $lk=>$lt){
-            if(in_array($lt['type'],[7,8,9,10])){
+            /*if(in_array($lt['type'],[7,8,9,10])){
                 $list[$lk]['type'] = 0;
-            }
+            }*/
 
             $list[$lk]['status_name'] = $status[$lt['status']][0];
             $list[$lk]['status_color'] = $status[$lt['status']][1];
@@ -85,9 +85,9 @@ class Notice extends Common
         if(in_array($info['type'],[0,2,3,7,8,9,10])){
             $this->M->update_data($w,['status'=>1]);
         }
-        if(in_array($info['type'],[7,8,9,10])){
+        /*if(in_array($info['type'],[7,8,9,10])){
             $info['type'] = 0;
-        }
+        }*/
         $status = $this->nstatus($info['status']);
         $info['status_name'] = $status[0];
         $info['status_color'] = $status[1];

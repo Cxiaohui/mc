@@ -87,7 +87,9 @@ class Index extends \app\common\controller\Base
         \think\Queue::later(2,'app\gerent\job\Pushqueue',$data);
         echo $test_data[$key];
     }
-
+    public function timg(){
+        echo '<img src="http://t.cn/EPS8YuD"/>';
+    }
     public function test_imgmegre(){
         $type = input('get.type','');
         $id = input('get.id',0);

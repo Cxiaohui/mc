@@ -10,6 +10,7 @@ use app\gerent\model\Project,
     app\common\library\Plog,
     app\common\library\Notice as LN,
     app\common\model\Purchase as mPur,
+    app\common\model\Purchasemodify,
     app\common\model\Purchasedoc;
 
 //采购
@@ -43,11 +44,22 @@ class Purchase extends Common{
         }
 
 
+        $list = $this->m->get_list(['p_id'=>$p_id,'isdel'=>0]);
+        if(!empty($list)){
+            $purchasemodify = new Purchasemodify();
+            $purchasedoc = new Purchasedoc();
+            foreach($list as $k=>$v){
+                $list[$k]['doc_count'] = $purchasedoc->get_count(['p_id'=>$p_id,'pu_id'=>$v['id']]);
+                $list[$k]['modifys'] = $purchasemodify->get_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,type,content,addtime');
+            }
+        }
+
+
         $js = $this->loadJsCss(array('p:common/common','purchase'), 'js', 'admin');
 
         $this->assign('footjs', $js);
         $this->assign('p_info', $p_info);
-        //$this->assign('data',$list);
+        $this->assign('data',$list);
         //$this->assign('is_sejishi',$is_sejishi);
         //$this->assign('is_jingli',$is_jingli);
         $this->assign('status',$this->status());
@@ -66,6 +78,13 @@ class Purchase extends Common{
             return $this->add_purchase_data($p_id,$id);
         }
         $info = [];
+        if($id>0){
+            $info = $this->m->get_info(['id'=>$id,'isdel'=>0]);
+            if(!$info){
+                $this->error('该采购信息不存在');
+            }
+            $info['docs'] = (new Purchasedoc())->get_list(['pu_id'=>$id,'isdel'=>0],'*',0);
+        }
 
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
         $js = $this->loadJsCss(array('p:common/common',
@@ -80,7 +99,13 @@ class Purchase extends Common{
         return $this->fetch('add');
     }
 
-    public function edit(){}
+    public function edit($p_id,$id=0){
+        if(!$p_id || $p_id<=0){
+            $this->error('访问错误');
+        }
+
+        return $this->add($p_id,$id);
+    }
 
     public function del(){}
 

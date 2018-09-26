@@ -138,7 +138,7 @@ class Article extends Common{
         $this->error('删除失败');
     }
 
-    //=========================
+    // todo 资讯推送设置= 20180924========================
 
     public function push_list(){
 

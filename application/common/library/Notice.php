@@ -31,9 +31,7 @@ class Notice {
                 return false;
             }
         }
-
         //同时还需要发推送
-
         if($data['status']==0){
             $push_data = [
                 'to_user_type'=>$data['user_type']==1?'b':'c',
@@ -46,8 +44,6 @@ class Notice {
 
             \think\Queue::later(1,'app\gerent\job\Pushqueue',$push_data);
         }
-
-
     }
 
     static public function set_done($where){
@@ -61,12 +57,27 @@ class Notice {
 
 
     static public function addNoticeFromPush($data){
-        //type:1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收
+        //notice表：type:1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收 7采购，8效果图，9cad图，10主材
+        //push表 type:0自定义1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收,7文章,8采购
+        //push:type=>notice:type
+        $push_type_maps = [
+            0=>0,
+            1=>1,
+            2=>2,
+            3=>3,
+            4=>4,
+            5=>5,
+            6=>6,
+            7=>0,//文章
+            8=>7//采购
+        ];
+
+
         $pushinfo = (new Push())->get_info(['id'=>$data['not_id']]);
         $jpush_user = explode('_',$data['jpush_user_id']);
         $notice_data = [
             'p_id'=>$pushinfo['p_id'],
-            'type'=>$pushinfo['type'],
+            'type'=>$push_type_maps[$pushinfo['type']],
             'target_id'=>$pushinfo['type_id'],
             'user_type'=>$jpush_user[0]=='b'?1:2,
             'user_id'=>$jpush_user[1],

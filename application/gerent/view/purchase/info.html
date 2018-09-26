@@ -13,7 +13,7 @@
             </div>
         </div>
             <div><h5>采购流程：</h5>
-                <p class="text-error">1 : <a href="{:url('Pusher/add')}?p_id={$p_info.id}&type=8" class="btn btn-primary">设置采购提醒</a> ,勾选项目，勾选项目中干系人，提醒其”需要上传采购表“</p>
+                <p class="text-error">1 : <a href="{:url('Pusher/add')}?p_id={$p_info.id}&type=8" class="btn btn-primary">设置采购提醒</a> ,勾选项目，勾选项目中干系人，提醒其”需要上传采购表“，<a href="{:url('Pusher/index')}?p_id={$p_info.id}&type=8">查看提醒列表</a></p>
                 <p class="text-error">2 : <a href="{:url('Purchase/add',['p_id'=>$p_info.id])}" class="btn btn-primary">添加采购信息</a> ,上传成功后自动提醒业主确认</p>
                 <p class="text-error">3 : 客户在C端采购提醒页面进行确认或者驳回</p>
             </div>
@@ -36,8 +36,8 @@
                 <td>{$da.doc_count}</td>
                 <td>{$da.addtime}</td>
                 <td>
-                    <a href="{:url('Projectreport/edit',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
-                    <a href="{:url('Pusher/add')}?p_id={$da.p_id}&type=5&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                    <a href="{:url('Purchase/edit',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                    <!--<a href="{:url('Pusher/add')}?p_id={$da.p_id}&type=8&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>-->
                 </td>
             </tr>
             <tr><th>操作记录</th><td colspan="4">
