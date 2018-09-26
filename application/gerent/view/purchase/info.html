@@ -41,11 +41,11 @@
                 </td>
             </tr>
             <tr><th>操作记录</th><td colspan="4">
-                {empty name="da.modifys"}
+                {empty name="da.logs"}
                 无
                 {else /}
-                {foreach name="da.modifys" item="mfy"}
-                <p>业主:{$mfy.content}[{$mfy.addtime}]</p>
+                {foreach name="da.logs" item="dlg"}
+                <p>{$dlg.oper_user_name}:{$dlg.oper_desc}[{$dlg.addtime}]</p>
                 {/foreach}
                 {/empty}
             </td></tr>

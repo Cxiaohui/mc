@@ -10,6 +10,7 @@ use app\gerent\model\Project,
     app\common\library\Plog,
     app\common\library\Notice as LN,
     app\common\model\Purchase as mPur,
+    app\common\model\Projectlog,
     app\common\model\Purchasemodify,
     app\common\model\Purchasedoc;
 
@@ -46,11 +47,11 @@ class Purchase extends Common{
 
         $list = $this->m->get_list(['p_id'=>$p_id,'isdel'=>0]);
         if(!empty($list)){
-            $purchasemodify = new Purchasemodify();
+            //$purchasemodify = new Purchasemodify();
             $purchasedoc = new Purchasedoc();
             foreach($list as $k=>$v){
                 $list[$k]['doc_count'] = $purchasedoc->get_count(['p_id'=>$p_id,'pu_id'=>$v['id']]);
-                $list[$k]['modifys'] = $purchasemodify->get_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,type,content,addtime');
+                $list[$k]['logs']  = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$v['id'],'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime');
             }
         }
 
