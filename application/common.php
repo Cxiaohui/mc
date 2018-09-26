@@ -25,6 +25,15 @@ function get_full_url($base64=false) {
     return $base64 ? base64_encode($url) : $url;
 }
 
+function quimg($path1,$path2,$q_host=''){
+    $src = $path1?:$path2;
+
+    if(strpos($src,'http://')!==false){
+        return $src;
+    }
+    return ($q_host?:config('qiniu.host')).$src;
+}
+
 /**
  * 将二维数组转为一维数组
  */

@@ -101,12 +101,9 @@ class Report extends Common{
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
-                if($dv['sign_complex_path']){
-                    $docs[$dk]['file_url'] = $qiniu_host.$dv['sign_complex_path'];
-                }else{
-                    $docs[$dk]['file_url'] = $qiniu_host.$dv['file_path'];
-                }
-                //$docs[$dk]['file_url'] = $qiniu_host.$dv['file_path'];
+
+                $data[$dk]['file_url'] = quimg($dv['sign_complex_path'],$dv['file_path'],$qiniu_host);
+
                 unset($docs[$dk]['file_path']);
             }
         }

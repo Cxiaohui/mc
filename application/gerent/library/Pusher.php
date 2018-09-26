@@ -6,7 +6,7 @@
  * Time: 17:21
  */
 namespace app\gerent\library;
-
+use app\common\model\Project;
 class Pusher{
 
     private $p_id = 0;
@@ -18,7 +18,8 @@ class Pusher{
         'booking'=>'\app\common\model\Booking',
         'offer'=>'\app\gerent\model\Projectoffer',
         'report'=>'\app\gerent\model\Projectreport',
-        'pstatic'=>'\app\common\model\Projectstatic'
+        'pstatic'=>'\app\common\model\Projectstatic',
+        'purchase'=>'\app\common\model\Purchase'
     ];
 
     public function __construct($p_id,$type,$type_id)
@@ -58,6 +59,13 @@ class Pusher{
             //效果图\CAD图\主材
             case 7:
                 (new $this->type_class['pstatic']())->update_data(['id'=>$this->type_id],$update);
+                break;
+            //采购信息
+            case 8:
+                if($this->type_id){
+                    (new $this->type_class['purchase']())->update_data(['id'=>$this->type_id],$update);
+                }
+
                 break;
         }
         return true;
@@ -139,6 +147,18 @@ class Pusher{
 
                 $title = '项目'.$info['name'].'确认提醒';
                 $message = '您的项目'.$info['name'].'已有更新，快去确认吧！';
+                $limittime = '';
+                break;
+            //采购信息
+            case 8:
+                //$info = (new $this->type_class['purchase']())->get_info(['id'=>$this->type_id],'id,name');
+                $info = (new Project())->get_info(['id'=>$this->p_id,'isdel'=>0],'id,name');
+                if(!$info){
+                    return ['err'=>1,'msg'=>'该信息不存在'];
+                }
+
+                $title = $info['name'].'项目采购提醒';
+                $message = $info['name'].'项目采购提醒，请在管理后台添加该项目的采购信息';
                 $limittime = '';
                 break;
             default:

@@ -15,6 +15,7 @@ use think\queue\Job,
     app\common\model\Projectstatic,
     app\common\model\Projectstaticdocs,
     app\common\library\Qiniu,
+    app\common\library\Shorturl,
     app\common\library\Mylog as mlog;
 
 class Compleximg{
@@ -54,6 +55,7 @@ class Compleximg{
     /**
      *  处理验收报告，施工预算的签名合成
      * @param $data ['type'=>'report|offer','id'=>$id]
+     * {"type":"static-3","id":"8","p_id":11}
      */
     public function do_job($data){
         mlog::write(json_encode($data),$this->log_file);
@@ -144,13 +146,20 @@ class Compleximg{
                     continue;
                 }
                 mlog::write('$w_url='.$w_url,$this->log_file);
-                $q_key = Qiniu::download_upload_watermark($w_url);
+                //知链接方式
+                $shorturl = Shorturl::sina_create($w_url);
+                if(!$shorturl){
+                    mlog::write('shorturl failed',$this->log_file);
+                    continue;
+                }
+
+                /*$q_key = Qiniu::download_upload_watermark($w_url);
                 if(!$q_key){
                     mlog::write('download_upload_watermark=>false;data:'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;
                 }
-                mlog::write('$q_key='.$q_key,$this->log_file);
-                $mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$q_key]);
+                mlog::write('$q_key='.$q_key,$this->log_file);*/
+                $mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$shorturl]);
             }
         }catch(\Exception $e){
             throw new \Exception($e);

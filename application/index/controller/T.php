@@ -10,6 +10,13 @@ use app\common\model\Imgroups;
 
 class T extends \app\common\controller\Base{
 
+    public function dwz(){
+        $url = 'http://pa5ijfg62.bkt.clouddn.com/reports/mcdocs-3b82b6e2e9f62bcaac7bb7dfe0be9c18.jpg?watermark/1/image/aHR0cDovL3BhNWlqZmc2Mi5ia3QuY2xvdWRkbi5jb20vc2lnbmltZy90ZXN0c2lnbi5qcGc=/dissolve/99/gravity/SouthEast/dx/15/dy/15/ws/0.8/wst/0';
+        //$url = 'http://content.iytime.com/projectstatics/mcdocs-8e0f3bef97a266f168213223258d77f8.jpg';
+        $res = \app\common\library\Shorturl::sina_create($url);
+
+        print_r($res);
+    }
 
     public function init_im_groups(){
 

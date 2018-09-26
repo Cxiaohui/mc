@@ -55,7 +55,8 @@ class User extends Common{
         }
         $update = [];
         foreach($puts as $k=>$v){
-            if(in_array($k,$allow_update_fileds)){
+
+            if($v && in_array($k,$allow_update_fileds)){
                 if($k=='gender'){
                     $update['sex'] = $v;
                 }else{
@@ -72,7 +73,7 @@ class User extends Common{
         $buser->update_data(['id'=>$this->user_id],$update);
 
         // 更新头像后再更新IM的头像
-        if($update['head_pic']){
+        if(isset($update['head_pic']) && $update['head_pic']){
             $user = $buser->get_info(['id'=>$this->user_id],'id,name,im_token');
             $im_update = [
                 'icon'=>config('qiniu.host').$update['head_pic']

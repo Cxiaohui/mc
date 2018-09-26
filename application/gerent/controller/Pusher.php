@@ -29,15 +29,28 @@ class Pusher extends Common{
     }
 
     public function index(){
-        $where = ['isdel'=>0];
-        $count = $this->m->get_count($where);
+        $so = $this->do_search();
+
+        $count = $this->m->get_count($so['w']);
 
         $data = $page = [];
         if($count>0){
             $page = $this->_pagenav($count);
             //$field = '*';
-            $data = $this->m->get_list($where,'*',$page['offset'].','.$page['limit']);
+            $data = $this->m->get_list($so['w'],'*',$page['offset'].','.$page['limit']);
 
+        }
+        $types = $this->types();
+        $title = '';
+        if(isset($so['w']['p_id']) && $so['w']['p_id']){
+            $info = (new Project())->get_info(['id'=>$so['w']['p_id']],'id,name');
+            $title = $info?$info['name']:'';
+        }
+        if(isset($so['w']['type']) && isset($types[$so['w']['type']])){
+            $title .= '-'.$types[$so['w']['type']];
+        }
+        if($title){
+            $title .= '提醒设置列表';
         }
 
         $js = $this->loadJsCss(array('p:common/common'), 'js', 'admin');
@@ -45,9 +58,24 @@ class Pusher extends Common{
 
         $this->assign('pagenav',$page);
         $this->assign('data',$data);
+        $this->assign('title',$title);
         $this->assign('run_types',$this->run_types());
 
         return $this->fetch('index');
+    }
+
+    protected function do_search(){
+        $where = ['isdel'=>0];
+        $p_id = input('get.p_id',0,'int');
+        $type = input('get.type',0,'int');
+        if($p_id>0){
+            $where['p_id'] = $p_id;
+        }
+        if($type>0){
+            $where['type'] = $type;
+        }
+
+        return ['w'=>$where];
     }
 
     public function info($id=0){
@@ -432,7 +460,8 @@ class Pusher extends Common{
             4=>'施工预算',
             5=>'验收方案',
             6=>'项目阶段(施工)',
-            7=>'效果图\CAD图\主材'
+            7=>'效果图\CAD图\主材',
+            8=>'采购信息'
         ];
     }
 

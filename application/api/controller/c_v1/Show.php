@@ -153,14 +153,10 @@ class Show extends Common{
         if(!empty($data)){
 
             foreach($data as $k=>$da){
-                //$data[$k]['file_url'] = $q_host.$da['file_path'];
-                if($da['sign_complex_path']){
-                    $data[$k]['file_url'] = $q_host.$da['sign_complex_path'];
-                }else{
-                    $data[$k]['file_url'] = $q_host.$da['file_path'];
-                }
+
+                $data[$k]['file_url'] = quimg($da['sign_complex_path'],$da['file_path'],$q_host);
                 $data[$k]['addtime'] = date("Y-m-d",strtotime($da['addtime']));
-                unset($data[$k]['file_path']);
+                unset($data[$k]['file_path'],$data[$k]['sign_complex_path']);
             }
         }
         $pstatic = new pstatic();

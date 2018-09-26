@@ -62,7 +62,7 @@ class User extends Common{
         }
         $update = [];
         foreach($puts as $k=>$v){
-            if(in_array($k,$allow_update_fileds)){
+            if($v && in_array($k,$allow_update_fileds)){
 
                 $update[$k] = $v;
             }
@@ -75,7 +75,7 @@ class User extends Common{
         $cuser->update_data(['id'=>$this->user_id],$update);
 
         // 更新头像后再更新IM的头像
-        if($update['head_pic']){
+        if(isset($update['head_pic']) && $update['head_pic']){
             $user = $cuser->get_info(['id'=>$this->user_id],'id,uname,im_token');
             $im_update = [
                 'icon'=>config('qiniu.host').$update['head_pic']

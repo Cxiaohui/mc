@@ -8,6 +8,7 @@
 namespace app\gerent\controller;
 use app\gerent\model\Project,
     app\common\library\Plog,
+    app\common\library\Notice as LN,
     app\common\model\Projectstatic as pstatic,
     app\gerent\model\Projectstaticdocs as mPS;
 
@@ -63,12 +64,8 @@ class Projectstatic extends Common{
             if(!empty($data)){
 
                 foreach($data as $k=>$da){
-                    if($da['sign_complex_path']){
-                        $da['file_url'] = $q_host.$da['sign_complex_path'];
-                    }else{
-                        $da['file_url'] = $q_host.$da['file_path'];
-                    }
 
+                    $da['file_url'] = quimg($da['sign_complex_path'],$da['file_path'],$q_host);
                     if($da['type'] == $tk){
                         $list[$tk]['list'][] = $da;
                         unset($data[$k]);
@@ -159,9 +156,9 @@ class Projectstatic extends Common{
             3=>'主材'
         ];
     }
-    //todo 新增完数据后，mc_project_static表中也需要有相应的数据
-    //todo 编辑后，mc_project_static表中的状态也改为等待确认
-    //todo 新增，编辑后都有通知
+    // 新增完数据后，mc_project_static表中也需要有相应的数据
+    // 编辑后，mc_project_static表中的状态也改为等待确认
+    // 新增，编辑后都有通知
     protected function save_data($p_id,$id){
         if(!$p_id || $p_id<=0){
             return ['err'=>1,'mesg'=>'数据丢失'];
@@ -196,6 +193,7 @@ class Projectstatic extends Common{
             $res = $pstatic->add_data($save_data,true);
 
             //add log
+            //5效果图，6cad图，7主材
             if($res){
                 Plog::add_one($p_id,$res,($type+4),['type'=>1,'id'=>session('user_id'),'name'=>session('name')],'添加项目'.$types[$type]);
             }
@@ -241,9 +239,27 @@ class Projectstatic extends Common{
         }
 
 
-
+        //成功后通知客户
+        $this->send_notice($p_id,$id,$type,$types[$type].'确认提醒','添加了项目的'.$types[$type]);
 
 
         return ['err'=>0,'mesg'=>'success','url'=>url('Projectstatic/info',['p_id'=>$p_id])];
+    }
+
+    protected function send_notice($p_id,$type,$id,$title,$content){
+        //$info = $this->M->get_info(['id'=>$id],'id,status');
+        $p_info = (new Project())->get_info(['id'=>$p_id],'id,owner_user_id');
+        $ndata = [
+            'p_id'=>$p_id,
+            'type'=>($type+1),//8效果图，9cad图，10主材
+            'target_id'=>$id,
+            'user_type'=>2,
+            'user_id'=> $p_info['owner_user_id'],
+            'title'=>$title,
+            'content'=>$content
+        ];
+
+        LN::add($ndata);
+
     }
 }

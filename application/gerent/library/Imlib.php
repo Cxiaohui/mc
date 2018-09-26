@@ -12,6 +12,10 @@ use app\common\model\Buser,
     app\common\model\Projectadmin;
 class Imlib{
 
+    //todo 更新用户名片 20180925
+    public function update_user_info($user_type,$user_id){
+
+    }
 
     public function get_member_info($p_id,$members){
         $b_user_ids= [];

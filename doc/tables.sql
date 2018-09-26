@@ -807,13 +807,31 @@ CREATE TABLE `mc_push_runtime` (
 create table mc_purchase(
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   p_id int(10) unsigned NOT NULL DEFAULT '0',
-  name
+  name varchar(128) NOT NULL DEFAULT '',
+  status tinyint NOT NULL DEFAULT '0' comment '0待确认，1客户已确认',
+  `remark` varchar(225) NOT NULL DEFAULT '',
   `addtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `passtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `pushid` int(11) NOT NULL DEFAULT '0',
  `isdel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标记',
  PRIMARY key(id),
  key(p_id)
 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
+
+
+CREATE TABLE `mc_purchase_modify` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `p_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `pu_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '提出修改的人(1业主)',
+  `content` text NOT NULL,
+  `addtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `isdel` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  KEY `p_id` (`p_id`),
+  KEY `pu_id` (`pu_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='采购信息修改';
 
 create table mc_purchase_docs(
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -857,11 +875,6 @@ CREATE TABLE `mc_im_groups` (
   KEY `tid` (`tid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='IM 群';
 
-create table mc_im_group_members(
-id
 
-
-
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='采购信息';
 
 
