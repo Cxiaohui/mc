@@ -104,8 +104,8 @@ class Purchase extends Common{
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
-
-                $data[$dk]['file_url'] = quimg('',$dv['file_path'],$qiniu_host);
+                //print_r($dv);
+                $docs[$dk]['file_url'] = quimg('',$dv['file_path'],$qiniu_host);
 
                 unset($docs[$dk]['file_path']);
             }

@@ -102,9 +102,9 @@ class Report extends Common{
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
 
-                $data[$dk]['file_url'] = quimg($dv['sign_complex_path'],$dv['file_path'],$qiniu_host);
+                $docs[$dk]['file_url'] = quimg($dv['sign_complex_path'],$dv['file_path'],$qiniu_host);
 
-                unset($docs[$dk]['file_path']);
+                unset($docs[$dk]['file_path'],$docs[$dk]['sign_complex_path']);
             }
         }
 

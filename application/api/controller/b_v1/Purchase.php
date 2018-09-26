@@ -81,7 +81,7 @@ class Purchase extends Common
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
 
-                $data[$dk]['file_url'] = quimg('',$dv['file_path'],$qiniu_host);
+                $docs[$dk]['file_url'] = quimg('',$dv['file_path'],$qiniu_host);
 
                 unset($docs[$dk]['file_path']);
             }
