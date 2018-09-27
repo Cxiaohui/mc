@@ -876,5 +876,23 @@ CREATE TABLE `mc_im_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='IM 群';
 
 
+-- 资讯推送
+
+CREATE TABLE `mc_push_news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `news_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '资讯Id',
+  `geter_users` varchar(128) NOT NULL DEFAULT '' COMMENT '接收者的名称',
+  `geter_user_ids` varchar(128) NOT NULL DEFAULT '' COMMENT 'all,all_c,all_b',
+  `title` varchar(128) NOT NULL DEFAULT '' COMMENT '消息标题',
+  `message` varchar(225) NOT NULL DEFAULT '' COMMENT '消息内容',
+  `metas` varchar(128) NOT NULL DEFAULT '' COMMENT '跳转数据字符串',
+  `run_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1立即执行，2定时执行',
+  `run_time` date NOT NULL DEFAULT '0000-00-00' COMMENT '定时执行的时间',
+  `addtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `uptime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `isdel` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `news_id` (`news_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资讯推送';
 
 

@@ -151,9 +151,9 @@ class Projectstatic extends Common{
 
     protected function doc_type(){
         return [
-            1=>'效果图',
-            2=>'CAD图',
-            3=>'主材'
+            1=>'项目方案',
+            2=>'项目图纸',
+            3=>'项目主材'
         ];
     }
     // 新增完数据后，mc_project_static表中也需要有相应的数据
@@ -195,7 +195,7 @@ class Projectstatic extends Common{
             //add log
             //5效果图，6cad图，7主材
             if($res){
-                Plog::add_one($p_id,$res,($type+4),['type'=>1,'id'=>session('user_id'),'name'=>session('name')],'添加项目'.$types[$type]);
+                Plog::add_one($p_id,$res,($type+4),['type'=>1,'id'=>session('user_id'),'name'=>session('name')],'添加'.$types[$type]);
             }
             
         }
@@ -240,7 +240,7 @@ class Projectstatic extends Common{
 
 
         //成功后通知客户
-        $this->send_notice($p_id,$id,$type,$types[$type].'确认提醒','添加了项目的'.$types[$type]);
+        $this->send_notice($p_id,$id,$type,$types[$type].'确认提醒','添加了'.$types[$type]);
 
 
         return ['err'=>0,'mesg'=>'success','url'=>url('Projectstatic/info',['p_id'=>$p_id])];

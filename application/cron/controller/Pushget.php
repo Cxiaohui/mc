@@ -20,7 +20,7 @@ class Pushget extends Common{
         //$time = '2018-09-17 23:00:00';
         $list = (new Pushruntime())->get_list(
             ['runtime'=>$time,'donetime'=>['eq','0000-00-00 00:00:00'],'isdel'=>0],
-            'id,not_id,jpush_user_id,message,metas',
+            'id,not_id,pn_id,jpush_user_id,message,metas',
             0);
 
         //print_r($list);exit;

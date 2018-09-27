@@ -72,6 +72,7 @@
                     {else/}
                     <a href="{:url('Recommend/index')}?id={$da.reid}"  class="btn mini" target="_blank">查看轮播</a>
                     {/if}
+                    <a href="{:url('Article/push_list')}?nid={$da.id}"  class="btn mini"><i class="icon-bullhorn"></i> 推送</a>
                     <a href="javascript:;" data-href="{:url('Article/artdel',['id'=>$da.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
                 </td>
             </tr>

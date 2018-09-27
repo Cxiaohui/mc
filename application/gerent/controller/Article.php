@@ -6,7 +6,10 @@
  * Time: 9:54
  */
 namespace app\gerent\controller;
-use app\gerent\model\Articles as mArticle;
+use app\gerent\model\Articles as mArticle,
+    app\gerent\model\Pushruntime,
+    app\common\model\Pushnews;
+
     //app\common\model\Area as mArea;
 class Article extends Common{
     /**
@@ -140,20 +143,105 @@ class Article extends Common{
 
     // todo 资讯推送设置= 20180924========================
 
-    public function push_list(){
+    public function push_list($nid=0){
+        $w = ['isdel'=>0];
+        $data = $page = [];
+        $title = '';
+        if($nid>0){
+            $newsinfo = $this->article_model->get_article_info(['id'=>$nid,'isdel'=>0],'id,title');
+            if(!$newsinfo){
+                $this->error('该文章不存在');
+            }
+            $title = $newsinfo['title'];
+            $w['news_id'] = $nid;
+        }
 
+        $pushnews = new Pushnews();
+        $count = $pushnews->get_count($w);
+        if($count>0){
+            $page = $this->_pagenav($count);
+            //$field = '*';
+            $data = $pushnews->get_list($w,'*',$page['offset'].','.$page['limit']);
+        }
+
+
+        $js = $this->loadJsCss(array('p:common/common'), 'js', 'admin');
+        $this->assign('footjs', $js);
+        $this->assign('h5_base_url',$this->h5_base_url());
+        $this->assign('pagenav',$page);
+        $this->assign('data',$data);
+        $this->assign('title',$title);
+        $this->assign('nid',$nid);
+        $this->assign('run_types',$this->run_types());
+        return $this->fetch('push_list');
     }
 
-    public function push_add(){
+    public function push_add($nid=0,$id=0){
+        if(!$nid){
+            $this->error('访问错误');
+        }
 
+        if($this->request->isPost()){
+            return $this->save_push_data($nid,$id);
+        }
+
+        $info = [];
+        $ref = get_ref();
+        $run_type = 1;
+        $geter = 'all_all';
+        $run_time = date('Y-m-d');
+
+        if($id>0){
+            $info = (new Pushnews())->get_info(['id'=>$id,'isdel'=>0]);
+            if(!$info){
+                $this->error('该推送设置不存在');
+            }
+            $run_type = $info['run_type'];
+            $run_time = $info['run_time'];
+            $geter = $info['geter_user_ids'];
+        }
+
+        $newsinfo = $this->article_model->get_article_info(['id'=>$nid,'isdel'=>0],'id,title');
+        if(!$newsinfo){
+            $this->error('该文章不存在');
+        }
+
+
+        $js = $this->loadJsCss(array('p:common/common','article_push_add'), 'js', 'admin');
+        $this->assign('footjs', $js);
+        $this->assign('h5_base_url',$this->h5_base_url());
+        $this->assign('run_type',$run_type);
+        $this->assign('geter',$geter);
+        $this->assign('run_time',$run_time);
+        $this->assign('newsinfo',$newsinfo);
+        $this->assign('info',$info);
+        $this->assign('ref',$ref);
+        $this->assign('push_geters',$this->push_geters());
+        return $this->fetch('push_add');
     }
 
-    public function push_edit(){
+    public function push_edit($nid=0,$id=0){
+        if(!$nid || $id<=0){
+            $this->error('访问错误');
+        }
 
+        return $this->push_add($nid,$id);
     }
 
-    public function push_del(){
+    public function push_del($id=0){
+        if(!$id || $id<=0){
+            $this->error('访问错误');
+        }
+        $pushnews = new Pushnews();
+        $info = $pushnews->get_info(['id'=>$id,'isdel'=>0],'id,news_id');
+        if(!$info){
+            $this->error('该推送设置不存在');
+        }
+        $this->article_model->update_article_data(['id'=>$info['news_id']],['pushid'=>0]);
+        $pushnews->update_data(['id'=>$id],['isdel'=>1]);
+        (new Pushruntime())->update_data(['pn_id'=>$id],['isdel'=>1]);
 
+        $this->success('删除成功');
     }
 
     //==================================
@@ -231,6 +319,102 @@ class Article extends Common{
 
 
     //======================
+
+    private function push_geters(){
+        return [
+            'all_all'=>'所有人',
+            'c_all'=>'仅业主客户',
+            'b_all'=>'仅企业内部'
+        ];
+    }
+
+    private function run_types(){
+        return [
+            1=>'立即推送送',
+            '定时推送',
+        ];
+    }
+
+    protected function save_push_data($nid,$id){
+        $post = input('post.');
+
+        if(!$post['news_id'] || !$post['news_name'] || !$post['geter'] || !$post['run_type']){
+            $this->error('数据有误');
+        }
+        $geter = $this->push_geters();
+
+        $ref = $post['ref']?:url('Article/push_list',['nid'=>$nid]);
+
+        $data = [
+            'news_id'=>$post['news_id'],
+            'news_name'=>$post['news_name'],
+            'geter_users'=>$geter[$post['geter']],
+            'geter_user_ids'=>$post['geter'],
+            'title'=>$post['news_name'],
+            'message'=>'点开看看',
+            //'metas'=>'',
+            'run_type'=>$post['run_type'],
+            'run_time'=>$post['run_type']==2?$post['run_time']:'0',
+        ];
+
+        //if(!isset($post['id'])){
+        $url = $this->h5_base_url().'DetailsPage.html?id='.$nid;
+        $data['metas'] = \app\common\library\Shorturl::sina_create($url);
+        //}
+
+        $pn_id = (new Pushnews())->save_push_data($data);
+        if(!$pn_id){
+            $this->error('保存设置失败');
+        }
+
+        $this->article_model->update_article_data(['id'=>$data['news_id']],['pushid'=>$pn_id]);
+
+        $geters = [$post['geter']];
+        if($post['geter']=='all_all'){
+            $geters = ['c_all','b_all'];
+        }
+
+
+        $pushruntime = new Pushruntime();
+
+        if(isset($post['id']) && $post['id']>0){
+            $pushruntime->update_data(['pn_id'=>$pn_id],['isdel'=>1]);
+        }
+
+        //立即推送
+        if($post['run_type']==1){
+
+            foreach($geters as $ger){
+                $push_data = [
+                    'jpush_user_id'=>$ger,
+                    'message'=>$data['title'],
+                    'metas'=>$data['metas']
+                ];
+
+                \think\Queue::later(1,'app\gerent\job\Pushqueue',$push_data);
+            }
+            $this->success('消息已经发送发',$ref);
+        }
+
+        //
+        if($post['run_type']==2){
+            $runtime = [];
+            foreach($geters as $ger){
+                $runtime[] = [
+                    'pn_id'=>$pn_id,
+                    'jpush_user_id'=>$ger,
+                    'message'=>$data['title'],
+                    'metas'=>$data['metas'],
+                    'runtime'=>$post['run_time'].' 10:00:00',
+                ];
+            }
+
+            $pushruntime->insert_all($runtime);
+
+            $this->success('消息设置成功',$ref);
+        }
+
+    }
 
     protected function astatus(){
         return array(

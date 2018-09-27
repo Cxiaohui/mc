@@ -56,7 +56,7 @@ class Pusher{
             case 5:
                 (new $this->type_class['report']())->update_data(['id'=>$this->type_id],$update);
                 break;
-            //效果图\CAD图\主材
+            //方案\图纸\主材
             case 7:
                 (new $this->type_class['pstatic']())->update_data(['id'=>$this->type_id],$update);
                 break;

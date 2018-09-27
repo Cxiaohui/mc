@@ -57,6 +57,9 @@ class Notice {
 
 
     static public function addNoticeFromPush($data){
+        if(!isset($data['not_id']) || !$data['not_id']){
+            return ['err'=>0,'msg'=>'ok','data'=>$data];
+        }
         //notice表：type:1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收 7采购，8效果图，9cad图，10主材
         //push表 type:0自定义1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收,7文章,8采购
         //push:type=>notice:type
