@@ -38,14 +38,15 @@ class Notice extends Common
         // 按 addtime 递减排序
         //$list = $this->M->get_list($w,'id,p_id,type,target_id,status,title,content,addtime',$limit['limit']);
         $list = $this->M->get_order_list($w,'id,p_id,type,target_id,status,title,content,addtime',['addtime'=>'desc'],$limit['limit']);
-        $status = $this->nstatus('');
+        //$status = $this->nstatus('');
         foreach($list as $lk=>$lt){
             /*if(in_array($lt['type'],[7,8,9,10])){
                 $list[$lk]['type'] = 0;
             }*/
+            $status = $this->nstatus($lt['type'],$lt['status']);
 
-            $list[$lk]['status_name'] = $status[$lt['status']][0];
-            $list[$lk]['status_color'] = $status[$lt['status']][1];
+            $list[$lk]['status_name'] = $status[0];
+            $list[$lk]['status_color'] = $status[1];
             $list[$lk]['content'] = cut_content($lt['content'],0,80);
         }
         $next_url = '';
@@ -88,7 +89,7 @@ class Notice extends Common
         /*if(in_array($info['type'],[7,8,9,10])){
             $info['type'] = 0;
         }*/
-        $status = $this->nstatus($info['status']);
+        $status = $this->nstatus($info['type'],$info['status']);
         $info['status_name'] = $status[0];
         $info['status_color'] = $status[1];
 
@@ -110,7 +111,8 @@ class Notice extends Common
         if($info['status']==1){
             return $this->response(['code'=>200,'msg'=>'设置成功']);
         }
-        if($info['type']==3){
+        //if($info['type']==3){
+        if(in_array($info['type'],[0,2,3,7,8,9,10])){
             $this->M->update_data($w,['status'=>1,'donetime'=>$this->datetime]);
             return $this->response(['code'=>200,'msg'=>'设置成功']);
         }else{
@@ -119,11 +121,18 @@ class Notice extends Common
     }
 
 
-    protected function nstatus($v){
-        $status =  [
-            0=>['待处理','#ff2c2c'],
-            1=>['已处理','#56d7ba']
-        ];
+    protected function nstatus($type,$v){
+        if(in_array($type,[1,4,5,6])){
+            $status =  [
+                0=>['待处理','#ff2c2c'],
+                1=>['已处理','#56d7ba']
+            ];
+        }else{
+            $status =  [
+                0=>['未读','#ff2c2c'],
+                1=>['已读','#56d7ba']
+            ];
+        }
         return isset($status[$v])?$status[$v]:$status;
     }
 }

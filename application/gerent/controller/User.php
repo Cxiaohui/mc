@@ -10,6 +10,7 @@ use extend\Str,
     think\Loader,
     app\gerent\model\Project as mPJ,
     app\gerent\model\Company,
+    app\common\library\YunIM,
     app\gerent\model\User as mUser;
 class User extends Common{
     /**
@@ -143,8 +144,15 @@ class User extends Common{
 
             $s_res = $this->Um->save_user_data($post);
             if($s_res){
-                //todo 如果是编辑，且用户存在im_token,且用户更新了名称/头像，则都要更新到IM中-20180924
-
+                // 如果是编辑，且用户存在im_token,且用户更新了名称/头像，则都要更新到IM中-20180924
+                if($scene=='edit'){
+                    $res = (new YunIM())->updateCUserinfo($post['id']);
+                    \extend\Mylog::write([
+                        'ref'=>'gerent',
+                        'user_id'=>$post['id'],
+                        'res'=>$res
+                    ],'c_user_iminfo');
+                }
 
 
                 \app\gerent\model\Adminoperlog::instance()->save_data('编辑C用户：'.$post['mobile']);

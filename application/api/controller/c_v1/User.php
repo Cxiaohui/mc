@@ -72,19 +72,20 @@ class User extends Common{
         $cuser->update_data(['id'=>$this->user_id],$update);
 
         // 更新头像后再更新IM的头像
-        if(isset($update['head_pic']) && $update['head_pic']){
-            $user = $cuser->get_info(['id'=>$this->user_id],'id,uname,im_token');
+        if(isset($update['head_pic']) && $update['head_pic'] || (isset($update['gender']) && $update['gender'])){
+            $res = (new YunIM())->updateCUserinfo($this->user_id);
+            /*$user = $cuser->get_info(['id'=>$this->user_id],'id,uname,im_token');
             $im_update = [
                 'icon'=>config('qiniu.host').$update['head_pic']
             ];
             $yim = new YunIM();
             $accid = $yim->build_im_userid($this->user_id,$this->user_type);
-            $res = $yim->imobj()->updateUserId($accid,$user['uname'],'{}',$im_update,$user['im_token']);
+            $res = $yim->imobj()->updateUserId($accid,$user['uname'],'{}',$im_update,$user['im_token']);*/
 
             \extend\Mylog::write([
                 'user_id'=>$this->user_id,
                 'res'=>$res
-            ],'c_user_headpic');
+            ],'c_user_iminfo');
         }
 
         return $this -> response(['code' => 200, 'msg' => '更新成功']);

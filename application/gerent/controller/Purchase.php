@@ -49,9 +49,12 @@ class Purchase extends Common{
         if(!empty($list)){
             //$purchasemodify = new Purchasemodify();
             $purchasedoc = new Purchasedoc();
+            $Projectlog = new Projectlog();
             foreach($list as $k=>$v){
-                $list[$k]['doc_count'] = $purchasedoc->get_count(['p_id'=>$p_id,'pu_id'=>$v['id']]);
-                $list[$k]['logs']  = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$v['id'],'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime');
+
+                $list[$k]['docs'] = $purchasedoc->get_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime');
+                $list[$k]['doc_count'] = count($list[$k]['docs']);
+                $list[$k]['logs']  = $Projectlog->get_list(['p_id'=>$p_id,'p_step_id'=>$v['id'],'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime');
             }
         }
 
@@ -64,6 +67,7 @@ class Purchase extends Common{
         //$this->assign('is_sejishi',$is_sejishi);
         //$this->assign('is_jingli',$is_jingli);
         $this->assign('status',$this->status());
+        $this->assign('qn_host', config('qiniu.host'));
         //$this->assign('report_type',$this->report_type());
         return $this->fetch('info');
     }

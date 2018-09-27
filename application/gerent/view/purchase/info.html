@@ -31,7 +31,7 @@
             {else /}
             {foreach name="data" item="da"}
             <tr>
-                <td>{$da.name}</td>
+                <td><i class="icon-circle"></i> {$da.name}</td>
                 <td>{$status[$da.status]}</td>
                 <td>{$da.doc_count}</td>
                 <td>{$da.addtime}</td>
@@ -40,7 +40,16 @@
                     <!--<a href="{:url('Pusher/add')}?p_id={$da.p_id}&type=8&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>-->
                 </td>
             </tr>
-            <tr><th>操作记录</th><td colspan="4">
+            <tr><td colspan="5">
+                {notempty name="da.docs"}
+                {foreach name="da.docs" item="doc"}
+                <p><a href="{$qn_host}{$doc.file_path}" target="_blank">{$doc.file_name}</a></p>
+
+                {/foreach}
+                {/notempty}
+            </td></tr>
+            <tr><td colspan="5">
+                <p>操作记录</p>
                 {empty name="da.logs"}
                 无
                 {else /}
