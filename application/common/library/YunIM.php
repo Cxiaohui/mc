@@ -15,6 +15,7 @@ use app\common\library\netease\ServerAPI,
     app\common\library\Imgjoin,
     app\common\model\Imgroups,
     app\common\model\IM as mIM;
+use app\common\model\Buser;
 
 class YunIM
 {
@@ -33,6 +34,66 @@ class YunIM
          "msg":"team count exceed"
      }
 }*/
+
+    /**
+     * @return ServerAPI
+     */
+    public function getImObj()
+    {
+        return $this->im_obj;
+    }
+
+    public function updateBUserinfo($id){
+        $info = (new Buserlib())->get_user_info($id);
+        $data = [
+            'name'=>$info['uname'],
+            'icon'=>$info['head_pic'],
+            'sign'=>'',
+            'email'=>'',
+            'birth'=>'',
+            'mobile'=>$info['mobile'],
+            'gender'=>$info['gender'],
+            'ex'=>[
+                'ename'=>$info['en_name'],
+                'comp'=>$info['company_name'],
+                'depart'=>$info['depart_name'],
+                'post'=>$info['post']
+            ]
+        ];
+        $accid = $this->build_im_userid($id,'b');
+        return $this->updateUserInfo($accid,$data);
+    }
+
+    public function updateCUserinfo($id){
+        $info = (new Cuserlib())->get_user_info($id);
+        $project = $info['project']?$info['project'][0]['name']:'';
+        $data = [
+            'name'=>$info['uname'],
+            'icon'=>$info['head_pic'],
+            'sign'=>'',
+            'email'=>'',
+            'birth'=>'',
+            'mobile'=>$info['mobile'],
+            'gender'=>$info['gender'],
+            'ex'=>['projects'=>[$project]]
+        ];
+        $accid = $this->build_im_userid($id,'b');
+        return $this->updateUserInfo($accid,$data);
+    }
+
+    public function updateUserInfo($accid,$data){
+        return $this->imobj()->updateUinfo(
+            $accid,
+            $data['name'],
+            $data['icon'],
+            $data['sign'],
+            $data['email'],
+            $data['birth'],
+            $data['mobile'],
+            $data['gender'],
+            json_encode($data['ex'])
+            );
+    }
 
     public function updateGroupByProject($p_id){
         $fields = 'id,imgroup_id,name,address,customer_manager_user_id,desgin_user_id,desgin_assistant_user_id,manager_user_id,supervision_user_id,decorate_butler_user_id,owner_user_id';

@@ -141,7 +141,7 @@ class Article extends Common{
         $this->error('删除失败');
     }
 
-    // todo 资讯推送设置= 20180924========================
+    //  资讯推送设置= 20180924========================
 
     public function push_list($nid=0){
         $w = ['isdel'=>0];
@@ -178,7 +178,7 @@ class Article extends Common{
 
     public function push_add($nid=0,$id=0){
         if(!$nid){
-            $this->error('访问错误');
+            $this->error('请先选择推送的资讯文章','Article/index');
         }
 
         if($this->request->isPost()){

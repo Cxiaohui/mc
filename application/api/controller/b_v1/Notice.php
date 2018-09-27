@@ -40,9 +40,10 @@ class Notice extends Common
         $list = $this->M->get_order_list($w,'id,p_id,type,target_id,status,title,content,addtime',['addtime'=>'desc'],$limit['limit']);
         $status = $this->nstatus('');
         foreach($list as $lk=>$lt){
-            /*if(in_array($lt['type'],[7,8,9,10])){
+            // B端采购提醒不需要处理,你把type改成0就可以了
+            if(in_array($lt['type'],[7])){
                 $list[$lk]['type'] = 0;
-            }*/
+            }
             $list[$lk]['status_name'] = $status[$lt['status']][0];
             $list[$lk]['status_color'] = $status[$lt['status']][1];
             $list[$lk]['content'] = cut_content($lt['content'],0,80);

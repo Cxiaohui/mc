@@ -7,8 +7,9 @@
  */
 namespace app\api\controller\c_v1;
 use app\common\model\Cuser,
-    app\common\model\Project as Pject,
+
     app\common\library\YunIM,
+    app\common\library\Cuserlib,
     app\api\library\Apitoken;
 class User extends Common{
 
@@ -18,7 +19,7 @@ class User extends Common{
     }
 
     public function center_get(){
-        $info = $this->get_user_info();
+        $info = (new Cuserlib())->get_user_info($this->user_id);
 
         return $this -> response(['code' => 200, 'msg' => '成功','data'=>[
             'info'=>$info,
@@ -39,11 +40,7 @@ class User extends Common{
     }
 
     public function info_get(){
-        $info = $this->get_user_info();
-
-        //获当前的项目
-        $pinfo = (new Pject())->get_list(['owner_user_id'=>$this->user_id,'isdel'=>0],'id,name,address',1);
-        $info['project'] = count($pinfo)>0?$pinfo[0]:new \stdClass();
+        $info = (new Cuserlib())->get_user_info($this->user_id);
 
         return $this -> response(['code' => 200, 'msg' => '成功','data'=>[
             'info'=>$info
@@ -94,19 +91,5 @@ class User extends Common{
     }
 
 
-    //
 
-    protected function get_user_info(){
-        $info = (new Cuser())->get_info(['id'=>$this->user_id],'id,uname,gender,mobile,head_pic,remark');
-        $info['gender_txt'] = $this->gender_txt($info['gender']);
-        $info['head_pic'] = c_img($info['head_pic'],2,600);
-        return $info;
-    }
-
-    protected function gender_txt($k=null){
-        $genders =  [
-            '未知','男','女'
-        ];
-        return $k?$genders[$k]:$genders;
-    }
 }

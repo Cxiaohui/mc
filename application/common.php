@@ -314,3 +314,10 @@ function formatTime($time){
     }
     return $str;
 }
+
+function gender_txt($k=null){
+    $genders =  [
+        '未知','男','女'
+    ];
+    return $k?$genders[$k]:$genders;
+}

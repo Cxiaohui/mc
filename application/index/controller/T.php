@@ -18,6 +18,25 @@ class T extends \app\common\controller\Base{
         print_r($res);
     }
 
+    public function imuser(){
+        $accid = input('get.accid','','trim');
+        if(!$accid){
+            exit('accid error');
+        }
+        $res = [];
+        $im = new \app\common\library\YunIM();
+        list($type,$uid) = explode('_',$accid);
+        if($type=='b'){
+            $res = $im->updateBUserinfo($uid);
+        }elseif($type=='c'){
+            $res = $im->updateCUserinfo($uid);
+        }
+        print_r($res);
+
+        $res = $im->imobj()->getUinfos([$accid]);
+        print_r($res);
+    }
+
     public function init_im_groups(){
 
         $tid = input('get.tid',0,'int');

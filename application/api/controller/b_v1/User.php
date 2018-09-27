@@ -8,6 +8,7 @@
 namespace app\api\controller\b_v1;
 use app\common\model\Buser,
     app\common\library\YunIM,
+    app\common\library\Buserlib,
     app\api\library\Apitoken;
 class User extends Common{
 
@@ -18,7 +19,7 @@ class User extends Common{
 
     public function center_get(){
         //mch5/mochuan/AcceptanceList.html?type=ysbz_list
-        $info = $this->get_user_info();
+        $info = (new Buserlib())->get_user_info($this->user_id);
         return $this -> response(['code' => 200, 'msg' => '成功','data'=>[
             'info'=>$info,
             'ysbz_url'=>$this->h5_base_url().'AcceptanceList.html?type=ysbz_list',
@@ -37,7 +38,7 @@ class User extends Common{
     }
 
     public function info_get(){
-        $info = $this->get_user_info();
+        $info = (new Buserlib())->get_user_info($this->user_id);
         return $this -> response(['code' => 200, 'msg' => '成功','data'=>[
             'info'=>$info
         ]]);
@@ -94,17 +95,5 @@ class User extends Common{
 
     //
 
-    protected function get_user_info(){
-        $info = (new Buser())->get_info(['id'=>$this->user_id],'id,name,name as uname,en_name,sex as gender,mobile,head_pic,depart_id,remark');
-        $info['head_pic'] = c_img($info['head_pic'],3,600);
-        // 20180923 部门信息
-        $company = [];
-        if($info['depart_id']>0){
-            $company = (new \app\gerent\model\Company())->get_company_depart('d.id='.$info['depart_id'].' limit 1');
-        }
 
-        $info['company_name'] = $company?$company[0]['company_name']:'无';
-        $info['depart_name'] = $company?$company[0]['depart_name']:'无';
-        return $info;
-    }
 }

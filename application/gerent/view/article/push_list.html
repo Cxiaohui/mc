@@ -15,7 +15,9 @@
         {if $title}
         <h4>相关资讯：{$title} <a href="{$h5_base_url}DetailsPage.html?id={$nid}" target="_blank">查看</a></h4>
         {/if}
+
         <p><a href="{:url('Article/push_add',['nid'=>$nid])}" class="btn btn-primary"><i class="icon-plus"></i>添加新推送</a></p>
+
         <table class="stat-table responsive table table-stats table-striped table-bordered">
             <tbody>
             <tr>
