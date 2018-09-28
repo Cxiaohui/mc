@@ -75,7 +75,7 @@ class Offer extends Common{
         if(!$rep_info){
             return $this->response(['code' => 201, 'msg' => '该验收报告不存在']);
         }
-        $status = [1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
+        $status = [0=>'待确认',1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
         $rep_info['status_name'] = $status[$rep_info['status']];
         $checks = [];
         if($rep_info['checktime1']>0){
@@ -182,7 +182,7 @@ class Offer extends Common{
         }
         $data = [
             'p_id'=>$p_id,
-            'p_rep_id'=>$id,
+            'p_offer_id'=>$id,
             'type'=>3,
             'content'=>$content,
             'addtime'=>$this->datetime

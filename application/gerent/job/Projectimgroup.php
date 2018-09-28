@@ -39,7 +39,7 @@ class Projectimgroup{
      * @param $data ['type'=>'report|offer','id'=>$id]
      */
     public function do_job($data){
-        //mlog::write('Projectimgroup', $this->log_file);
+        mlog::write($data, $this->log_file);
 
         try{
             $yim = new YunIM();
@@ -53,7 +53,7 @@ class Projectimgroup{
                 $res = $yim->updateGroupByProject($data['p_id']);
             }*/
 
-            mlog::write('imgroup:'.json_encode($res),$this->log_file);
+            mlog::write('imgroup:'.json_encode($res,JSON_UNESCAPED_UNICODE),$this->log_file);
         }catch (\Exception $e){
             throw new \Exception($e);
         }

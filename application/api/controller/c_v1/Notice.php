@@ -112,7 +112,7 @@ class Notice extends Common
             return $this->response(['code'=>200,'msg'=>'设置成功']);
         }
         //if($info['type']==3){
-        if(in_array($info['type'],[0,2,3,7,8,9,10])){
+        if(in_array($info['type'],[0,2,3])){//,7,8,9,10
             $this->M->update_data($w,['status'=>1,'donetime'=>$this->datetime]);
             return $this->response(['code'=>200,'msg'=>'设置成功']);
         }else{
@@ -120,14 +120,27 @@ class Notice extends Common
         }
     }
 
-
+    /**
+     * 采购提醒在B端为已读未读，C端需要处理
+    我家图纸（签字确认流）、我家方案 主材（通过驳回流确认），需要处理
+     * @param $type
+     * @param $v
+     * @return array|mixed
+     */
     protected function nstatus($type,$v){
-        if(in_array($type,[1,4,5,6])){
+        /**
+         * 【待处理/已处理】
+        1设计验收 4施工预算，5验收方案，6施工验收,7采购,8我家方案，9我家图纸，10我家主材
+         */
+        if(in_array($type,[1,4,5,6,7,8,9,10])){
             $status =  [
                 0=>['待处理','#ff2c2c'],
                 1=>['已处理','#56d7ba']
             ];
-        }else{
+        } /**
+         * 0,2付款，3预约，
+         */
+        else{
             $status =  [
                 0=>['未读','#ff2c2c'],
                 1=>['已读','#56d7ba']

@@ -318,7 +318,7 @@ class Pusher extends Common{
             $geters['names'][] = $name;
         }
         $ref = $post['ref']?:url('Pusher/index');
-
+        $geters['ids'] = array_unique($geters['ids']);
         $save_data = [
             'p_id'=>$post['p_id'],
             'p_name'=>$pinfo['name'],

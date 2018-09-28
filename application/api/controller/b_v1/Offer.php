@@ -210,7 +210,7 @@ class Offer extends Common{
         $pject = new Pject();
         $data = [
             'p_id'=>$p_id,
-            'p_rep_id'=>$id,
+            'p_offer_id'=>$id,
             //'type'=>3,
             'content'=>$content,
             'addtime'=>$this->datetime

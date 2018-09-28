@@ -16,4 +16,14 @@
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
 // 加载框架引导文件
-require __DIR__ . '/../thinkphp/start.php';
+//try{
+    require __DIR__ . '/../thinkphp/start.php';
+/*}catch (\Exception $e){
+    header('HTTP/1.1 500 Internal Server Error');
+
+    echo json_encode([
+        'code'=>500,
+        'msg'=>'系统繁忙，请稍后再试'
+    ]);
+}*/
+

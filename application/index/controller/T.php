@@ -18,6 +18,16 @@ class T extends \app\common\controller\Base{
         print_r($res);
     }
 
+    public function imuserinfo(){
+        $accid = input('get.accid','','trim');
+        if(!$accid){
+            exit('accid error');
+        }
+        $im = new \app\common\library\YunIM();
+        $res = $im->imobj()->getUinfos([$accid]);
+        print_r($res);
+    }
+
     public function imuser(){
         $accid = input('get.accid','','trim');
         if(!$accid){
@@ -35,6 +45,14 @@ class T extends \app\common\controller\Base{
 
         $res = $im->imobj()->getUinfos([$accid]);
         print_r($res);
+    }
+
+    public function createimgroup(){
+        $p_id = input('get.p_id',0,'int');
+        if(!$p_id){
+            exit('tid error');
+        }
+        \think\Queue::later(2,'app\gerent\job\Projectimgroup',['p_id'=>$p_id,'act'=>'add']);
     }
 
     public function init_im_groups(){

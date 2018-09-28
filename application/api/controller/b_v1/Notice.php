@@ -81,14 +81,14 @@ class Notice extends Common
         if(!$info){
             return $this->response(['code'=>201,'msg'=>'该消息不存在']);
         }
-        //1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收 7采购8效果图，9cad图，10主材
-        // type=0,2付款，3预约 自动设为已处理
-        if(in_array($info['type'],[0,2,3,7,8,9,10])){
+        //1设计验收2付款，3预约，4施工预算,5验收方案，6施工验收 8效果图，9cad图，10主材
+        // type=0,2付款，3预约,7采购 自动设为已处理
+        if(in_array($info['type'],[0,2,3,7])){//,8,9,10
             $this->M->update_data($w,['status'=>1]);
         }
-        /*if(in_array($info['type'],[7,8,9,10])){
+        if(in_array($info['type'],[7])){
             $info['type'] = 0;
-        }*/
+        }
 
         $status = $this->nstatus($info['type'],$info['status']);
         $info['status_name'] = $status[0];
@@ -113,7 +113,7 @@ class Notice extends Common
             return $this->response(['code'=>200,'msg'=>'设置成功']);
         }
         //if($info['type']==3){
-        if(in_array($info['type'],[0,2,3,7,8,9,10])){
+        if(in_array($info['type'],[0,2,3,7])){//,8,9,10
             $this->M->update_data($w,['status'=>1,'donetime'=>$this->datetime]);
             return $this->response(['code'=>200,'msg'=>'设置成功']);
         }else{
@@ -123,13 +123,19 @@ class Notice extends Common
 
 
     protected function nstatus($type,$v){
-
-        if(in_array($type,[1,4,5,6])){
+        /**
+         * 【待处理/已处理】
+        1设计验收 4施工预算，5验收方案，6施工验收,8我家方案，9我家图纸，10我家主材
+         */
+        if(in_array($type,[1,4,5,6,8,9,10])){
             $status =  [
                 0=>['待处理','#ff2c2c'],
                 1=>['已处理','#56d7ba']
             ];
-        }else{
+        }/**
+         * 0,2付款，3预约,7采购
+         */
+        else{
             $status =  [
                 0=>['未读','#ff2c2c'],
                 1=>['已读','#56d7ba']

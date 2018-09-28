@@ -244,11 +244,11 @@ class YunIM
             'members'=>implode(',',$members)
         ];
         (new Imgroups())->save_groups($group_data);
-        /*$this->save_im_list($p_id,$tid,$gname,$members_B,$members_C);
+        //$this->save_im_list($p_id,$tid,$gname,$members_B,$members_C);
         (new Projectim())->save_data([
             'p_id'=>$p_info['id'],
             'tid'=>$tid
-        ]);*/
+        ]);
         //Imgjoin::create_group_icon($members_B,$members_C,$tid);
         //发个群信息
         $this->imobj()->sendMsg($ower_user,1,$tid,0,['msg'=>'群:['.$gname.']创建成功']);
