@@ -193,6 +193,9 @@ class YunIM
         if(!$p_info){
             return ['err' => 1, 'msg' => '项目不存在'];
         }
+        if($p_info['imgroup_id']){
+            return $this->update_im_group($p_id,$p_info['imgroup_id']);
+        }
 
         //群名--项目名称
         //群主--虚拟一个用户
@@ -253,6 +256,26 @@ class YunIM
         //发个群信息
         $this->imobj()->sendMsg($ower_user,1,$tid,0,['msg'=>'群:['.$gname.']创建成功']);
         return ['err' => 0, 'msg' => 'success'];
+    }
+
+    public function update_im_group($p_id,$tid){
+        $res = $this->queryGroup([$tid]);
+        if($res['code']!='200'){
+            return ['err' => 1, 'msg' => '群id存在，获取群信息失败','res'=>$res];
+        }
+        $data = $res['tinfos'][0];
+        $data['icon'] = $data['icon']?:'';
+        $data['members'] = implode(',',$data['members']);
+        $data['updatetime'] = date('Y-m-d H:i:s',ceil($data['updatetime']/1000));
+        $data['createtime'] = date('Y-m-d H:i:s',ceil($data['createtime']/1000));
+        $data['p_id'] = $p_id;
+
+        //print_r($data);
+        $res = (new Imgroups())->save_groups($data);
+        if($res){
+            return ['err' => 0, 'msg' => 'success'];
+        }
+        return ['err' => 1, 'msg' => '更新群信息失败'];
     }
 
     public function save_im_list($p_id,$tid,$gname,$members_B,$members_C){

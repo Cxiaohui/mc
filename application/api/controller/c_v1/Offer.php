@@ -36,6 +36,7 @@ class Offer extends Common{
         }
         $poffer = new Projectoffer();
         //todo 状态
+        //0未确认，1设计确认，2项目经理确认，3业主确认，4业主修改
         $list = $poffer->get_list(['p_id'=>$p_id,'status'=>['in','1,2,3,4'],'isdel'=>0],'id,name,status');
         if(empty($list)){
             return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);

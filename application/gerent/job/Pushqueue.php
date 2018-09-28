@@ -20,7 +20,7 @@ class Pushqueue{
     public function fire(Job $job,$data=[])
     {
         try {
-            mlog::write(json_encode($data),$this->log_file);
+            mlog::write(json_encode($data,JSON_UNESCAPED_UNICODE),$this->log_file);
 
             if(isset($data['jpush_user_id'])){// && $data['jpush_user_id']
                 $res = Jpush::push_mesg(

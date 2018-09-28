@@ -105,8 +105,8 @@ var steps = {
             +'<p class="input-append">'
             +'<a href="javascript:;" class="add-on text-error del_main_step"><i class="icon-trash"></i></a>'
             +'<span class="add-on">阶段名称</span><input type="text" class="stepv step_m_name" value=""/>'
-            +'<span class="add-on">计划时间</span><input type="date" min="'+mindate+'" class="stepv step_m_time1" value=""/>'
-            +'<span class="add-on">-</span><input type="date" min="'+mindate+'" class="stepv step_m_time2" value=""/>'
+            +'<span class="add-on">计划时间</span><input type="date" min="'+mindate+'" class="stepv step_m_time1" value="'+mindate+'"/>'
+            +'<span class="add-on">-</span><input type="date" min="'+mindate+'" class="stepv step_m_time2" value="'+mindate+'"/>'
             +'<span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>'
             +'<span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>'
 
@@ -122,8 +122,8 @@ var steps = {
             +'<p class="input-append">'
             +'<a href="javascript:;" class="add-on text-error del_sub_step"><i class="icon-trash"></i></a>'
             +'<span class="add-on">阶段名称</span><input type="text"  class="stepv step_s_name"/>'
-            +'<span class="add-on">计划时间</span><input type="date" min="'+mindate+'" class="stepv step_s_time1"/>'
-            +'<span class="add-on">-</span><input type="date" min="'+mindate+'" class="stepv step_s_time2"/>'
+            +'<span class="add-on">计划时间</span><input type="date" min="'+mindate+'" class="stepv step_s_time1" value="'+mindate+'"/>'
+            +'<span class="add-on">-</span><input type="date" min="'+mindate+'" class="stepv step_s_time2" value="'+mindate+'"/>'
             +'<span class="add-on"><i class="icon-circle-arrow-up move_up"></i> </span>'
             +'<span class="add-on"><i class="icon-circle-arrow-down move_down"></i> </span>'
 

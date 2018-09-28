@@ -330,6 +330,8 @@ class Project extends Common{
         if(!$step_info){
             return $this->response(['code' => 201, 'msg' => '阶段信息不存在']);
         }
+        // 更新 状态： 2待客户确认
+        $pstep->update_data($w,['status'=>2,'uptime'=>$this->datetime]);
 
         //通知业主
         $ndata = [

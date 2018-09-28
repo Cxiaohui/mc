@@ -123,7 +123,7 @@ class Projectstep extends Common{
         $this->assign('p_info', $p_info);
         $this->assign('p_id', $p_id);
         $this->assign('act', $act);
-        $this->assign('mindate', date('Y/m/d'));
+        $this->assign('mindate', date('Y-m-d'));
         $this->assign('type1_steps', $type1_steps);
         $this->assign('type2_steps', $type2_steps);
         return $this->fetch('add');

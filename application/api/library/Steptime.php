@@ -8,6 +8,7 @@
 namespace app\api\library;
 
 use app\common\model\Projectpay,
+    app\common\model\Projectstep,
     app\common\model\Booking;
 
 class Steptime{
@@ -174,6 +175,8 @@ class Steptime{
         return $main_steps;
     }
 
+
+
     //加上竣工时间及事项 在 $times 中加上状态
     // 项目应付款项
     // 预约与被预约事项
@@ -202,10 +205,19 @@ class Steptime{
         /*if($time_range_begin<=$time_range_end){
             return false;
         }*/
+        //todo 显示子节点信息 20180929
+        //$projectstep = new Projectstep();
         for($i=$time_range_begin;$i<=$time_range_end;){
             //echo date('Y-m-d',$i),PHP_EOL;
             $is_sp_po = false;
             foreach($times as $tm){
+                //获取子阶段信息
+                /*$w = ['pid'=>$tm['id'],'isdel'=>0];
+                $has_sub = $projectstep->get_count($w);
+                if($has_sub){
+                    $subs = $projectstep->get_list($w,'id,type,name,plan_time,realtime');
+                    $subs = self::get_mainstep_color($subs);
+                }*/
 
                 if($i>=strtotime($tm['plan_begin_date']) && $i<= strtotime($tm['plan_end_date'])){
                     //$tmp = [];

@@ -14,6 +14,9 @@ class Mylog{
         if(is_array($mseg)){
             $mseg = print_r($mseg,1);
         }
+        if(!is_string($mseg)){
+            $mseg = json_encode($mseg);
+        }
         $path = LOG_PATH.$fname;
         if(!is_dir($path)){
             mkdir($path,0777,true);

@@ -109,7 +109,7 @@ class Jpush{
 
     static public function init_obj($type='c'){
         $type = strtolower($type);
-        if(in_array($type,['b','c'])){
+        if(!in_array($type,['b','c'])){
             $type = 'c';
         }
         if($type=='c'){
