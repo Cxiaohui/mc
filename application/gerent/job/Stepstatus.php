@@ -36,13 +36,15 @@ class Stepstatus{
     public function do_job(){
         $ps = new Projectstep();
         $where = ['isdel'=>0,'realtime'=>''];
-        $list = $ps->get_list($where,'id,plan_time,status',0);
+        $list = $ps->get_list($where,'id,plan_time1,status',0);
         $today = strtotime(date('Y-m-d'));
         if(!empty($list)){
             foreach($list as $lt){
-                $times = explode('|', $lt['plan_time']);
-                if(strtotime($times[0])<=$today){
-                    $update = ['realtime'=>$times[0],'realtime1'=>$times[0]];
+
+                //$times = explode('|', $lt['plan_time']);
+                if(strtotime($lt['plan_time1'])<=$today){
+                    //todo 运行一段时间 后，取消 realtime 的赋值 20180929
+                    $update = ['realtime'=>$lt['plan_time1'],'realtime1'=>$lt['plan_time1']];
                     if($lt['status']==0){
                         $update['status'] = 1;
                     }

@@ -37,6 +37,9 @@ class Pushget extends Common{
                 mlog::write($data['msg'],$this->log_file);
                 continue;
             }
+            if(!isset($data['data']['metas']['url'])){
+                $data['data']['metas'] = ['url'=>$data['data']['metas']];
+            }
             \think\Queue::later(1,'app\gerent\job\Pushqueue',$data['data']);
         }
         mlog::write($time.':data list:'.count($list),$this->log_file);

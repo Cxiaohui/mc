@@ -76,11 +76,13 @@ class Project extends Common{
         //获取所有主阶段信息,各阶段时间
 
         $main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
-
-        if (!empty($main_steps)) {
-            $main_steps = Steptime::get_mainstep_color($main_steps);
+        $all_steps = $pstep->get_order_list(['p_id' => $p_id, 'isdel' => 0],'id,pid,type,name,plan_time1,plan_time2,realtime1,realtime2', ['plan_time1'=>'asc'],0);
+        //print_r($all_steps);exit;
+        if (!empty($all_steps)) {
+            //$main_steps = Steptime::get_mainstep_color($main_steps);
+            $all_steps = Steptime::get_step_color($all_steps);
            //print_r($main_steps);
-            $step_color_date = Steptime::get_color_days($main_steps,$p_id,1);
+            $step_color_date = Steptime::get_color_days2($all_steps,$p_id,1);
             if(!$step_color_date){
                 return $this->response(['code' => 201, 'msg' => '项目的时间有误']);
             }
@@ -96,7 +98,7 @@ class Project extends Common{
                 'data' => [
                     'project' => $p_info,
                     'step_color_date' => $step_color_date,
-                    'step_times' => $main_steps,
+                    'step_times' => Steptime::get_mainstep_color($main_steps),
                     'design_step_docs' => $step1_docs,
                     'construction_step_docs' => $step2_docs,
                     //'design_step_last_doc'=>$step1_last_docs,

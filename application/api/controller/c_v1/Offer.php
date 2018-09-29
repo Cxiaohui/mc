@@ -37,11 +37,13 @@ class Offer extends Common{
         $poffer = new Projectoffer();
         //todo 状态
         //0未确认，1设计确认，2项目经理确认，3业主确认，4业主修改
-        $list = $poffer->get_list(['p_id'=>$p_id,'status'=>['in','1,2,3,4'],'isdel'=>0],'id,name,status');
+        //,'status'=>['in','1,2,3,4']
+        $list = $poffer->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status');
         if(empty($list)){
             return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
-        $status = [1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
+        $status = $this->offer_status();
+
         foreach($list as $k=>$v){
             $list[$k]['status_name'] = $status[$v['status']];
         }
@@ -72,21 +74,21 @@ class Offer extends Common{
         }
 
         $offer = new Projectoffer();
-        $rep_info = $offer->get_info(['id'=>$id,'p_id'=>$p_id,'isdel'=>0],'id,name,status,remark,passtime,checktime1,checktime2,addtime');
-        if(!$rep_info){
-            return $this->response(['code' => 201, 'msg' => '该验收报告不存在']);
+        $offer_info = $offer->get_info(['id'=>$id,'p_id'=>$p_id,'isdel'=>0],'id,name,status,remark,passtime,checktime1,checktime2,addtime');
+        if(!$offer_info){
+            return $this->response(['code' => 201, 'msg' => '该预算内容不存在']);
         }
-        $status = [0=>'待确认',1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
-        $rep_info['status_name'] = $status[$rep_info['status']];
+        $status = $this->offer_status();
+        $offer_info['status_name'] = $status[$offer_info['status']];
         $checks = [];
-        if($rep_info['checktime1']>0){
-            $checks[] = ['title'=>'设计师已确认','isok'=>1,'check_date'=>$rep_info['checktime1'],'content'=>''];
+        if($offer_info['checktime1']>0){
+            $checks[] = ['title'=>'设计师已确认','isok'=>1,'check_date'=>$offer_info['checktime1'],'content'=>''];
         }
-        if($rep_info['checktime2']>0){
-            $checks[] = ['title'=>'项目经理已确认','isok'=>1,'check_date'=>$rep_info['checktime2'],'content'=>''];
+        if($offer_info['checktime2']>0){
+            $checks[] = ['title'=>'项目经理已确认','isok'=>1,'check_date'=>$offer_info['checktime2'],'content'=>''];
         }
-        if($rep_info['passtime']>0){
-            $checks[] = ['title'=>'业主已确认','isok'=>1,'check_date'=>$rep_info['passtime'],'content'=>''];
+        if($offer_info['passtime']>0){
+            $checks[] = ['title'=>'业主已确认','isok'=>1,'check_date'=>$offer_info['passtime'],'content'=>''];
         }
 
         $modifys = (new Projectoffermodify())->get_list(['p_id'=>$p_id,'p_offer_id'=>$id],'id,type,content,addtime',0);
@@ -113,6 +115,7 @@ class Offer extends Common{
             'msg'=>'成功',
             'data'=>[
                 'project' => $p_info,
+                'offer_info' =>$offer_info,
                 'docs'=>$docs,
                 'check_logs'=>$checks
             ]
@@ -191,6 +194,7 @@ class Offer extends Common{
 
         $res = (new Projectoffermodify())->add_data($data);
         if($res){
+            $poffer->update_data($w,['status'=>4]);
             // 添加日志
             Plog::add_one($p_id,$id,4,
                 ['type'=>2,'id'=>$this->user_id,'name'=>'业主'],
@@ -210,5 +214,10 @@ class Offer extends Common{
         }
 
         return $this->response(['code' => 201, 'msg' => '提交失败']);
+    }
+    
+    
+    protected function offer_status(){
+        return [0=>'待设计师确认',1=>'待项目经理确认',2=>'待业主确认',3=>'已处理',4=>'已提交修改'];
     }
 }

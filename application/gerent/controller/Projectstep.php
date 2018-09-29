@@ -381,6 +381,7 @@ class Projectstep extends Common{
                   'type'=>$da['type'],
                   'name'=>$dali['name'],
                   'step_sort'=>$k,
+                  //todo 运行一段时间 后，取消 plan_time 的赋值 20180929
                   'plan_time'=>$dali['time1'].'|'.$dali['time2'],
                   'plan_time1'=>$dali['time1'],
                   'plan_time2'=>$dali['time2'],
@@ -402,6 +403,7 @@ class Projectstep extends Common{
                       'type'=>$da['type'],
                       'name'=>$sub['name'],
                       'step_sort'=>$sk,
+                      //todo 运行一段时间 后，取消 plan_time 的赋值 20180929
                       'plan_time'=>$sub['time1'].'|'.$sub['time1'],
                       'plan_time1'=>$dali['time1'],
                       'plan_time2'=>$dali['time2'],

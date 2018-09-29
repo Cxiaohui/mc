@@ -71,19 +71,22 @@ class Offer extends Common{
         }
 
         $offer = new Projectoffer();
-        $rep_info = $offer->get_info(['id'=>$id,'p_id'=>$p_id,'isdel'=>0],'id,name,status,remark,passtime,checktime1,checktime2,addtime');
-        if(!$rep_info){
+        $offer_info = $offer->get_info(['id'=>$id,'p_id'=>$p_id,'isdel'=>0],'id,name,status,remark,passtime,checktime1,checktime2,addtime');
+        if(!$offer_info){
             return $this->response(['code' => 201, 'msg' => '该验收报告不存在']);
         }
         $checks = [];
-        if($rep_info['checktime1']>0){
-            $checks[] = ['title'=>'设计师已确认','isok'=>1,'check_date'=>$rep_info['checktime1'],'content'=>''];
+        $status = $this->offer_status();
+        $offer_info['status_name'] = $status[$offer_info['status']];
+
+        if($offer_info['checktime1']>0){
+            $checks[] = ['title'=>'设计师已确认','isok'=>1,'check_date'=>$offer_info['checktime1'],'content'=>''];
         }
-        if($rep_info['checktime2']>0){
-            $checks[] = ['title'=>'项目经理已确认','isok'=>1,'check_date'=>$rep_info['checktime2'],'content'=>''];
+        if($offer_info['checktime2']>0){
+            $checks[] = ['title'=>'项目经理已确认','isok'=>1,'check_date'=>$offer_info['checktime2'],'content'=>''];
         }
-        if($rep_info['passtime']>0){
-            $checks[] = ['title'=>'业主已确认','isok'=>1,'check_date'=>$rep_info['passtime'],'content'=>''];
+        if($offer_info['passtime']>0){
+            $checks[] = ['title'=>'业主已确认','isok'=>1,'check_date'=>$offer_info['passtime'],'content'=>''];
         }
 
         $modifys = (new Projectoffermodify())->get_list(['p_id'=>$p_id,'p_offer_id'=>$id],'id,type,content,addtime',0);
@@ -111,6 +114,7 @@ class Offer extends Common{
             'msg'=>'成功',
             'data'=>[
                 'project' => $p_info,
+                'offer_info' =>$offer_info,
                 'docs'=>$docs,
                 'check_logs'=>$checks
             ]
@@ -262,5 +266,9 @@ class Offer extends Common{
         }
 
         return $this->response(['code' => 201, 'msg' => '提交失败']);
+    }
+
+    protected function offer_status(){
+        return [0=>'待设计师确认',1=>'待项目经理确认',2=>'待业主确认',3=>'已处理',4=>'业主修改'];
     }
 }

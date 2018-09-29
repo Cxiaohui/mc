@@ -359,9 +359,13 @@ class Article extends Common{
 
         //if(!isset($post['id'])){
         $url = $this->h5_base_url().'DetailsPage.html?id='.$nid;
-        $data['metas'] = \app\common\library\Shorturl::sina_create($url);
+        $shorturl= \app\common\library\Shorturl::sina_create($url);
+        if(!$shorturl){
+            $this->error('生成文章短链接失败');
+        }
+        $data['metas'] = $shorturl;
         //}
-
+        //print_r($data);exit;
         $pn_id = (new Pushnews())->save_push_data($data);
         if(!$pn_id){
             $this->error('保存设置失败');
@@ -388,7 +392,7 @@ class Article extends Common{
                 $push_data = [
                     'jpush_user_id'=>$ger,
                     'message'=>$data['title'],
-                    'metas'=>$data['metas']
+                    'metas'=>['url'=>$shorturl]
                 ];
 
                 \think\Queue::later(1,'app\gerent\job\Pushqueue',$push_data);
@@ -404,7 +408,7 @@ class Article extends Common{
                     'pn_id'=>$pn_id,
                     'jpush_user_id'=>$ger,
                     'message'=>$data['title'],
-                    'metas'=>$data['metas'],
+                    'metas'=>$shorturl,
                     'runtime'=>$post['run_time'].' 10:00:00',
                 ];
             }

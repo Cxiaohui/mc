@@ -126,6 +126,165 @@ class Steptime{
     )
     时间有误
      */
+
+    static public function get_step_color($steps){
+        $colors = self::step_colors();
+        $now = date('Y-m-d');
+        $has_cur = false;
+        $i=0;
+        //print_r($steps);
+        foreach($steps as $sk=>$step){
+            //检查 是否有子节点
+            if($step['pid']==0){
+                foreach($steps as $v){
+                    if($v['pid'] == $step['id']){
+                        unset($steps[$sk]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        //print_r($steps);exit;
+
+        foreach ($steps as $k => $stp) {
+            $steps[$k]['active'] = 0;
+
+            $steps[$k]['plan_date_str'] = self::get_plan_date_str($stp['plan_time1'],$stp['plan_time2']);
+
+            $steps[$k]['color'] = $colors['before'];
+
+            if($stp['plan_time2']<$now){
+                $steps[$k]['color'] = $colors['before'];
+            }
+            if($stp['plan_time1']>$now){
+                $steps[$k]['color'] = $colors['after'][$i%2];
+            }
+            if (!$has_cur && $stp['plan_time1'] <= $now && $stp['plan_time2'] >= $now) {
+                $steps[$k]['name'] = '当前阶段：' . $stp['name'];
+                $steps[$k]['color'] = $colors['now'];
+                $steps[$k]['active'] = 1;
+                $has_cur = true;
+                if (isset($steps[$k + 1])) {
+                    $steps[$k + 1]['name'] = '下一阶段：' . $stp['name'];
+                    $steps[$k+1]['color'] = $colors['after'][$i%2];
+                    $steps[$k+1]['active'] = 0;
+                }
+            }
+
+            $i++;
+        }
+        return $steps;
+    }
+
+    static public function get_color_days2($times,$p_id=0,$user_type=1){
+        //print_r($times);exit;
+        $time_range_begin = strtotime($times[0]['plan_time1']);
+        $time_range_end = strtotime($times[count($times)-1]['plan_time2']);
+        $one_day_time = 24*3600;
+        $today = strtotime(date('Y-m-d'));
+
+        $real_end_time = $times[count($times)-1]['realtime2'];
+        if($real_end_time !='0000-00-00' && $real_end_time>$time_range_end){
+            $time_range_end = $real_end_time;
+        }
+
+        //项目的应付款项信息
+        $paylist = (new Projectpay())->get_list(['p_id'=>$p_id,'paied_time'=>0,'isdel'=>0],'id,name,payable,payable_time',0);
+
+        // 预约信息  $user_type
+        $bookings = (new Booking())->get_list(['p_id'=>$p_id],'id,to_users,booking_time,booking_content');
+
+        $days = [];
+        $colors = self::step_colors();
+        $j=0;
+
+        for($i=$time_range_begin;$i<=$time_range_end;){
+            //echo date('Y-m-d',$i),PHP_EOL;
+            $is_sp_po = false;
+            foreach($times as $tm){
+
+
+                if($i>=strtotime($tm['plan_time1']) && $i<= strtotime($tm['plan_time2'])){
+                    //$tmp = [];
+                    $days[$j]['date'] = date('Y-m-d',$i);
+                    $days[$j]['color'] = $tm['color'];
+                    if($i==$today){
+                        $days[$j]['color'] = $colors['now'];
+                    }
+                    /*else if($i>$today){
+                        $days[$j]['color'] = '#b8f7d9';
+                    }*/
+                    //找出竣工时间及事项
+                    if($tm['realtime2'] && $i==strtotime($tm['realtime2'])){
+                        $days[$j]['steps'][] = [
+                            'title'=>$tm['name'].' 实际竣工日',
+                            'content'=>'',
+                            'date_time'=>date('Y-m-d',$i)
+                        ];
+                        $is_sp_po = true;
+                    }
+
+                    $days[$j]['steps'][] = ['id'=>$tm['id'],'title'=>$tm['name'],'content'=>'','date_time'=>date('Y-m-d',$i)];
+
+                    if(count($days[$j]['steps'])>1){
+                        $days[$j]['color'] = $colors['t_po'];
+                    }
+                    if($i<$today){
+                        $days[$j]['color'] = $colors['before'];
+                    }
+                }
+            }
+
+            if(!empty($paylist)){
+                foreach($paylist as $pay){
+                    if($i==strtotime($pay['payable_time'])){
+                        $days[$j]['steps'][] = [
+                            'title'=>'项目款应付日',
+                            'content'=>'应付金额'.$pay['payable'],
+                            'date_time'=>date('Y-m-d',$i)
+                        ];
+                        if(!$is_sp_po){
+                            $is_sp_po = true;
+                        }
+
+                    }
+                }
+            }
+
+            if(!empty($bookings)){
+
+                foreach($bookings as $bok){
+                    $bk_time = strtotime(substr($bok['booking_time'],0,10));
+                    if($i==$bk_time){
+                        $days[$j]['steps'][] = [
+                            'title'=>'预约看工地',
+                            'content'=>$bok['booking_content'],
+                            'date_time'=>$bok['booking_time']
+                        ];
+                        if(!$is_sp_po){
+                            $is_sp_po = true;
+                        }
+                    }
+                }
+            }
+
+            if($is_sp_po){
+                $days[$j]['color'] = $colors['d_po'];
+            }
+            $j++;
+            $i += $one_day_time;
+        }
+
+        return array_values($days);
+    }
+
+    static public function get_plan_date_str($date1,$date2){
+
+        return date('m.d',strtotime($date1)).($date2?'-'.date('m.d',strtotime($date2)):'');
+
+    }
+
     static public function get_mainstep_color($main_steps){
         $colors = self::step_colors();
         $now = date('Y-m-d');
@@ -175,6 +334,8 @@ class Steptime{
         return $main_steps;
     }
 
+
+
     //加上竣工时间及事项 在 $times 中加上状态
     // 项目应付款项
     // 预约与被预约事项
@@ -203,7 +364,7 @@ class Steptime{
         /*if($time_range_begin<=$time_range_end){
             return false;
         }*/
-        //todo 显示子节点信息 20180929
+        // 显示子节点信息 20180929
         //$projectstep = new Projectstep();
         for($i=$time_range_begin;$i<=$time_range_end;){
             //echo date('Y-m-d',$i),PHP_EOL;

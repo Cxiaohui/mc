@@ -24,9 +24,13 @@ class Notice extends Common
     public function list_get(){
 
         $page = input('get.page',1,'int');
+        $p_id = input('get.p_id',0,'int');
         $pagesize = input('get.pagesize',20,'int');
 
-        $w = ['user_type'=>2,'user_id'=>$this->user_id];
+        $w = ['user_type'=>$this->user_type_int,'user_id'=>$this->user_id];
+        if($p_id>0){
+            $w['p_id'] = $p_id;
+        }
         $count = $this->M->get_count($w);
         if($count<=0){
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>[]]);
