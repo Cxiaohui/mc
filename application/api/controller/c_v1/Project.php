@@ -120,7 +120,7 @@ class Project extends Common{
 
         $pay = new Projectpay();
 
-        $w = ['p_id'=>$p_id,'p_type'=>1];
+        $w = ['p_id'=>$p_id,'p_type'=>1,'isdel'=>0];
         $fields = 'id,name,payable,payable_time,paied,paied_time,remark';
         $type1 = $pay->get_list($w,$fields);
         $w['p_type'] = 2;

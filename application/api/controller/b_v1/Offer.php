@@ -89,7 +89,7 @@ class Offer extends Common{
             $checks[] = ['title'=>'业主已确认','isok'=>1,'check_date'=>$offer_info['passtime'],'content'=>''];
         }
 
-        $modifys = (new Projectoffermodify())->get_list(['p_id'=>$p_id,'p_offer_id'=>$id],'id,type,content,addtime',0);
+        $modifys = (new Projectoffermodify())->get_list(['p_id'=>$p_id,'p_offer_id'=>$id,'isdel'=>0],'id,type,content,addtime',0);
         if(!empty($modifys) ){
             $report_offer_type = $this->report_offer_type();
             foreach($modifys as $mfy){

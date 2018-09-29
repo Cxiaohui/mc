@@ -38,7 +38,7 @@ class Projectpay extends Common{
             $this->error('请先完成项目基本信息');
         }
 
-        $w = ['p_id'=>$p_id,'p_type'=>1];
+        $w = ['p_id'=>$p_id,'p_type'=>1,'isdel'=>0];
         $type1 = $this->M->get_list($w,'*');
         $w['p_type'] = 2;
         $type2 = $this->M->get_list($w,'*');
@@ -132,7 +132,7 @@ class Projectpay extends Common{
 
         $info = $this->M->get_info(['id'=>$id,'isdel'=>0],'id,paied');
         if(!$info){
-            $this->error('访问错误');
+            $this->error('该付款记录不存在或已删除');
         }
         if($info['paied']>0){
             $this->error('该信息已有付款记录，不能删除');

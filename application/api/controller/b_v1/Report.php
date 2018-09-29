@@ -83,7 +83,7 @@ class Report extends Common{
             $checks[] = ['title'=>'业主已确认','isok'=>1,'check_date'=>$rep_info['passtime'],'content'=>''];
         }
 
-        $modifys = (new Projectreportmodify())->get_list(['p_id'=>$p_id,'p_rep_id'=>$id],'id,type,content,addtime',0);
+        $modifys = (new Projectreportmodify())->get_list(['p_id'=>$p_id,'p_rep_id'=>$id,'isdel'=>0],'id,type,content,addtime',0);
         if(!empty($modifys) ){
             $report_offer_type = $this->report_offer_type();
             foreach($modifys as $mfy){
