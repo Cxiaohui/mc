@@ -129,7 +129,7 @@ class Projectpay extends Common{
         if(!$id || $id<=0){
             $this->error('访问错误');
         }
-        //return 'ok';
+
         $info = $this->M->get_info(['id'=>$id,'isdel'=>0],'id,paied');
         if(!$info){
             $this->error('访问错误');
@@ -137,6 +137,7 @@ class Projectpay extends Common{
         if($info['paied']>0){
             $this->error('该信息已有付款记录，不能删除');
         }
+        //return 'ok';
         $res = $this->M->update_data(['id'=>$id,'isdel'=>0],['isdel'=>1]);
         if($res){
             $this->success('删除成功');

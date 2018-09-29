@@ -121,6 +121,7 @@ class Projectstatic extends Common{
         $this->assign('p_info', $p_info);
         $this->assign('type', $type);
         $this->assign('doc_type',$this->doc_type());
+        $this->assign('upload_alert',$this->upload_alert());
         return $this->fetch('add');
     }
 
@@ -148,6 +149,13 @@ class Projectstatic extends Common{
 
     //======
 
+    protected function upload_alert(){
+        return [
+            1=>'请上传该项目我家方案的图片',
+            2=>'请上传该项目图纸文件的图片（非图片文件无法签名合成）',
+            3=>'请上传该项目我家方案的图片'
+        ];
+    }
 
     protected function doc_type(){
         return [

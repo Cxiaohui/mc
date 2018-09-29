@@ -45,6 +45,7 @@ var mc_qiniu = {
                     press.css('width',res.total.percent+'%').html(res.total.percent+'%');
                 },
                 error:function(err){
+                    layer.alert(err);
                     console.log(err);
                 },
                 complete:function(res){

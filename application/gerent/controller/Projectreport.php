@@ -129,6 +129,8 @@ class Projectreport extends Common{
         $this->M->update_data(['id'=>$id],['isdel'=>1]);
         $this->MD->update_data(['p_rep_id'=>$id],['isdel'=>1]);
         (new Projectreportmodify())->update_data(['p_rep_id'=>$id],['isdel'=>1]);
+
+        $this->success('删除成功');
     }
 
     public function opers(){

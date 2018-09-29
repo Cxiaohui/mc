@@ -120,6 +120,8 @@ class Purchase extends Common{
         $this->m->update_data(['id'=>$id],['isdel'=>1]);
         (new Purchasedoc())->update_data(['pu_id'=>$id],['isdel'=>1]);
         (new Purchasedoc())->update_data(['pu_id'=>$id],['isdel'=>1]);
+
+        $this->success('删除成功');
     }
 
     //采购提醒

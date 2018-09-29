@@ -130,7 +130,7 @@ class Projectoffer extends Common{
         $this->M->update_data(['id'=>$id],['isdel'=>1]);
         $this->MD->update_data(['p_offer_id'=>$id],['isdel'=>1]);
         (new Projectoffermodify())->update_data(['p_offer_id'=>$id],['isdel'=>1]);
-
+        $this->success('删除成功');
     }
     // 确认操作在B端进行
     public function opers(){

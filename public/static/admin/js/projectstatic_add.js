@@ -11,7 +11,7 @@ var mc_qiniu = {
         'putExtra':{
             fname: "",//文件原文件名
             params: {},//用来放置自定义变量
-            mimeType: null//["image/png", "image/jpeg", "image/gif"]
+            mimeType: ["image/png", "image/jpeg", "image/gif"]
         },
         'uptoken':'',
         'select':'.filepick'
@@ -42,6 +42,10 @@ var mc_qiniu = {
                     press.css('width',res.total.percent+'%').html(res.total.percent+'%');
                 },
                 error:function(err){
+                    /*if(err.indexOf('file type')>-1){
+                        layer.alert('上传的文件类型有误，请确认后再上传');
+                    }*/
+                    layer.alert(err);
                     console.log(err);
                 },
                 complete:function(res){
