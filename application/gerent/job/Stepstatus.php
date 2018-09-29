@@ -20,11 +20,12 @@ class Stepstatus{
             //mlog::write($job->attempts(),$this->log_file);
             $this->do_job();
             $job->delete();
-            $delay = 24*3600;//一天执行一次
+            //$delay = 24*3600;//一天执行一次
             // 也可以重新发布这个任务
-            $job->release($delay); //$delay为延迟时间
+            //$job->release($delay); //$delay为延迟时间
             mlog::write('success:', $this->log_file);
         } catch (\Exception $e) {
+            $job->delete();
             mlog::write('Error:' . $e->getFile() . '-' . $e->getLine() . PHP_EOL . '-' . $e->getMessage(), $this->log_file);
         }
     }
@@ -41,7 +42,7 @@ class Stepstatus{
             foreach($list as $lt){
                 $times = explode('|', $lt['plan_time']);
                 if(strtotime($times[0])<=$today){
-                    $update = ['realtime'=>$times];
+                    $update = ['realtime'=>$times[0],'realtime1'=>$times[0]];
                     if($lt['status']==0){
                         $update['status'] = 1;
                     }

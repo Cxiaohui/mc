@@ -381,7 +381,9 @@ class Projectstep extends Common{
                   'type'=>$da['type'],
                   'name'=>$dali['name'],
                   'step_sort'=>$k,
-                  'plan_time'=>$dali['time1'].'|'.$dali['time2']
+                  'plan_time'=>$dali['time1'].'|'.$dali['time2'],
+                  'plan_time1'=>$dali['time1'],
+                  'plan_time2'=>$dali['time2'],
               ];
               $step_id = $this->M->save_data($save);
               if(!$step_id){
@@ -400,7 +402,9 @@ class Projectstep extends Common{
                       'type'=>$da['type'],
                       'name'=>$sub['name'],
                       'step_sort'=>$sk,
-                      'plan_time'=>$sub['time1'].'|'.$sub['time1']
+                      'plan_time'=>$sub['time1'].'|'.$sub['time1'],
+                      'plan_time1'=>$dali['time1'],
+                      'plan_time2'=>$dali['time2'],
                   ];
                   $sub_step_id = $this->M->save_data($save);
                   if(!$sub_step_id){

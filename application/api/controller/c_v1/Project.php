@@ -61,7 +61,8 @@ class Project extends Common{
         //$pdoc = new Projectdoc();
         //获取所有主阶段信息,各阶段时间
 
-        $main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
+        //$main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
+        $main_steps = $pstep->get_order_list(['p_id' => $p_id, 'isdel' => 0], [''],'id,type,name,plan_time,realtime');
 
         if (!empty($main_steps)) {
             $main_steps = Steptime::get_mainstep_color($main_steps);
@@ -346,7 +347,9 @@ class Project extends Common{
             'status'=>4,
             'pass_time'=>$this->datetime,
             'uptime'=>$this->datetime,
-            'realtime'=>$times[0].'|'.date('Y-m-d')
+            'realtime'=>$times[0].'|'.date('Y-m-d'),
+            'realtime1'=>$times[0],
+            'realtime2'=>date('Y-m-d')
         ];
         $pstep->update_data(['id'=>$puts['step_id'],'p_id'=>$puts['p_id']],$update);
         //如果有子阶段，则判断子阶段是否全部完成
@@ -356,6 +359,8 @@ class Project extends Common{
                 $step_info = $pstep->get_info($s_w,'id,plan_time');
                 $times = explode('|',$step_info['plan_time']);
                 $update['realtime'] = $times[0].'|'.date('Y-m-d');
+                $update['realtime1'] = $times[0];
+                $update['realtime2'] = date('Y-m-d');
                 $pstep->update_data(['id'=>$step_info['pid'],'p_id'=>$puts['p_id']],$update);
             }
         }

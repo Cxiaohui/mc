@@ -896,3 +896,4 @@ CREATE TABLE `mc_push_news` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资讯推送';
 
 
+update mc_p_steps set plan_time1 = left(plan_time,10),plan_time2=right(plan_time,10),realtime1=left(realtime,10),realtime2=left(realtime,10) where 1=1;

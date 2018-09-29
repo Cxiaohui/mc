@@ -241,6 +241,7 @@ class YunIM
             'tid'=>$tid,
             'tname'=>$gname,
             'icon'=>'',
+            'size'=>(count($members)+1),
             'owner'=>$ower_user,
             'announcement'=>$announcement,
             'intro'=>$intro,
