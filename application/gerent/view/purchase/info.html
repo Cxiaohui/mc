@@ -38,6 +38,7 @@
                 <td>
                     <a href="{:url('Purchase/edit',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
                     <!--<a href="{:url('Pusher/add')}?p_id={$da.p_id}&type=8&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>-->
+                    <a  href="javascript:;" data-href="{:url('Purchase/del',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
                 </td>
             </tr>
             <tr><td colspan="5">

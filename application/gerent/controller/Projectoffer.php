@@ -114,20 +114,25 @@ class Projectoffer extends Common{
     }
 
     public function edit($p_id,$id=0){
-        if(!$p_id || $p_id<=0){
+        if(!$p_id || $p_id<=0 || !$id || $id<=0){
             $this->error('访问错误');
         }
 
         return $this->add($p_id,$id);
     }
 
-    public function del($id=0){
-        if(!$id || $id<=0){
+    //todo 删除是否需要记录到操作日志中？ 20180930
+    public function del($p_id,$id=0){
+        if(!$p_id || $p_id<=0 || !$id || $id<=0){
             $this->error('访问错误');
         }
+        //return 'ok';
+        $this->M->update_data(['id'=>$id],['isdel'=>1]);
+        $this->MD->update_data(['p_offer_id'=>$id],['isdel'=>1]);
+        (new Projectoffermodify())->update_data(['p_offer_id'=>$id],['isdel'=>1]);
 
     }
-    //todo 确认操作在B端进行
+    // 确认操作在B端进行
     public function opers(){
 
         if(!$this->request->isAjax()){

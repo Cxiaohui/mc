@@ -56,7 +56,7 @@
                     {if $stp1.paied==0}
                     <a href="{:url('Pusher/add')}?p_id={$stp1.p_id}&type=2&type_id={$stp1.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
                     {/if}
-
+                    <a href="javascript:;" data-href="{:url('Projectpay/del',['id'=>$stp1.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
                 </td>
             </tr>
             {/foreach}
@@ -92,6 +92,7 @@
                     </a>
                     {if $stp2.paied==0}
                     <a href="{:url('Pusher/add')}?p_id={$stp2.p_id}&type=2&type_id={$stp2.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
+                    <a href="javascript:;" data-href="{:url('Projectpay/del',['id'=>$stp2.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
                     {/if}
                 </td>
             </tr>

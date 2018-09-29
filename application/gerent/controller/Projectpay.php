@@ -44,6 +44,9 @@ class Projectpay extends Common{
         $type2 = $this->M->get_list($w,'*');
         $count = count($type1) + count($type2);
 
+        $js = $this->loadJsCss(array('p:common/common'), 'js', 'admin');
+
+        $this->assign('footjs', $js);
         $this->assign('p_info', $p_info);
         $this->assign('type1', $type1);
         $this->assign('type2', $type2);
@@ -126,7 +129,8 @@ class Projectpay extends Common{
         if(!$id || $id<=0){
             $this->error('访问错误');
         }
-        $info = $this->M->get_info(['id'=>$id,'isdel'=>0],'is,paied');
+        //return 'ok';
+        $info = $this->M->get_info(['id'=>$id,'isdel'=>0],'id,paied');
         if(!$info){
             $this->error('访问错误');
         }

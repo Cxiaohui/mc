@@ -23,10 +23,12 @@
             <tr><td colspan="2">没有找到相关数据</td></tr>
             {else /}
             {foreach name="data" item="da" key="dk"}
-            <tr><td colspan="2">{$da.name}   <a href="{:url('Projectstatic/add',['p_id'=>$p_info.id])}?type={$dk}" class="btn mini btn-primary"><i class="icon-plus-sign"></i>添加展示内容</a>
+            <tr><td colspan="2"><h4>{$da.name}</h4>
+                <a href="{:url('Projectstatic/add',['p_id'=>$p_info.id])}?type={$dk}" class="btn mini btn-primary"><i class="icon-plus-sign"></i>添加展示内容</a>
                 {if $da.id>0}
                 <a href="{:url('Pusher/add')}?p_id={$p_info.id}&type=7&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
                 {/if}
+
             </td></tr>
             {notempty name="da.list"}
             {foreach name="da.list" item="sda"}

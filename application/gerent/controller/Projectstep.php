@@ -386,6 +386,7 @@ class Projectstep extends Common{
                   'plan_time1'=>$dali['time1'],
                   'plan_time2'=>$dali['time2'],
               ];
+              //print_r($save);
               $step_id = $this->M->save_data($save);
               if(!$step_id){
                   continue;
@@ -405,8 +406,8 @@ class Projectstep extends Common{
                       'step_sort'=>$sk,
                       //todo 运行一段时间 后，取消 plan_time 的赋值 20180929
                       'plan_time'=>$sub['time1'].'|'.$sub['time1'],
-                      'plan_time1'=>$dali['time1'],
-                      'plan_time2'=>$dali['time2'],
+                      'plan_time1'=>$sub['time1'],
+                      'plan_time2'=>$sub['time2'],
                   ];
                   $sub_step_id = $this->M->save_data($save);
                   if(!$sub_step_id){

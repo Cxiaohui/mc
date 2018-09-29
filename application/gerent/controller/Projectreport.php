@@ -114,18 +114,21 @@ class Projectreport extends Common{
     }
 
     public function edit($p_id,$id=0){
-        if(!$p_id || $p_id<=0){
+        if(!$p_id || $p_id<=0 || !$id || $id<=0){
             $this->error('访问错误');
         }
 
         return $this->add($p_id,$id);
     }
 
-    public function del($id=0){
-        if(!$id || $id<=0){
+    public function del($p_id,$id=0){
+        if(!$p_id || $p_id<=0 || !$id || $id<=0){
             $this->error('访问错误');
         }
-
+        //return 'ok';
+        $this->M->update_data(['id'=>$id],['isdel'=>1]);
+        $this->MD->update_data(['p_rep_id'=>$id],['isdel'=>1]);
+        (new Projectreportmodify())->update_data(['p_rep_id'=>$id],['isdel'=>1]);
     }
 
     public function opers(){
