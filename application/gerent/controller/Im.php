@@ -32,7 +32,7 @@ class Im extends Common{
         $data = $page = $projects = [];
         if($count>0){
             $page = $this->_pagenav($count);
-            $field = 'id,p_id,tid,tname,size';
+            $field = 'id,p_id,tid,tname,size,createtime';
             $data = $this->m->get_order_list($where,$field,['updatetime'=>'desc'],$page['offset'].','.$page['limit']);
             $p_ids = array2to1($data,'p_id');
             if(!empty($p_ids)){
@@ -98,6 +98,11 @@ class Im extends Common{
         if($im_info['tid']){
             $res = (new YunIM())->imobj()->removeGroup($im_info['tid'],$im_info['owner']);
             if($res['code']!=200){
+                \extend\Mylog::write([
+                    'mesg'=>'解散群失败',
+                    'res'=>$res,
+                    'info'=>$im_info
+                ],'remove_group');
                 $this->error('解散群失败：'.json_encode($res));
             }
         }

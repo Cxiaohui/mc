@@ -13,6 +13,8 @@ use app\common\model\Approle,
     app\gerent\model\Projectstep as mPJS,
     app\gerent\model\Projectmark as mPJM,
     app\common\model\Projectlog,
+    app\common\model\Imgroups,
+    app\common\library\YunIM,
     app\common\model\Projectadmin;
 class Project extends Common{
     /**
@@ -156,6 +158,22 @@ class Project extends Common{
         }
         $res = $this->M->update_data($w,['uptime'=>$this->datetime,'isdel'=>1]);
         if($res){
+            //解散群
+            $groups = (new Imgroups())->get_list(['p_id'=>$id],'id,p_id,tid,owner',0);
+            if(!empty($groups)){
+                $yim = new YunIM();
+                foreach($groups as $gp){
+                    $res = $yim->imobj()->removeGroup($gp['tid'],$gp['owner']);
+                    if($res['code']!=200){
+                        \extend\Mylog::write([
+                            'mesg'=>'解散群失败',
+                            'res'=>$res,
+                            'info'=>$gp
+                        ],'remove_group');
+                    }
+                }
+
+            }
             $this->success('删除成功');
         }
         $this->error('删除失败');

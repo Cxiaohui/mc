@@ -21,6 +21,7 @@
                 <th>群名称</th>
                 <th>相关项目</th>
                 <th>成员数</th>
+                <th>创建时间</th>
                 <th>操作</th>
             </tr>
             {empty name="data"}
@@ -38,6 +39,7 @@
                     {/notempty}
                     </a></td>
                 <td>{$da.size}</td>
+                <td>{$da.createtime}</td>
                 <td>
                     <a href="{:url('Im/edit',['id'=>$da.id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
                     <a href="javascript:;" data-url="{:url('Im/sendmsg',['id'=>$da.id])}" class="btn mini openlayerwin"><i class="icon-comment"></i>发送消息</a>
