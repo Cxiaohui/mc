@@ -18,13 +18,72 @@ class Sysdepart extends Common{
      * @var mTeam
      */
     protected $t_model;
+    /**
+     * @var Company
+     */
+    protected $comp;
 
     public function _initialize($check_login=true)
     {
         parent::_initialize($check_login);
         $this->admin_model = new mSystable();
         $this->t_model = new mTeam();
+        $this->comp = new Company();
     }
+
+    //==================公司=
+
+    public function comp_index(){
+        $where = '1=1';
+
+        $count = $this->comp->get_count($where);
+        $data = $page = [];
+        if($count>0){
+            $data = $this->comp->get_list($where,'*',0);
+        }
+
+        $js = $this->loadJsCss(array('p:common/common', 'department'), 'js', 'admin');
+        //$this->assign('pagenav',$page);
+        $this->assign('footjs', $js);
+        $this->assign('data',$data);
+        return $this->fetch('comp_index');
+    }
+
+    public function comp_add($id=0){
+        if($this->request->isPost()){
+            return $this->save_comp_data();
+        }
+        $info = [];
+        if($id>0){
+            $info = $this->comp->get_info(['id'=>$id]);
+            if(!$info){
+                $this->error('该公司信息不存在');
+            }
+        }
+
+        $js = $this->loadJsCss(array('p:common/common', 'department'), 'js', 'admin');
+        $this->assign('footjs', $js);
+        $this->assign('info', $info);
+        //$this->assign('company', (new Company())->get_list($cpw,'id,name',0));
+        return $this->fetch('comp_add');
+    }
+
+    public function comp_edit($id=0){
+        if(!$id || $id<=0){
+            $this->jsalert('访问错误',7);
+        }
+        return $this->comp_add($id);
+
+    }
+
+    public function comp_del($id=0){
+        if(!$id || $id<=0){
+            $this->error('访问错误');
+        }
+        $this->error('建议不要删除公司信息，如有需要请变更其他信息');
+    }
+
+    //============部门
 
     public function index(){
         $where = ['isdel'=>0];
@@ -41,7 +100,7 @@ class Sysdepart extends Common{
         if(session('cp_power_tag')!=1){
             $cpw = ['id'=>session('cpid')];
         }
-        $companys = (new Company())->get_list($cpw,'id,name',0);
+        $companys = $this->comp->get_list($cpw,'id,name',0);
         foreach($companys as $k=>$cpy){
 
             foreach($data as $dk => $da){
@@ -102,7 +161,7 @@ class Sysdepart extends Common{
         $this->error('删除失败');
     }
 
-    //===========================
+    //================团队===========
 
     public function team_index(){
         $where = [];
@@ -183,6 +242,15 @@ class Sysdepart extends Common{
         $this->error('保存失败');
     }
 
+    protected function save_comp_data(){
+        $post = $this->request->post();
+
+        $res = $this->comp->save_data($post);
+        if($res){
+            $this->jsalert('保存公司资料成功',3);
+        }
+        $this->error('保存失败');
+    }
 
     protected function save_depart_data(){
         $post = $this->request->post();

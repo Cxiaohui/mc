@@ -100,7 +100,7 @@ class Projectpay extends Common{
         }
         $type1 = $type2 = [];
         if($act = 'edit'){
-            $w = ['p_id'=>$p_id,'p_type'=>1];
+            $w = ['p_id'=>$p_id,'p_type'=>1,'isdel'=>0];
             $type1 = $this->M->get_list($w,'id,name,payable,payable_time');
             $w['p_type'] = 2;
             $type2 = $this->M->get_list($w,'id,name,payable,payable_time');

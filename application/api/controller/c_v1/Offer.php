@@ -136,7 +136,7 @@ class Offer extends Common{
         //$p_info = (new Pject())->get_info(['id'=>$p_id],'id,manager_user_id,desgin_user_id');
         $poffer = new Projectoffer();
         $w = ['id'=>$id,'p_id'=>$p_id];
-        $pr_info = $poffer->get_info($w,'id,name');
+        $pr_info = $poffer->get_info($w,'id,name,status');
         if(!$pr_info){
             return $this->response(['code' => 201, 'msg' => '该项目无法访问.']);
         }

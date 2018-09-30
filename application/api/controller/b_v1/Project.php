@@ -248,7 +248,7 @@ class Project extends Common{
         $log_mesg = '[上传]'.$step_info['name'].'现场照片';
         if($message){
             $step_update = [
-                'status'=>2,
+                //'status'=>2,//留言不变更状态20180930
                 'b_user_id'=>$this->user_id,
                 'b_user_name'=>$this->user['name'],
                 'b_user_mesg'=>$message,

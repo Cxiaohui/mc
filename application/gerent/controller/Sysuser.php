@@ -11,6 +11,8 @@ use extend\Str,
     //app\cool_admin\validate\Admin as vAdmin,
     app\gerent\model\Company,
     app\gerent\model\Teams,
+    app\gerent\model\Project,
+    app\common\model\Projectadmin,
     app\common\library\YunIM,
     app\gerent\model\Systable as mSystable;
 
@@ -24,6 +26,8 @@ class Sysuser extends Common{
     {
         parent::_initialize($check_login);
         $this->admin_model = new mSystable();
+        $this->pm = new Project();
+        $this->apm = new Projectadmin();
     }
 
     public function index(){
@@ -35,6 +39,9 @@ class Sysuser extends Common{
             $page = $this->_pagenav($count);
             $field = 'id,log,role,name,sex,is_work,status,mobile,allow_lg_b,b_power_tag,head_pic,team_id,department,create_time,lgtime,post';
             $data = $this->admin_model->get_admin_list($sop['w'],$field,$page['offset'].','.$page['limit']);
+            foreach($data as $k=>$da){
+                $data[$k]['projects'] = $this->getadminprojects($da['id']);
+            }
         }
         //print_r($page);
         $departs = $this->admin_model->get_depart_list(['isdel'=>0],'id,name',0,true);
@@ -53,6 +60,16 @@ class Sysuser extends Common{
         $this->assign('flink',$this->filterLink($sop['p']['f'],$departs));
         $this->assign('fselect',$this->filterSelect($sop['p']['sok'],['mobile'=>'手机号码','name'=>'姓名','id'=>'序号']));
         return $this->fetch('index');
+    }
+
+    protected function getadminprojects($user_id){
+        $pids = $this->apm->get_list(['b_user_id'=>$user_id],'p_id');
+        if(empty($pids)){
+            return [];
+        }
+        $pids = array2to1($pids,'p_id');
+        //print_r($pids);
+        return $this->pm->get_list(['id'=>['in',$pids],'isdel'=>0],'id,name');
     }
 
     protected function dosearch(){

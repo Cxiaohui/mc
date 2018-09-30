@@ -11,8 +11,6 @@ $(function () {
         }
         layeriframe(url, '部门资料', 400, 300);
     });
-
-    //保存检查
     $('#savedata').on('click',function(){
         var cpid = $('select[name="cpid"]'),
             name = $('input[name="name"]');
@@ -24,6 +22,27 @@ $(function () {
 
         if(!checkInputEmpty(name)){
             pageMesg.show('请填写部门名称',0);
+            name.focus();
+            return false;
+        }
+        $('#postform').submit();
+    });
+
+    $('a.openlayerwin2').on('click',function(){
+        var url = $(this).attr('data-url');
+        if(!url){
+            return false;
+        }
+        layeriframe(url, '公司资料', 400, 300);
+    });
+
+    //保存检查
+    $('#savedata2').on('click',function(){
+        var name = $('input[name="name"]');
+
+
+        if(!checkInputEmpty(name)){
+            pageMesg.show('请填写公司名称',0);
             name.focus();
             return false;
         }

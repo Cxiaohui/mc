@@ -126,7 +126,7 @@ class Offer extends Common{
         $id = input('post.id',0,'int');
         $p_id = input('post.p_id',0,'int');
         $sign_img = input('post.sign_img','','trim');
-        if (!$id || $id <= 0 || !$p_id || $p_id <= 0 || !$sign_img) {
+        if (!$id || $id <= 0 || !$p_id || $p_id <= 0 ) {//|| !$sign_img
             return $this->response(['code' => 201, 'msg' => '参数有误']);
         }
         $this->_check_project_power($p_id);
@@ -135,7 +135,7 @@ class Offer extends Common{
         $update = [];
         $poffer = new Projectoffer();
         $w = ['id'=>$id,'p_id'=>$p_id];
-        $pr_info = $poffer->get_info($w,'id,name');
+        $pr_info = $poffer->get_info($w,'id,name,status');
         if(!$pr_info){
             return $this->response(['code' => 201, 'msg' => '该项目无法访问.']);
         }

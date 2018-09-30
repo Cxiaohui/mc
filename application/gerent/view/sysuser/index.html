@@ -50,6 +50,7 @@
 
                 <th>后台登录/角色</th>
                 <th>B端登录</th>
+                <th style="width:100px;">负责的项目</th>
                 <th>最近登录时间</th>
                 <th>操作</th>
             </tr>
@@ -75,6 +76,14 @@
                 <td>{if $da['allow_lg_b']==1}<label class="label label-success">允许登录</label> {else /}禁止{/if}
 
                     <br/>{$b_powers[$da['b_power_tag']]}</td>
+                <td>
+                    {empty name="da.projects"}无
+                    {else/}
+                    {foreach name="da.projects" item="prot"}
+                    <p><a href="{:url('project/info',['id'=>$prot.id])}" target="_blank">{$prot.name}</a> </p>
+                    {/foreach}
+                    {/empty}
+                </td>
                 <td>{if $da.lgtime>0}{$da.lgtime|date="Y-m-d H:i",###}{/if}</td>
                 <td>
                     <a href="{:url('Sysuser/edit',array('id'=>$da['id']))}" class="btn mini"><i class="icon-info-sign"></i>资料详情</a>
