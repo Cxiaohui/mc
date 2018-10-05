@@ -42,10 +42,11 @@ var mc_qiniu = {
                     press.css('width',res.total.percent+'%').html(res.total.percent+'%');
                 },
                 error:function(err){
-                    /*if(err.indexOf('file type')>-1){
+                    if(err.message.indexOf('file type doesn\'t match')>-1){
                         layer.alert('上传的文件类型有误，请确认后再上传');
-                    }*/
-                    layer.alert(err);
+                    }else{
+                        layer.alert(err.message);
+                    }
                     console.log(err);
                 },
                 complete:function(res){

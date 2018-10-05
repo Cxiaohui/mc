@@ -18,7 +18,7 @@ class Mydocs extends Common
         parent::__construct($this->user_type);
         //$this->M = new MN();
     }
-
+    //todo 看自己的所有项目文件 - 20181006
     public function list_get()
     {
         $p_id = input('get.p_id',0,'int');

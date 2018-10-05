@@ -331,8 +331,8 @@ class YunIM
         return array_unique($members);
     }
 
-    public function sendTestMsg($from,$to,$type,$message){
-        return $this->imobj()->sendMsg($from,$type,$to,0,['msg'=>$message]);
+    public function sendTestMsg($from,$to,$type,$message,$option=array("push"=>false,"roam"=>true,"history"=>false,"sendersync"=>true, "route"=>false),$pushcontent=''){
+        return $this->imobj()->sendMsg($from,$type,$to,0,['msg'=>$message],$option,$pushcontent);
     }
 
     public function queryGroup($tids){
@@ -461,6 +461,7 @@ class YunIM
     {
         return strtolower($type) . '_' . $user_id;
     }
+
     public function imobj()
     {
         if (is_null($this->im_obj)) {

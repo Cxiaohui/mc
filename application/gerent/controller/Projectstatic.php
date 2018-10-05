@@ -162,7 +162,7 @@ class Projectstatic extends Common{
             $info['docs'] = $this->M->get_list(['p_static_id'=>$id,'isdel'=>0],'*',0);
         }
         //print_r($info);
-
+        $policy = ['mimeLimit'=>''];
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
         $js = $this->loadJsCss(array(
             'p:common/common',
@@ -211,9 +211,9 @@ class Projectstatic extends Common{
 
     protected function upload_alert(){
         return [
-            1=>'请上传该项目我家方案的图片',
-            2=>'请上传该项目图纸文件的图片（非图片文件无法签名合成）',
-            3=>'请上传该项目我家主材的图片'
+            1=>'请上传该项目我家方案文档（PDF、WORD、EXCEL）',
+            2=>'请上传该项目施工图片（非图片文件无法签名合成）',
+            3=>'请上传该项目我家主材文档（PDF、WORD、EXCEL）'
         ];
     }
 

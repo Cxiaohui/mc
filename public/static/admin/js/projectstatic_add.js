@@ -2,6 +2,10 @@
  * Created by chenxh on 2018/7/8.
  */
 var uploadeds = [];
+var mime_type = null;
+if(type==2){
+    mime_type = ["image/png", "image/jpeg", "image/gif"];
+}
 var mc_qiniu = {
     'config':{
         'base_config':{
@@ -11,7 +15,7 @@ var mc_qiniu = {
         'putExtra':{
             fname: "",//文件原文件名
             params: {},//用来放置自定义变量
-            mimeType: ["image/png", "image/jpeg", "image/gif"]
+            mimeType: mime_type
         },
         'uptoken':'',
         'select':'.filepick'
@@ -42,10 +46,13 @@ var mc_qiniu = {
                     press.css('width',res.total.percent+'%').html(res.total.percent+'%');
                 },
                 error:function(err){
-                    /*if(err.indexOf('file type')>-1){
+                    //console.log(err.message);
+                    if(err.message.indexOf('file type doesn\'t match')>-1){
                         layer.alert('上传的文件类型有误，请确认后再上传');
-                    }*/
-                    layer.alert(err);
+                    }else{
+                        layer.alert(err.message);
+                    }
+                    //layer.alert(err);
                     console.log(err);
                 },
                 complete:function(res){

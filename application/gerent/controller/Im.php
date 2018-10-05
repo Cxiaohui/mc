@@ -236,9 +236,10 @@ class Im extends Common{
         if(!$info || !$info['tid']){
             $this->error('该群数据有误，请检查');
         }
+        $option = ["push"=>true,"roam"=>true,"history"=>false,"sendersync"=>true, "route"=>false];
+        $pushcontent = $message;
 
-
-        $res = (new YunIM())->sendTestMsg($info['owner'],$info['tid'],1,$message);
+        $res = (new YunIM())->sendTestMsg($info['owner'],$info['tid'],1,$message,$option,$pushcontent);
         if($res['code']==200){
             $this->jsalert('发送消息成功',3);
         }

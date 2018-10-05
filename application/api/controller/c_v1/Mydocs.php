@@ -33,6 +33,8 @@ class Mydocs extends Common
         }
         $my_pids = array2to1($my_ps, 'id');
         $where = ' p_id in (' . implode(',',$my_pids) . ')';*/
+        //todo 看自己的所有项目文件 - 20181006
+
         $where = ' p_id='.$p_id;
         //$limit = ($page-1)*$pagesize.','.$pagesize;
         $limit = 0;

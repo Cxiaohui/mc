@@ -211,7 +211,7 @@ class Project extends Common{
             'docs'=>$docs,
             'project_log'=>$plogs,
             //加上拍照说明文章的链接
-            'photo_desn_url'=>''
+            'photo_desn_url'=>$this->h5_base_url().'DetailsPage.html?id=20'
         ];
         if($primary_doc){
             $data['primary_doc'] = $primary_doc;

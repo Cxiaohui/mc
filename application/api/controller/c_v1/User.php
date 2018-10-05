@@ -23,8 +23,10 @@ class User extends Common{
 
         return $this -> response(['code' => 200, 'msg' => '成功','data'=>[
             'info'=>$info,
-            'ysbz_url'=>$this->h5_base_url().'AcceptanceList.html?type=ysbz_list',
-            'sgbz_url'=>$this->h5_base_url().'AcceptanceList.html?type=sgbz_list',
+            //'ysbz_url'=>$this->h5_base_url().'AcceptanceList.html?type=ysbz_list',
+            'ysbz_url'=>$this->h5_base_url().'DetailsPage.html?id=19',
+            //'sgbz_url'=>$this->h5_base_url().'AcceptanceList.html?type=sgbz_list',
+            'sgbz_url'=>$this->h5_base_url().'DetailsPage.html?id=18',
             'zxbz_url'=>$this->h5_base_url().'DecorateSecurity.html',
             'kfzx_url'=>$this->h5_base_url().'ConsumerLine.html',
         ]]);
