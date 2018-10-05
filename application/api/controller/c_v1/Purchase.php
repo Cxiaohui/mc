@@ -17,6 +17,8 @@ use app\common\model\Project as Pject,
 
 class Purchase extends Common{
 
+    protected $status = [0=>'待确认',1=>'等待修改',2=>'已确认'];
+
     public function __construct($user_type='')
     {
         parent::__construct($this->user_type);
@@ -38,13 +40,13 @@ class Purchase extends Common{
         }
         $purchase = new mPure();
 
-        $list = $purchase->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status');
+        $list = $purchase->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status',0);
         if(empty($list)){
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
-        $status = [0=>'待确认',1=>'等待修改',2=>'已确认'];
+
         foreach($list as $k=>$v){
-            $list[$k]['status_name'] = $status[$v['status']];
+            $list[$k]['status_name'] = $this->status[$v['status']];
         }
         return $this->response([
             'code'=>200,
@@ -78,8 +80,8 @@ class Purchase extends Common{
         if(!$rep_info){
             return $this->response(['code' => 201, 'msg' => '该采购信息不存在']);
         }
-        $status = [0=>'待确认',1=>'等待修改',2=>'已确认'];
-        $rep_info['status_name'] = $status[$rep_info['status']];
+
+        $rep_info['status_name'] = $this->status[$rep_info['status']];
         /*$checks = [];
         if($rep_info['checktime1']>0){
             $checks[] = ['title'=>'设计师已确认','isok'=>1,'check_date'=>$rep_info['checktime1'],'content'=>''];

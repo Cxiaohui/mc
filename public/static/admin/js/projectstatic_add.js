@@ -108,12 +108,12 @@ $(function(){
         if(is_click){
             return false;
         }
-        var type = $('#type');
-        if(!checkSelectEmpty(type)){
-            formValid.showErr(type,'请选择展示类型');
+        var name = $('#name');
+        if(!checkInputEmpty(name)){
+            formValid.showErr(name,'请填写名称');
             return false;
         }else{
-            formValid.showSuccess(type);
+            formValid.showSuccess(name);
         }
         $('.p_doc').each(function(i){
             var _this = $(this);
@@ -134,7 +134,7 @@ $(function(){
         }
 
         is_click = true;
-        $.post(location.href,{'type':type.val(),'upfiles':uploadeds},function(d){
+        $.post(location.href,{'type':$('#type').val(),'name':name.val(),'remark':$('#remark').val(),'upfiles':uploadeds},function(d){
             console.log(d);
             if(d.err==0){
                 layermsg('保存成功',1);

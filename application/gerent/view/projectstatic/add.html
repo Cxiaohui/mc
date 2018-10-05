@@ -5,7 +5,7 @@
             <div class="span12">
                 <div class="primary-head">
 
-                    <div class="span3"><h3 class="page-header">项目展示内容</h3></div>
+                    <div class="span3"><h3 class="page-header">[{$p_info.name}]{$doc_type[$type]}</h3></div>
                     <div class="span9">
                         <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
                     </div>
@@ -14,15 +14,15 @@
         </div>
         <table class="stat-table responsive table table-stats table-striped table-bordered">
             <tbody>
-            <tr><th>{$p_info.name}</th></tr>
+            <input type="hidden" id="type" value="{$type}"/>
             <tr>
-                <th>展示类型</th>
+                <th>名称</th>
+                <td><input type="text" id="name" value="{if $info}{$info.name}{/if}"/> </td>
+            </tr>
+            <tr>
+                <th>备注说明</th>
                 <td>
-                    <select id="type">
-                        {foreach name="doc_type" item="dy" key="dk"}
-                        <option value="{$dk}"{if $type==$dk} selected{/if}>{$dy}</option>
-                        {/foreach}
-                    </select>
+                    <textarea class="span8" id="remark" rows="4" maxlength="200" placeholder="备注说明，200字内">{if $info}{$info.remark}{/if}</textarea>
                 </td>
             </tr>
 

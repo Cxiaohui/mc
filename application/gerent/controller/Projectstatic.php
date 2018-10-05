@@ -8,6 +8,7 @@
 namespace app\gerent\controller;
 use app\gerent\model\Project,
     app\common\library\Plog,
+    app\common\model\Projectlog,
     app\common\library\Notice as LN,
     app\common\model\Projectstatic as pstatic,
     app\gerent\model\Projectstaticdocs as mPS;
@@ -18,10 +19,15 @@ class Projectstatic extends Common{
      * @var mPS
      */
     protected $M;
+    /**
+     * @var pstatic
+     */
+    protected $ps;
     public function _initialize($check_login=true)
     {
         parent::_initialize($check_login);
         $this->M = new mPS();
+        $this->ps = new pstatic();
     }
 
     public function index(){
@@ -29,6 +35,49 @@ class Projectstatic extends Common{
     }
 
     public function info($p_id=0){
+        if(!$p_id || $p_id<=0){
+            $this->error('访问错误');
+        }
+
+        $p_w = ['id'=>$p_id,'isdel'=>0];
+        if(session('cp_power_tag')!=1){
+            $p_w['cpid'] = session('cpid');
+        }
+        $p_info = (new Project())->get_info($p_w,'id,name,status,type');
+        if(!$p_info){
+            $this->error('请先完成项目基本信息');
+        }
+        $log_type = $this->log_type();
+        $type = input('get.type',1,'int');
+        $where = ['p_id'=>$p_id,'type'=>$type,'isdel'=>0];
+        $pstatics = $this->ps->get_list($where,'id,p_id,name,type,status,addtime');
+        if(!empty($pstatics)){
+            $Projectlog = new Projectlog();
+            foreach($pstatics as $k=>$pst){
+                $pstatics[$k]['docs'] = $this->M->get_list(['p_static_id'=>$pst['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime');
+                $pstatics[$k]['doc_count'] = count($pstatics[$k]['docs'] );
+                //5效果图，6cad图，7主材
+                $pstatics[$k]['logs'] = $Projectlog->get_list(
+                    ['p_id'=>$p_id,'p_step_id'=>$pst['id'],'p_step_type'=>$log_type[$type]],
+                    'id,oper_user_name,oper_desc,addtime');
+            }
+        }
+
+
+        $js = $this->loadJsCss(array('p:common/common'), 'js', 'admin');
+
+        $this->assign('footjs', $js);
+        //$this->assign('img_ext', config('img_ext'));
+        $this->assign('p_info', $p_info);
+        $this->assign('data',$pstatics);
+        $this->assign('type',$type);
+        $this->assign('qn_host', config('qiniu.host'));
+        $this->assign('status',$this->status());
+        $this->assign('doc_type',$this->doc_type());
+        return $this->fetch('info');
+    }
+
+    public function info_bak($p_id=0){
         if(!$p_id || $p_id<=0){
             $this->error('访问错误');
         }
@@ -82,19 +131,18 @@ class Projectstatic extends Common{
         $this->assign('p_info', $p_info);
         $this->assign('data',$list);
         $this->assign('doc_type',$this->doc_type());
-        return $this->fetch('info');
+        return $this->fetch('info2');
     }
 
-    public function add($p_id=0,$id=0){
+    public function add($id=0,$p_id=0){
         if($this->request->isAjax()){
-
             return $this->save_data($p_id,$id);
         }
 
         if(!$p_id || $p_id<=0){
             $this->error('访问错误');
         }
-        $type = input('get.type',0,'int');
+
         $p_w = ['id'=>$p_id,'isdel'=>0];
         if(session('cp_power_tag')!=1){
             $p_w['cpid'] = session('cpid');
@@ -103,15 +151,25 @@ class Projectstatic extends Common{
         if(!$p_info){
             $this->error('请先完成项目基本信息');
         }
+        $type = input('get.type',1,'int');
         $info = [];
 
         if($id>0){
-
+            $info = $this->ps->get_info(['id'=>$id,'isdel'=>0]);
+            if(!$info){
+                $this->error('该信息不存在');
+            }
+            $info['docs'] = $this->M->get_list(['p_static_id'=>$id,'isdel'=>0],'*',0);
         }
+        //print_r($info);
 
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
-        $js = $this->loadJsCss(array('p:common/common',
-            'https://unpkg.com/qiniu-js@2/dist/qiniu.min.js','p:md5/md5','projectstatic_add'), 'js', 'admin');
+        $js = $this->loadJsCss(array(
+            'p:common/common',
+            'https://unpkg.com/qiniu-js@2/dist/qiniu.min.js',
+            'p:md5/md5','projectstatic_add'
+        ), 'js', 'admin');
+
         //print_r($cates);
         $this->assign('footjs', $js);
         $this->assign('uptoken', $uptoken);
@@ -120,25 +178,27 @@ class Projectstatic extends Common{
         $this->assign('p_id', $p_id);
         $this->assign('p_info', $p_info);
         $this->assign('type', $type);
+        $this->assign('qn_host', config('qiniu.host'));
+        $this->assign('img_ext', config('img_ext'));
         $this->assign('doc_type',$this->doc_type());
         $this->assign('upload_alert',$this->upload_alert());
         return $this->fetch('add');
     }
 
-    public function edit($id=0){
-        if(!$id || $id<=0){
+    public function edit($id=0,$p_id=0){
+        if(!$id || $id<=0 || !$p_id || $p_id<=0){
             $this->error('访问错误');
         }
 
-        return $this->add($id);
+        return $this->add($id,$p_id);
     }
 
     public function del($id=0){
         if(!$id || $id<=0){
             $this->error('访问错误');
         }
-
-        $res = $this->M->update_data(['id'=>$id],['isdel'=>1]);
+        $this->ps->update_data(['id'=>$id],['isdel'=>1]);
+        $res = $this->M->update_data(['p_static_id'=>$id],['isdel'=>1]);
         if($res){
             $this->success('删除成功');
         }
@@ -160,8 +220,23 @@ class Projectstatic extends Common{
     protected function doc_type(){
         return [
             1=>'项目方案',
-            2=>'项目图纸',
+            2=>'项目施工图',
             3=>'项目主材'
+        ];
+    }
+    protected function status(){
+        return [
+            0=>'待客户确认',
+            1=>'客户驳回',
+            2=>'客户已确认'
+        ];
+    }
+    //5方案，6施工图，7主材
+    protected function log_type(){
+        return [
+            1=>'5',
+            2=>'6',
+            3=>'7'
         ];
     }
     // 新增完数据后，mc_project_static表中也需要有相应的数据
@@ -171,11 +246,12 @@ class Projectstatic extends Common{
         if(!$p_id || $p_id<=0){
             return ['err'=>1,'mesg'=>'数据丢失'];
         }
-        $type = input('post.type',0,'int');
-
+        $post['type'] = input('post.type',0,'int');
+        $post['name'] = input('post.name','','trim');
+        $post['remark'] = input('post.remark','','trim');
         $docs = input('post.upfiles/a',[]);
 
-        if(!$type){
+        if(!$post['type'] || !in_array($post['type'],[1,2,3]) || !$post['name']){
             return ['err'=>1,'mesg'=>'数据丢失.'];
         }
         if($id==0){
@@ -183,55 +259,31 @@ class Projectstatic extends Common{
                 return ['err'=>1,'mesg'=>'数据丢失.'];
             }
         }
-        $pstatic = new pstatic();
-        $types = $this->doc_type();
-        $w = ['p_id'=>$p_id,'type'=>$type];
-        $save_data = [
-            'name'=>$types[$type],
-            'status'=>0,
-            'uptime'=>$this->datetime
-        ];
-        $res = true;
-        if($pstatic->get_count($w)){
-            $pstatic->update_data($w,$save_data);
-        }else{
-            $save_data['p_id'] = $p_id;
-            $save_data['type'] = $type;
-            $save_data['addtime'] = $type;
-            $res = $pstatic->add_data($save_data,true);
 
-            //add log
-            //5效果图，6cad图，7主材
-            if($res){
-                Plog::add_one($p_id,$res,($type+4),['type'=>1,'id'=>session('user_id'),'name'=>session('name')],'添加'.$types[$type]);
-            }
-            
-        }
-        if(!$res){
-            return ['err'=>1,'mesg'=>'保存失败.'];
-        }
-
-        /*$log_tag = '[添加]';
+        //有更新就重置状态
+        $post['status'] = 0;
+        $log_tag = '[添加]';
         if($id>0){
             $log_tag = '[编辑]';
-            $this->M->update_data(['id'=>$id,'p_id'=>$p_id],$post);
+            $this->ps->update_data(['id'=>$id,'p_id'=>$p_id],$post);
         }else{
             $post['p_id'] = $p_id;
             $post['addtime'] = $this->datetime;
-            $id = $this->M->add_data($post,true);
+            $id = $this->ps->add_data($post,true);
         }
 
         if(!$id){
             return ['err'=>1,'mesg'=>'保存资料失败.'];
-        }*/
+        }
 
         //docs
         if(!empty($docs)){
             $inserts = [];
             foreach($docs as $dc){
                 $inserts[] = [
+                    'p_static_id'=>$id,
                     'p_id'=>$p_id,
-                    'type'=>$type,
+                    'type'=>$post['type'],
                     //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                     'file_type'=>$dc['ext'],
                     'file_name'=>$dc['filename'],
@@ -245,13 +297,15 @@ class Projectstatic extends Common{
                 $this->M->insert_all($inserts);
             }
         }
-
+        $doc_type = $this->doc_type();
+        $log_type = $this->log_type();
+        Plog::add_one($p_id,$id,$log_type[$post['type']],['type'=>1,'id'=>session('user_id'),'name'=>session('name')],$log_tag.$doc_type[$post['type']]);
 
         //成功后通知客户
-        $this->send_notice($p_id,$id,$type,$types[$type].'确认提醒','添加了'.$types[$type]);
+        $this->send_notice($p_id,$id,$post['type'],$doc_type[$post['type']].'确认提醒','添加了'.$doc_type[$post['type']]);
 
 
-        return ['err'=>0,'mesg'=>'success','url'=>url('Projectstatic/info',['p_id'=>$p_id])];
+        return ['err'=>0,'mesg'=>'success','url'=>url('Projectstatic/info',['p_id'=>$p_id]).'?type='.$post['type']];
     }
 
     protected function send_notice($p_id,$id,$type,$title,$content){

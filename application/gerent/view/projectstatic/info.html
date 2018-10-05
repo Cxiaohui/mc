@@ -4,57 +4,66 @@
             <div class="span12">
                 <div class="primary-head">
 
-                    <div class="span6"><h3 class="page-header">[{$p_info.name}]项目展示内容列表</h3></div>
+                    <div class="span6"><h3 class="page-header">[{$p_info.name}]{$doc_type[$type]}列表</h3></div>
                     <div class="span6">
                         <a href="javascript:history.back();" class="btn pull-right"><i class="icon-reply"></i> 返回</a>
-                        <!--<a href="{:url('Projectstatic/add',['p_id'=>$p_info.id])}" class="btn btn-primary pull-right"><i class="icon-plus"></i>添加新内容</a>-->
+                        <a href="{:url('Projectstatic/add',['p_id'=>$p_info.id])}?type={$type}" class="btn btn-primary pull-right"><i class="icon-plus"></i>添加{$doc_type[$type]}</a>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div>{foreach name="doc_type" item="dtype" key="dk"}
+            <a href="{:url('Projectstatic/info',['p_id'=>$p_info.id])}?type={$dk}" class="btn {if $type!=$dk}btn-primary{/if}">{$dtype}</a>
+            {/foreach}
+        </div>
         <table class="stat-table responsive table table-stats table-striped table-bordered">
             <tbody>
             <tr>
                 <th>名称</th>
+                <th>状态</th>
+                <th>文档数</th>
+                <th>添加时间</th>
                 <th>操作</th>
             </tr>
             {empty name="data"}
-            <tr><td colspan="2">没有找到相关数据</td></tr>
+            <tr><td colspan="5">没有找到相关数据</td></tr>
             {else /}
-            {foreach name="data" item="da" key="dk"}
-            <tr><td colspan="2"><h4>{$da.name}</h4>
-                <a href="{:url('Projectstatic/add',['p_id'=>$p_info.id])}?type={$dk}" class="btn mini btn-primary"><i class="icon-plus-sign"></i>添加展示内容</a>
-                {if $da.id>0}
-                <a href="{:url('Pusher/add')}?p_id={$p_info.id}&type=7&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>
-                {/if}
-
-            </td></tr>
-            {notempty name="da.list"}
-            {foreach name="da.list" item="sda"}
+            {foreach name="data" item="da"}
             <tr>
-                <td>{if in_array($sda.file_type,$img_ext)}
-                    <img src="{$sda.file_url}" style="height: 80px"/>
-                    {/if}
-                    <a href="{$sda.file_url}" target="_blank"> {$sda.file_name}</a>
-                </td>
+                <td><i class="icon-circle"></i> {$da.name}</td>
+                <td>{$status[$da.status]}</td>
+                <td>{$da.doc_count}</td>
+                <td>{$da.addtime}</td>
                 <td>
-
-                    <!--<a href="{:url('Projectstatic/edit',['id'=>$sda.id,'p_id'=>$sda.p_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>-->
-                    <a  href="javascript:;" data-href="{:url('Projectstatic/del',['id'=>$sda.id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
+                    <a href="{:url('Projectstatic/edit',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini"><i class="icon-edit"></i>编辑</a>
+                    <!--<a href="{:url('Pusher/add')}?p_id={$da.p_id}&type=8&type_id={$da.id}" class="btn mini"><i class="icon-bell-alt"></i> 提醒设置</a>-->
+                    <a  href="javascript:;" data-href="{:url('Projectstatic/del',['id'=>$da.id,'p_id'=>$da.p_id])}" class="btn mini" onclick="deldata(this);"><i class="icon-trash"></i>删除</a>
                 </td>
             </tr>
-            {/foreach}
+            <tr><td colspan="5">
+                {notempty name="da.docs"}
+                {foreach name="da.docs" item="doc"}
+                <p><a href="{$qn_host}{$doc.file_path}" target="_blank">{$doc.file_name}</a></p>
 
-            {else /}
-            <tr><td colspan="2">
-                无
+                {/foreach}
+                {/notempty}
             </td></tr>
-
-            {/notempty}
+            <tr><td colspan="5">
+                <p>操作记录</p>
+                {empty name="da.logs"}
+                无
+                {else /}
+                {foreach name="da.logs" item="dlg"}
+                <p>{$dlg.oper_user_name}:{$dlg.oper_desc}[{$dlg.addtime}]</p>
+                {/foreach}
+                {/empty}
+            </td></tr>
             {/foreach}
             {/empty}
             </tbody>
         </table>
     </div>
 </div>
+<script type="text/javascript">
+
+</script>
