@@ -122,6 +122,7 @@ class Offer extends Common{
 
     }
     //确认方案
+    //todo 内部亦需要按流程签字确认 -20181005
     public function pass_post(){
         $id = input('post.id',0,'int');
         $p_id = input('post.p_id',0,'int');

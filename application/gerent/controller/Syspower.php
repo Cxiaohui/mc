@@ -10,6 +10,11 @@ use app\gerent\model\Systable as mSystable;
 
 class Syspower extends Common{
 
+    /**
+     * @var mSystable
+     */
+    protected $admin_model;
+
     public function _initialize($check_login = true)
     {
         parent::_initialize($check_login);
@@ -313,7 +318,12 @@ class Syspower extends Common{
      * 删除角色
      */
     public function roledel($rid=0){
+        if($rid<=0){
+            $this->error('访问错误');
+        }
 
+        $this->admin_model->del_role($rid);
+        $this->success('删除成功');
     }
 
 

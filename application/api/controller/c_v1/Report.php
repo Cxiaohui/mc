@@ -36,7 +36,7 @@ class Report extends Common{
         }
         $preport = new Projectreport();
         //todo 状态
-        $list = $preport->get_list(['p_id'=>$p_id,'status'=>['in','1,2,3,4'],'isdel'=>0],'id,name,status');
+        $list = $preport->get_list(['p_id'=>$p_id,'status'=>['in','1,2,3,4'],'isdel'=>0],'id,name,status',0);
         if(empty($list)){
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }

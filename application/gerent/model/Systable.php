@@ -240,6 +240,22 @@ class Systable extends  Base{
         return $this->_get_info($this->role_table,$where,$field);
     }
 
+    public function del_role($role_id){
+        //Db::startTrans();
+
+        //admin_access   role_id
+        $this->_del_row($this->acc_table,['role_id'=>$role_id]);
+
+        //admin_role_user  role_id
+        $this->_del_row($this->role_user_table,['role_id'=>$role_id]);
+
+        //admin  ,role_id,role
+        $this->_update_data($this->admin_table,['role_id'=>$role_id],['role_id'=>'','role'=>'']);
+
+        //admin_role   id
+        $this->_del_row($this->role_table,['id'=>$role_id]);
+    }
+
     public function del_role_group($gid){
         return $this->_del_row($this->role_table,['id'=>$gid]);
     }
