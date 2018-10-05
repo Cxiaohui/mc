@@ -11,6 +11,7 @@ use app\common\model\Project as Pject,
     app\common\model\Projectreportdoc,
     app\common\model\Projectreportmodify,
     app\common\library\Plog,
+    app\common\model\Projectlog,
     app\common\library\Notice as LN,
     app\common\model\Projectreport;
 
@@ -102,13 +103,18 @@ class Report extends Common{
             }
         }
 
+
+        // 输出操作记录 - 20181005
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>3],'id,oper_user_name,oper_desc,addtime');
+
         return $this->response([
             'code'=>200,
             'msg'=>'成功',
             'data'=>[
                 'project' => $p_info,
                 'docs'=>$docs,
-                'check_logs'=>$checks
+                'check_logs'=>$checks,
+                'report_logs'=>$plogs
             ]
         ]);
 

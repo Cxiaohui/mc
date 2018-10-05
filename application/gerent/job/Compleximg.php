@@ -160,6 +160,8 @@ class Compleximg{
                 }
                 mlog::write('$q_key='.$q_key,$this->log_file);*/
                 $mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$shorturl]);
+
+                //todo 成功后，再执行一个任务，进行合并图片下载上传-20181005
             }
         }catch(\Exception $e){
             throw new \Exception($e);

@@ -11,6 +11,7 @@ use app\common\model\Project as Pject,
     app\common\model\Projectofferdoc,
     app\common\model\Projectoffermodify,
     app\common\library\Plog,
+    app\common\model\Projectlog,
     app\common\library\Notice as LN,
     app\common\model\Projectoffer;
 
@@ -110,6 +111,9 @@ class Offer extends Common{
             }
         }
 
+        // 输出操作记录 - 20181005
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>4],'id,oper_user_name,oper_desc,addtime');
+
         return $this->response([
             'code'=>200,
             'msg'=>'成功',
@@ -117,7 +121,8 @@ class Offer extends Common{
                 'project' => $p_info,
                 'offer_info' =>$offer_info,
                 'docs'=>$docs,
-                'check_logs'=>$checks
+                'check_logs'=>$checks,
+                'offer_logs'=>$plogs
             ]
         ]);
 

@@ -91,7 +91,7 @@ class Show extends Common{
                 unset($docs[$dk]['file_path']);
             }
         }
-
+        // 输出操作记录 - 20181005
         $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>$this->log_type[$static_info['type']]],'id,oper_user_name,oper_desc,addtime');
 
         return $this->response([
