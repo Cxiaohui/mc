@@ -78,6 +78,15 @@ class Index extends Common{
         ]);
     }
 
+    public function h5urls_get(){
+
+        return $this -> response([
+            'code' => 200,
+            'msg' => '成功',
+            'data'=>$this->get_public_h5url()
+        ]);
+
+    }
 
     public function appmodel_get(){
         $os = input('get.os','','trim');

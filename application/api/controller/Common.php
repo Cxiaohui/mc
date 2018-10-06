@@ -82,6 +82,16 @@ class Common extends Rest {
         return 'https://'.$this->req->host() .'/mch5/mochuan/';
     }
 
+    protected function get_public_h5url(){
+        return [
+            'pzsm_url'=>$this->h5_base_url().'DetailsPage.html?id=20',
+            'ysbz_url'=>$this->h5_base_url().'DetailsPage.html?id=19',
+            'sgbz_url'=>$this->h5_base_url().'DetailsPage.html?id=18',
+            'zxbz_url'=>$this->h5_base_url().'DecorateSecurity.html',
+            'kfzx_url'=>$this->h5_base_url().'ConsumerLine.html',
+        ];
+    }
+
     protected function get_base_url(){
         return $this->req->scheme().'://'.$this->req->host();
     }

@@ -16,6 +16,16 @@ class Index extends Common{
         //$this->M = new MN();
     }
 
+    public function h5urls_get(){
+
+        return $this -> response([
+            'code' => 200,
+            'msg' => '成功',
+            'data'=>$this->get_public_h5url()
+        ]);
+
+    }
+
     public function somelist_get(){
         $type = input('get.type',0,'int');
         $p_id = input('get.p_id',0,'int');
