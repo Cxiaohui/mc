@@ -35,7 +35,7 @@ class Show extends Common{
         return $this->get_static_datas(1);
     }
 
-    //我家的图纸
+    //我家的施工图
     public function drawings_get(){
         return $this->get_static_datas(2);
     }
@@ -49,7 +49,7 @@ class Show extends Common{
     public function caselist_get(){
         return $this->get_list_datas(1);
     }
-    //我家的图纸-列表
+    //我家的施工图-列表
     public function drawinglist_get(){
         return $this->get_list_datas(2);
     }
@@ -187,7 +187,11 @@ class Show extends Common{
             return $this->response(['code'=>201,'msg'=>'操作失败，请稍后再试']);
         }
         //添加一个定时任务，合成图片
-        \think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'static-'.$info['type'],'id'=>$id,'p_id'=>$info['p_id']]);
+        //施工图签字确认
+        if($info['type']==2){
+            \think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'static-'.$info['type'],'id'=>$id,'p_id'=>$info['p_id']]);
+        }
+
         //add log
         Plog::add_one($p_id,$info['id'],$this->log_type[$info['type']],['type'=>2,'id'=>$this->user_id,'name'=>'业主'],'[通过]');
 

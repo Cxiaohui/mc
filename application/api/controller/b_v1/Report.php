@@ -120,6 +120,7 @@ class Report extends Common{
 
     }
     //确认报告
+    //todo 项目经理签字确认 - 20181006
     public function pass_post(){
         $id = input('post.id',0,'int');
         $p_id = input('post.p_id',0,'int');
