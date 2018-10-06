@@ -180,11 +180,11 @@ class Steptime{
     static public function get_color_days2($times,$p_id=0,$user_type=1){
         //print_r($times);exit;
         $time_range_begin = strtotime($times[0]['plan_time1']);
-        $time_range_end = strtotime($times[count($times)-1]['plan_time2']);
+        $time_range_end = strtotime(end($times)['plan_time2']);
         $one_day_time = 24*3600;
         $today = strtotime(date('Y-m-d'));
 
-        $real_end_time = $times[count($times)-1]['realtime2'];
+        $real_end_time = end($times)['realtime2'];
         if($real_end_time !='0000-00-00' && $real_end_time>$time_range_end){
             $time_range_end = $real_end_time;
         }

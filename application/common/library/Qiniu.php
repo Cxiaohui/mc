@@ -15,6 +15,45 @@ use think\image\Exception;
 
 class Qiniu{
 
+    static public function save_new_img($w_url){
+        try{
+            $qn = config('qiniu');
+            //$savebuket = $qn['bucket1'];
+            $savename = explode('-',str_replace($qn['host'],'',$w_url))[0].'-'.md5($w_url).'.jpg';
+
+            $auth = new Auth($qn['AccessKey'],$qn['SecretKey']);
+
+            $encodedEntryURI = \Qiniu\base64_urlSafeEncode($qn['bucket1'].':'.$savename);
+
+            $newurl = $w_url.'|saveas/'.$encodedEntryURI;
+
+            $safe_sign = $auth->sign(str_replace('http://','',$newurl));
+
+
+            $finalURL = $newurl.'/sign/'.$safe_sign;
+
+            /**
+             * {
+            key: "projectstatics/mcdocs-e5b5acea06c78fecdfe4d8f0ca3430f3.jpg",
+            hash: "FtFgqyk18N7rWDMv57WALJeq3lRn"
+            }
+             */
+            $res = Http::curl_get($finalURL);
+
+            $res = json_decode($res,1);
+            //var_dump($res);
+            if(isset($res['key'])){
+                return ['err'=>0,'key'=>$res['key'],'hash'=>$res['hash']];
+            }
+            return ['err'=>1,'msg'=>'保存新图片失败','res'=>$res];
+
+        }catch (\Exception $e){
+            return ['err'=>1,'msg'=>'保存新图片失败.','res'=>$e->getMessage()];
+        }
+
+
+    }
+
     static public function delete_file($file_key,$bucket=null){
         //BucketManager
         $auth = new Auth(config('qiniu.AccessKey'),config('qiniu.SecretKey'));

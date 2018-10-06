@@ -7,6 +7,10 @@
  */
 namespace app\index\controller;
 use app\common\model\Imgroups;
+use Qiniu\Auth,
+    \Qiniu\Config as QConfig,
+    Qiniu\Storage\BucketManager,
+    Qiniu\Storage\UploadManager;
 
 class T extends \app\common\controller\Base{
 
@@ -15,6 +19,19 @@ class T extends \app\common\controller\Base{
         //$url = 'http://content.iytime.com/projectstatics/mcdocs-8e0f3bef97a266f168213223258d77f8.jpg';
         $res = \app\common\library\Shorturl::sina_create($url);
 
+        print_r($res);
+    }
+
+    public function savecompimg(){
+        //$q = new \app\common\library\Qiniu();
+
+        //$url = 'http://content.iytime.com/projectstatics/mcdocs-c09e57fbf9d4569ba2448c04b9f2cbaa.png?watermark/1/image/aHR0cDovL2NvbnRlbnQuaXl0aW1lLmNvbS9wcm9qZWN0LzIwMTgwOTIzLzExLzgvbWNkb2NzLTE1Mzc2OTQ4MjcucG5n/dissolve/80/gravity/SouthEast/dx/15/dy/15/ws/0.12/wst/2';
+        //$url = 'http://content.iytime.com/projectstatics/mcdocs-32477b9e4abfddc67181f46bb401285a.jpg?watermark/1/image/aHR0cDovL2NvbnRlbnQuaXl0aW1lLmNvbS9wcm9qZWN0LzIwMTgwOTI2LzExLzkvbWNkb2NzLTE1Mzc5NzQwNTEucG5n/dissolve/80/gravity/SouthEast/dx/15/dy/15/ws/0.24/wst/2';
+
+        //$url = 'http://content.iytime.com/projectstatics/mcdocs-0b1ef120ebf1eacfd504407cf29bb573.png?watermark/1/image/aHR0cDovL2NvbnRlbnQuaXl0aW1lLmNvbS9wcm9qZWN0LzIwMTgwOTI2LzExLzkvbWNkb2NzLTE1Mzc5NzQwNTEucG5n/dissolve/80/gravity/SouthEast/dx/15/dy/15/ws/0.24/wst/2';
+        $url = 'http://content.iytime.com/reports/mcdocs-0fef2f34920fa230ee55c88cb41408d5.png?watermark/1/image/aHR0cDovL2NvbnRlbnQuaXl0aW1lLmNvbS9wcm9qZWN0LzIwMTgxMDA2LzE0LzEyL21jZG9jcy0xNTM4ODAxOTEyLnBuZw==/dissolve/80/gravity/SouthEast/dx/15/dy/15/ws/0.17/wst/2';
+
+        $res = \app\common\library\Qiniu::save_new_img($url);
         print_r($res);
     }
 

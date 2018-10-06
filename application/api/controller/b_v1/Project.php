@@ -74,8 +74,9 @@ class Project extends Common{
         $pstep = new Projectstep();
         //$pdoc = new Projectdoc();
         //获取所有主阶段信息,各阶段时间
-
-        $main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
+        // 主阶段信息还需要检查-20181006
+        //$main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
+        $main_steps = $pstep->get_order_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime',['type'=>'asc','step_sort'=>'asc']);
         $all_steps = $pstep->get_order_list(['p_id' => $p_id, 'isdel' => 0],'id,pid,type,name,plan_time1,plan_time2,realtime1,realtime2', ['plan_time1'=>'asc'],0);
         //print_r($all_steps);exit;
         if (!empty($all_steps)) {

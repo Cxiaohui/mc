@@ -139,29 +139,42 @@ class Compleximg{
                 if($pic_info['width']>0){
                     $ws = sprintf("%.2f",180/$pic_info['width']);
                 }
-
+                //获取签名合成图片的url
                 $w_url = Qiniu::watermark_url($doc['file_path'],$info['sign_img'],['ws'=>$ws,'dissolve'=>80,'wst'=>2]);
                 if(!$w_url){
                     mlog::write('watermark_url=>false;data:'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;
                 }
                 mlog::write('$w_url='.$w_url,$this->log_file);
+                //将新图片保存到七牛
+                $saveres = Qiniu::save_new_img($w_url);
+
+                if($saveres['err']==0){
+                    $mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$saveres['key']]);
+
+                    mlog::write('success!',$this->log_file);
+                }else{
+                    mlog::write([
+                        'save new img failed!',
+                        $saveres
+                    ],$this->log_file);
+                    continue;
+                }
                 //知链接方式
-                $shorturl = Shorturl::sina_create($w_url);
+                /*$shorturl = Shorturl::sina_create($w_url);
                 if(!$shorturl){
                     mlog::write('shorturl failed',$this->log_file);
                     continue;
-                }
+                }*/
 
                 /*$q_key = Qiniu::download_upload_watermark($w_url);
                 if(!$q_key){
                     mlog::write('download_upload_watermark=>false;data:'.json_encode($data).';doc id='.$doc['id'],$this->log_file);
                     continue;
                 }
-                mlog::write('$q_key='.$q_key,$this->log_file);*/
-                $mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$shorturl]);
 
-                //todo 成功后，再执行一个任务，进行合并图片下载上传-20181005
+                mlog::write('$q_key='.$q_key,$this->log_file);*/
+
             }
         }catch(\Exception $e){
             throw new \Exception($e);

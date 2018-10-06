@@ -61,8 +61,9 @@ class Project extends Common{
         //$pdoc = new Projectdoc();
         //获取所有主阶段信息,各阶段时间
 
-        $main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
-
+        // 主阶段信息还需要检查-20181006
+        //$main_steps = $pstep->get_step_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime');
+        $main_steps = $pstep->get_order_list(['p_id' => $p_id, 'pid' => 0, 'isdel' => 0], 'id,type,name,plan_time,realtime',['type'=>'asc','step_sort'=>'asc']);
         $all_steps = $pstep->get_order_list(['p_id' => $p_id, 'isdel' => 0],'id,pid,type,name,plan_time1,plan_time2,realtime1,realtime2', ['plan_time1'=>'asc'],0);
         //print_r($all_steps);exit;
         if (!empty($all_steps)) {
@@ -276,7 +277,8 @@ class Project extends Common{
      */
     public function step_modify_post(){
         $puts = $this->req->post();
-        if(!$puts['p_id'] || !$puts['step_id'] || !isset($puts['img']) || !isset($puts['content']) || !$puts['img'] || !$puts['content']){
+        //!isset($puts['img']) ||!$puts['img'] ||
+        if(!$puts['p_id'] || !$puts['step_id'] ||  !isset($puts['content']) || !$puts['content']){
             return $this->response(['code'=>201,'msg'=>'参数有误']);
         }
         if(!$this->check_project_onwer($puts['p_id'])){
@@ -297,7 +299,7 @@ class Project extends Common{
             'p_id'=>$puts['p_id'],
             'p_step_id'=>$puts['step_id'],
             'c_user_id'=>$this->user_id,
-            'img'=>$puts['img'],
+            'img'=>isset($puts['img'])? $puts['img'] :'',
             'content'=>$puts['content'],
             'addtime'=>$this->datetime
         ];
@@ -323,7 +325,7 @@ class Project extends Common{
         //add log
         Plog::add_one($puts['p_id'],$puts['step_id'],$step_info['type'],['type'=>2,'id'=>$this->user_id,'name'=>'业主'],'[修改]'.$puts['content']);
 
-        return $this->response(['code'=>200,'msg'=>'保存成功']);
+        return $this->response(['code'=>200,'msg'=>'谢谢您的反馈，我们将会尽快处理。']);
     }
 
     /**
