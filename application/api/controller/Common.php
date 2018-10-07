@@ -71,8 +71,17 @@ class Common extends Rest {
             return $this -> response(['code' => 101, 'msg' => '无法访问..']);
         }
         $res_user_id = Apitoken::check_api($user_type,$auth_list[1],$auth_list[2]);
-        if(!$res_user_id){
-            return $this -> response(['code' => 401, 'msg' => 'Token过期，请重新登录']);
+        if($res_user_id<0){
+            //
+            $resean = [
+                -1 => '您的账户已在其他设备登录，请重新登录',
+                -2 =>'Token过期，请重新登录',
+                -3 =>'Token过期，请重新登录.'
+            ];
+            return $this -> response([
+                'code' => 401,
+                'msg' => isset($resean[$res_user_id])?$resean[$res_user_id]:$resean[-3]
+            ]);
         }
         $this->user_id = $res_user_id;
         return true;

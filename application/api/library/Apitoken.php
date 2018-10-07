@@ -15,7 +15,8 @@ class Apitoken{
         $token = cache($cache_key);
         //echo $token;exit;
         if($token){
-            return $token == $api_token?$user_id:false;
+            //在其他设备登录
+            return $token == $api_token?$user_id:-1;
         }
         $w = ['user_id'=>$user_id];
         if($user_type=='c'){
@@ -25,10 +26,10 @@ class Apitoken{
         }
         $u_info = (new Apptokens())->get_info($w,'api_token,token_expiry');
         if(!$u_info){
-            return false;
+            return -2;//
         }
         cache($cache_key,$u_info['api_token']);
-        return $u_info['api_token'] == $api_token?$user_id:false;
+        return $u_info['api_token'] == $api_token?$user_id:-3;//token过期
     }
 
     static public function clean_api_token($user_type,$user_id){
