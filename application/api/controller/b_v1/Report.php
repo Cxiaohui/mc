@@ -62,7 +62,8 @@ class Report extends Common{
         }
 
         $this->_check_project_power($p_id);
-        $p_info = (new Pject())->get_info(['id' => $p_id, 'isdel' => 0], 'id,type,name');
+        $pject = new Pject();
+        $p_info = $pject->get_info(['id' => $p_id, 'isdel' => 0], 'id,type,name');
 
         if (!$p_info) {
             return $this->response(['code' => 201, 'msg' => '该项目不存在']);
@@ -112,6 +113,7 @@ class Report extends Common{
             'msg'=>'成功',
             'data'=>[
                 'project' => $p_info,
+                'is_jingli' => $pject->is_jingli($p_id,$this->user_id),
                 'docs'=>$docs,
                 'check_logs'=>$checks,
                 'report_logs'=>$plogs
