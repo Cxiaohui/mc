@@ -144,10 +144,10 @@ class Pusher extends Common{
             if($info['once_limit_time']>0){
                 $target_end_time = $info['once_limit_time'];
             }
-            $up_date = date('Y-m-d',strtotime($info['uptime']));
+            /*$up_date = date('Y-m-d',strtotime($info['uptime']));
             if($up_date==date('Y-m-d')){
                 $can_send_one = false;
-            }
+            }*/
         }
 
         $lpush = new lpush($p_id,$type,$type_id);
@@ -162,9 +162,10 @@ class Pusher extends Common{
                 $target_end_time = $default['limittime'];
             }
         }
-        if($can_send_one){
+        /*if($can_send_one){
             $can_send_one = !$lpush->has_send_one();
-        }
+        }*/
+        $can_send_one_today = $lpush->can_send_one_today();
 
         //var_dump($can_send_one);
         if($p_id>0){
@@ -191,7 +192,8 @@ class Pusher extends Common{
         $this->assign('type',$type);
         $this->assign('type_id',$type_id);
         $this->assign('info',$info);
-        $this->assign('can_send_one',$can_send_one);
+        $this->assign('can_send_one',$can_send_one_today);
+
         $this->assign('project',$project);
         $this->assign('title',$title);
         $this->assign('message',$message);
@@ -370,7 +372,7 @@ class Pusher extends Common{
         if($save_data['p_id']>0 && $save_data['type']>0 && $save_data['type_id']>0){
             $lpush = new lpush($save_data['p_id'],$save_data['type'],$save_data['type_id']);
             $lpush->update_type_id($n_id);
-            $lpush->tag_send_one();
+            //$lpush->tag_send_one();
         }
 
 

@@ -18,25 +18,29 @@ class Mydocs extends Common
         parent::__construct($this->user_type);
         //$this->M = new MN();
     }
-    //todo 看自己的所有项目文件 - 20181006
+    // 看自己的所有项目文件 - 20181006
     public function list_get()
     {
         $p_id = input('get.p_id',0,'int');
         $page = input('get.page', 1, 'int');
         $pagesize = input('get.pagesize', 20, 'int');
-        if (!$p_id || $p_id <= 0) {
+        /*if (!$p_id || $p_id <= 0) {
             return $this->response(['code' => 201, 'msg' => '参数有误']);
-        }
+        }*/
+        if($p_id>0) {
+            $where = ' p_id=' . $p_id;
+        }else{
+            $my_ps = (new Projectadmin())->get_list(['b_user_id' => $this->user_id], 'p_id', 0);
 
-        /*$my_ps = (new Projectadmin())->get_list(['b_user_id' => $this->user_id], 'p_id', 0);
-
-        if (empty($my_ps)) {
-            return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => []]);
+            if (empty($my_ps)) {
+                return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => []]);
+            }
+            $my_pids = array2to1($my_ps, 'p_id');
+            //print_r($my_pids);
+            $where = ' p_id in (' . implode(',',$my_pids) . ')';
         }
-        $my_pids = array2to1($my_ps, 'p_id');
-        //print_r($my_pids);
-        $where = ' p_id in (' . implode(',',$my_pids) . ')';*/
-        $where = ' p_id='.$p_id;
+        /**/
+
         $limit = ($page-1)*$pagesize.','.$pagesize;
 
         $list = Docs::get_all_project_docs($where,$limit);

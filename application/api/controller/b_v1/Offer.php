@@ -133,8 +133,11 @@ class Offer extends Common{
         $id = input('post.id',0,'int');
         $p_id = input('post.p_id',0,'int');
         $sign_img = input('post.sign_img','','trim');
-        if (!$id || $id <= 0 || !$p_id || $p_id <= 0 ) {//|| !$sign_img
+        if (!$id || $id <= 0 || !$p_id || $p_id <= 0 ) {//
             return $this->response(['code' => 201, 'msg' => '参数有误']);
+        }
+        if(!$sign_img){
+            return $this->response(['code' => 201, 'msg' => '请先签字']);
         }
         $this->_check_project_power($p_id);
 

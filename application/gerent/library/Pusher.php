@@ -6,7 +6,8 @@
  * Time: 17:21
  */
 namespace app\gerent\library;
-use app\common\model\Project;
+use app\common\model\Project,
+    app\gerent\model\Push as mPush;
 class Pusher{
 
     private $p_id = 0;
@@ -173,6 +174,18 @@ class Pusher{
             'message'=>$message,
             'limittime'=>$limittime
         ];
+    }
+
+    public function can_send_one_today(){
+        $info = (new mPush)->get_info(['p_id'=>$this->p_id,'type'=>$this->type,'type_id'=>$this->type_id,'run_type'=>1],'id,addtime');
+        if(!$info){
+            return true;
+        }
+        $add_date = date('Y-m-d',strtotime($info['addtime']));
+        if($add_date==date('Y-m-d')){
+            return false;
+        }
+        return true;
     }
 
     public function has_send_one(){

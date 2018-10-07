@@ -874,8 +874,36 @@ function appendInputVal(input,val){
     input.val(bval+p+val);
 
 }
+function get_date_str(y,m,d){
+
+    if(m + 1<10){
+        m = '0'+(m + 1);
+    }
+
+    if(d<10){
+        d = '0'+d;
+    }
+    return y+'-'+m+'-'+d;
+    /*return {
+        'en':d+'/'+m+'/'+y,
+        'cn':y+'-'+m+'-'+d
+    };*/
+}
 
 $(function () {
+    var mcd = new Date(),
+        mc_today = get_date_str(mcd.getFullYear(),mcd.getMonth()+1,mcd.getDate());
+
+    $('input[type="date"]').each(function(i){
+
+        if(!$(this).val()){
+            //console.log(today);
+            $(this).val(mc_today);
+        }
+
+    });
+
+
     $('.del_mcfile').on('click',function(){
         var _this = $(this),
             type = _this.attr('data-type'),

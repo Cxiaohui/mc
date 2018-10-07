@@ -24,18 +24,24 @@ class Mydocs extends Common
         $p_id = input('get.p_id',0,'int');
         //$page = input('get.page', 1, 'int');
         //$pagesize = input('get.pagesize', 20, 'int');
+
         if (!$p_id || $p_id <= 0) {
             return $this->response(['code' => 201, 'msg' => '参数有误']);
         }
-        /*$my_ps = (new APject())->get_list(['owner_user_id' => $this->user_id, 'isdel' => 0], 'id', 0);
-        if (empty($my_ps)) {
-            return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => []]);
+        $where = '';
+        if($p_id>0){
+            $where = ' p_id='.$p_id;
         }
-        $my_pids = array2to1($my_ps, 'id');
-        $where = ' p_id in (' . implode(',',$my_pids) . ')';*/
-        //todo 看自己的所有项目文件 - 20181006
 
-        $where = ' p_id='.$p_id;
+        /*else{
+            $my_ps = (new APject())->get_list(['owner_user_id' => $this->user_id, 'isdel' => 0], 'id', 0);
+            if (empty($my_ps)) {
+                return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => []]);
+            }
+            $my_pids = array2to1($my_ps, 'id');
+            $where = ' p_id in (' . implode(',',$my_pids) . ')';
+        }*/
+
         //$limit = ($page-1)*$pagesize.','.$pagesize;
         $limit = 0;
 

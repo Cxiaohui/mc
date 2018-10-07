@@ -176,6 +176,11 @@ class Show extends Common{
         if(!$info){
             return $this->response(['code'=>201,'msg'=>'该项目无法访问']);
         }
+
+        if($info['type']==2 && !$sign_img){
+            return $this->response(['code' => 201, 'msg' => '请先签字']);
+        }
+
         $main_data = [
             'status'=>2,
             'sign_img'=>$sign_img,
@@ -188,7 +193,7 @@ class Show extends Common{
         }
         //添加一个定时任务，合成图片
         //施工图签字确认
-        if($info['type']==2){
+        if($info['type']==2 && $sign_img){
             \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'static_'.$info['type'],'id'=>$id,'sign_type'=>1]);
         }
 
