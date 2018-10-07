@@ -179,7 +179,7 @@ class Steptime{
 
     static public function get_color_days2($times,$p_id=0,$user_type=1){
         //print_r($times);exit;
-        $time_range_begin = strtotime($times[0]['plan_time1']);
+        $time_range_begin = strtotime(reset($times)['plan_time1']);
         $time_range_end = strtotime(end($times)['plan_time2']);
         $one_day_time = 24*3600;
         $today = strtotime(date('Y-m-d'));

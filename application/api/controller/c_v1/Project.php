@@ -342,7 +342,7 @@ class Project extends Common{
         }
         $pstep = new Projectstep();
         $s_w = ['id'=>$puts['step_id'],'p_id'=>$puts['p_id'],'isdel'=>0];
-        $step_info = $pstep->get_info($s_w,'id,pid,status,type,plan_time');
+        $step_info = $pstep->get_info($s_w,'id,pid,status,type,plan_time1,plan_time');
         if(!$step_info){
             return $this->response(['code'=>201,'msg'=>'该项目没有阶段信息']);
         }
@@ -351,8 +351,8 @@ class Project extends Common{
             'status'=>4,
             'pass_time'=>$this->datetime,
             'uptime'=>$this->datetime,
-            'realtime'=>$times[0].'|'.date('Y-m-d'),
-            'realtime1'=>$times[0],
+            'realtime'=>$step_info['plan_time1'].'|'.date('Y-m-d'),
+            'realtime1'=>$step_info['plan_time1'],
             'realtime2'=>date('Y-m-d')
         ];
         $pstep->update_data(['id'=>$puts['step_id'],'p_id'=>$puts['p_id']],$update);
@@ -360,12 +360,12 @@ class Project extends Common{
         if($step_info['pid']>0){
             if($pstep->is_commplete($step_info['pid'])==1){
                 $s_w['id'] = $step_info['pid'];
-                $step_info = $pstep->get_info($s_w,'id,plan_time');
-                $times = explode('|',$step_info['plan_time']);
-                $update['realtime'] = $times[0].'|'.date('Y-m-d');
-                $update['realtime1'] = $times[0];
+                $pstep_info = $pstep->get_info($s_w,'id,plan_time1,plan_time');
+                //$times = explode('|',$step_info['plan_time']);
+                $update['realtime'] = $pstep_info['plan_time1'].'|'.date('Y-m-d');
+                $update['realtime1'] = $pstep_info['plan_time1'];
                 $update['realtime2'] = date('Y-m-d');
-                $pstep->update_data(['id'=>$step_info['pid'],'p_id'=>$puts['p_id']],$update);
+                $pstep->update_data(['id'=>$pstep_info['id'],'p_id'=>$puts['p_id']],$update);
             }
         }
         // 通过时再检查，事务提醒中有没有相关的通知，有则设为'已处理'

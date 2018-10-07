@@ -148,7 +148,8 @@ class Report extends Common{
         $res = $projectreport->update_data($w,$update);
 
         if($res){
-            \think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'report','id'=>$id]);
+            //\think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'report','id'=>$id]);
+            \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'report','id'=>$id,'sign_type'=>1]);
             // 添加日志
             //add log
             Plog::add_one($p_id,$id,3,

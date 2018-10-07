@@ -189,7 +189,7 @@ class Show extends Common{
         //添加一个定时任务，合成图片
         //施工图签字确认
         if($info['type']==2){
-            \think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'static-'.$info['type'],'id'=>$id,'p_id'=>$info['p_id']]);
+            \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'static_'.$info['type'],'id'=>$id,'sign_type'=>1]);
         }
 
         //add log

@@ -127,8 +127,8 @@ class Offer extends Common{
 
     }
     //确认方案
-    //todo 设计师签字确认 - 20181006
-    //todo 项目经理签字确认 - 20181006
+    // 设计师签字确认 - 20181006
+    // 项目经理签字确认 - 20181006
     public function pass_post(){
         $id = input('post.id',0,'int');
         $p_id = input('post.p_id',0,'int');
@@ -150,12 +150,20 @@ class Offer extends Common{
         //是设计师
         $is_sejishi = $pject->is_sejishi($p_id,$this->user_id);
         if($is_sejishi && $pr_info['status']==0){
-            $update = ['status'=>1,'checktime1'=>$this->datetime];
+            $update = [
+                'status'=>1,
+                'sejishi_sign_img'=>$sign_img?:'',
+                'checktime1'=>$this->datetime
+            ];
         }
         //是项目经理
         $is_jingli = $pject->is_jingli($p_id,$this->user_id);
         if($is_jingli && $pr_info['status']==1){
-            $update = ['status'=>2,'checktime2'=>$this->datetime];
+            $update = [
+                'status'=>2,
+                'jingli_sign_img'=>$sign_img?:'',
+                'checktime2'=>$this->datetime
+            ];
         }
         if(empty($update)){
             return $this->response(['code' => 201, 'msg' => '当前用户无法确认']);
@@ -163,6 +171,17 @@ class Offer extends Common{
         //$update = ['status'=>3,'passtime'=>$this->datetime,'sign_img'=>$sign_img];
         $res = $poffer->update_data($w,$update);
         if($res){
+            // 处理设计师电签图片 - 20181006
+            if($is_sejishi && $sign_img){
+                \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'offer','id'=>$id,'sign_type'=>2]);
+            }
+
+            // 处理项目经理电签图片 - 20181006
+            if($is_jingli && $sign_img){
+                \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'offer','id'=>$id,'sign_type'=>3]);
+            }
+
+
             // 添加日志
             //add log
             Plog::add_one($p_id,$id,4,

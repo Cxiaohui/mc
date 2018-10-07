@@ -151,7 +151,8 @@ class Offer extends Common{
 
         if($res){
             //添加一个定时任务，合成图片
-            \think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'offer','id'=>$id]);
+            //\think\Queue::later(2,'app\gerent\job\Compleximg',['type'=>'offer','id'=>$id]);
+            \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'offer','id'=>$id,'sign_type'=>1]);
             //添加日志
             //add log
             Plog::add_one($p_id,$id,4,

@@ -120,11 +120,11 @@ class Report extends Common{
 
     }
     //确认报告
-    //todo 项目经理签字确认 - 20181006
+    // 项目经理签字确认 - 20181006
     public function pass_post(){
         $id = input('post.id',0,'int');
         $p_id = input('post.p_id',0,'int');
-        //$sign_img = input('post.sign_img','','trim');
+        $sign_img = input('post.sign_img','','trim');
         if (!$id || $id <= 0 || !$p_id || $p_id <= 0 ) {//|| !$sign_img
             return $this->response(['code' => 201, 'msg' => '参数有误']);
         }
@@ -147,7 +147,11 @@ class Report extends Common{
         //是项目经理
         $is_jingli = $pject->is_jingli($p_id,$this->user_id);
         if($is_jingli && $pr_info['status']==1){
-            $update = ['status'=>2,'checktime2'=>$this->datetime];
+            $update = [
+                'status'=>2,
+                'jingli_sign_img'=>$sign_img?:'',
+                'checktime2'=>$this->datetime
+            ];
         }
 
         if(empty($update)){
@@ -156,6 +160,11 @@ class Report extends Common{
 
         $res = $pr->update_data($prw,$update);
         if($res){
+            // 处理项目经理电签图片 - 20181006
+            if($is_jingli && $sign_img){
+                \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'report','id'=>$id,'sign_type'=>3]);
+            }
+
             // 添加日志
             Plog::add_one($p_id,$id,3,
                 ['type'=>1,'id'=>$this->user_id,'name'=>$this->user['name']],
