@@ -18,11 +18,12 @@
                 {notempty name="nodes"}
                 {foreach name="nodes" item="nd"}
                 <li {if strtolower($nd['name'])==$contr } class="active"{/if} >
-                    <a href="javascript:;" class="{$nd['icon']} lv1"> {$nd['title']} {notempty name="nd.sub"}<i class="{if strtolower($nd['name'])==$contr } icon-chevron-down{else/}icon-chevron-up{/if} "></i> {/notempty}</a>
+                    <a class="{$nd['icon']} lv1" href="{:url($nd['name'].'/'.$nd.sub[0]['name'])}"> {$nd['title']} {notempty name="nd.sub"}<i class="{if strtolower($nd['name'])==$contr } icon-chevron-down{else/}icon-chevron-up{/if} "></i> {/notempty}</a>
                     {notempty name="nd.sub"}
                     <ul class="accordion-nav"{if strtolower($nd['name'])!=$contr} style="display:none;"{/if}>
                         {foreach name="nd.sub" item="nv2"}
-                        <li{if strtolower($nd['name'])==$contr&&strtolower($nv2['name'])==$act} class="active"{/if}><a href="{:url($nd['name'].'/'.$nv2['name'])}"> {$nv2['title']}</a></li>
+                        <li{if strtolower($nd['name'])==$contr&&strtolower($nv2['name'])==$act} class="active"{/if}>
+                        <a href="{:url($nd['name'].'/'.$nv2['name'])}"> {$nv2['title']}</a></li>
                         {notempty name="nv2.sub"}
                             {foreach name="nv2.sub" item="nv3"}
                 <li{if strtolower($nd['name'])==$contr&&strtolower($nv3['name'])==$act} class="active"{/if}><a href="{:url($nd['name'].'/'.$nv3['name'])}"> {$nv3['title']}</a></li>

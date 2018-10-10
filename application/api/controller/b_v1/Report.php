@@ -21,6 +21,8 @@ class Report extends Common{
     {
         parent::__construct($this->user_type);
     }
+    protected $status = [0=>'待设计师确认',1=>'待项目经理确认',2=>'待业主确认',3=>'已处理',4=>'业主修改'];
+
     //验收报告
     public function list_get(){
         $p_id = input('get.p_id',0,'int');
@@ -40,9 +42,9 @@ class Report extends Common{
             return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
         //0未确认，1设计确认，2经理确认，3业主确认，4业主修改
-        $status = [0=>'待确认',1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
+        //$status = [0=>'待确认',1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];
         foreach($list as $k=>$v){
-            $list[$k]['status_name'] = $status[$v['status']];
+            $list[$k]['status_name'] = $this->status[$v['status']];
         }
         return $this->response([
             'code'=>200,
@@ -75,6 +77,7 @@ class Report extends Common{
             return $this->response(['code' => 201, 'msg' => '该验收报告不存在']);
         }
         $checks = [];
+        $rep_info['status_name'] = $this->status[$rep_info['status']];
         if($rep_info['checktime1']>0){
             $checks[] = ['title'=>'设计师已确认','isok'=>1,'check_date'=>$rep_info['checktime1'],'content'=>''];
         }
@@ -113,6 +116,7 @@ class Report extends Common{
             'msg'=>'成功',
             'data'=>[
                 'project' => $p_info,
+                'report_info'=>$rep_info,
                 'is_jingli' => $pject->is_jingli($p_id,$this->user_id),
                 'docs'=>$docs,
                 'check_logs'=>$checks,
@@ -163,7 +167,7 @@ class Report extends Common{
         $res = $pr->update_data($prw,$update);
         if($res){
             // 处理项目经理电签图片 - 20181006
-            if($is_jingli && $sign_img){
+            if($is_jingli && $pr_info['status']==1 && $sign_img){
                 \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'report','id'=>$id,'sign_type'=>3]);
             }
 

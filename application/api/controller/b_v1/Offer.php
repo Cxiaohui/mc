@@ -177,12 +177,12 @@ class Offer extends Common{
         $res = $poffer->update_data($w,$update);
         if($res){
             // 处理设计师电签图片 - 20181006
-            if($is_sejishi && $sign_img){
+            if($is_sejishi && $pr_info['status']==0 && $sign_img){
                 \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'offer','id'=>$id,'sign_type'=>2]);
             }
 
             // 处理项目经理电签图片 - 20181006
-            if($is_jingli && $sign_img){
+            if($is_jingli && $pr_info['status']==1 && $sign_img){
                 \think\Queue::later(2,'app\gerent\job\Createsignimg',['type'=>'offer','id'=>$id,'sign_type'=>3]);
             }
 

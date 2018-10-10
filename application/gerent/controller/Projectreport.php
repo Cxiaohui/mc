@@ -242,10 +242,18 @@ class Projectreport extends Common{
             }
         }
         $log_tag = '[添加]';
+
+
         if($id>0){
+
+            if(!empty($docs)) {
+                $post['status'] = 1;
+            }
+
             $log_tag = '[编辑]';
             $this->M->update_data(['id'=>$id,'p_id'=>$p_id],$post);
         }else{
+            $post['status'] = 1;
             $post['p_id'] = $p_id;
             $post['addtime'] = $this->datetime;
             $id = $this->M->add_data($post,true);
