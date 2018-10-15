@@ -42,7 +42,7 @@ class Purchase extends Common{
 
         $list = $purchase->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status',0);
         if(empty($list)){
-            return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
+            return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
 
         foreach($list as $k=>$v){

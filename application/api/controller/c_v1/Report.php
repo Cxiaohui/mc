@@ -39,7 +39,7 @@ class Report extends Common{
         //todo 状态
         $list = $preport->get_list(['p_id'=>$p_id,'status'=>['in','1,2,3,4'],'isdel'=>0],'id,name,status',0);
         if(empty($list)){
-            return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
+            return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
         //0未确认，1设计确认，2经理确认，3业主确认，4业主修改
         $status = [1=>'待确认',2=>'待确认',3=>'已处理',4=>'等待修改'];

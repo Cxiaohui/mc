@@ -127,7 +127,7 @@ class Show extends Common{
         $pstatic = new pstatic();
         $list = $pstatic->get_list($w,'id,name,status',0);
         if(empty($list)){
-            return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
+            return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
         foreach($list as $k=>$lt){
             $list[$k]['status_name'] = $this->status[$lt['status']];

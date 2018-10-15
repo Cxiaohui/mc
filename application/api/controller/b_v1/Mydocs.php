@@ -33,7 +33,7 @@ class Mydocs extends Common
             $my_ps = (new Projectadmin())->get_list(['b_user_id' => $this->user_id], 'p_id', 0);
 
             if (empty($my_ps)) {
-                return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => []]);
+                return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => ['docs'=>[]]]);
             }
             $my_pids = array2to1($my_ps, 'p_id');
             //print_r($my_pids);

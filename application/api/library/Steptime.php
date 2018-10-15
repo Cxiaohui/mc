@@ -239,6 +239,7 @@ class Steptime{
             if(!empty($paylist)){
                 foreach($paylist as $pay){
                     if($i==strtotime($pay['payable_time'])){
+                        $days[$j]['date'] = $pay['payable_time'];
                         $days[$j]['steps'][] = [
                             'title'=>'项目款应付日',
                             'content'=>'应付金额'.$pay['payable'],
@@ -257,6 +258,7 @@ class Steptime{
                 foreach($bookings as $bok){
                     $bk_time = strtotime(substr($bok['booking_time'],0,10));
                     if($i==$bk_time){
+                        $days[$j]['date'] = substr($bok['booking_time'],0,10);
                         $days[$j]['steps'][] = [
                             'title'=>'预约看工地',
                             'content'=>$bok['booking_content'],

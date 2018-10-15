@@ -46,6 +46,9 @@ class Mydocs extends Common
         $limit = 0;
 
         $list = Docs::get_all_project_docs($where,$limit);
+        if(empty($list)){
+            return $this->response(['code' => 200, 'msg' => '没有数据', 'data' => ['docs'=>[]]]);
+        }
         $words = ['doc','docx'];
         $excels = ['xls','xlsx'];
         $pdfs = ['pdf'];

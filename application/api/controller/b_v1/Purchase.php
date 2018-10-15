@@ -36,7 +36,7 @@ class Purchase extends Common
 
         $list = $purchase->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status');
         if(empty($list)){
-            return $this->response(['code'=>201,'msg'=>'没有数据','data'=>['list'=>[]]]);
+            return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
         $status = [0=>'待确认',1=>'等待修改',2=>'已确认'];
         foreach($list as $k=>$v){
