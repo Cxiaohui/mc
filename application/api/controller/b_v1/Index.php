@@ -12,7 +12,7 @@ class Index extends Common{
 
     public function __construct($user_type = '')
     {
-        parent::__construct($this->user_type);
+        parent::__construct(false);
         //$this->M = new MN();
     }
 

@@ -42,7 +42,7 @@ class T extends \app\common\controller\Base{
         }
         $im = new \app\common\library\YunIM();
         $res = $im->imobj()->getUinfos([$accid]);
-        print_r($res);
+        dump($res);
     }
 
     public function imuser(){
@@ -62,6 +62,34 @@ class T extends \app\common\controller\Base{
 
         $res = $im->imobj()->getUinfos([$accid]);
         print_r($res);
+    }
+
+    public function up_group_ower_icon(){
+        $accid = input('get.accid','','trim');
+        if(!$accid){
+            exit('accid error');
+        }
+        $icon = "http://content.iytime.com/im/group_icon.png";
+        //
+        $data = [
+            'name'=>'莫川设计',
+            'icon'=>$icon,
+            'sign'=>'',
+            'email'=>'',
+            'birth'=>'',
+            'mobile'=>'',
+            'gender'=>0,
+            'ex'=>[
+                'ename'=>'',
+                'comp'=>'',
+                'depart'=>'',
+                'post'=>''
+            ]
+        ];
+        $im = new \app\common\library\YunIM();
+
+        $res = $im->updateUserInfo($accid,$data);
+        dump($res);
     }
 
     public function createimgroup(){

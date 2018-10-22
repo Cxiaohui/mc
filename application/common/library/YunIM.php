@@ -24,17 +24,6 @@ class YunIM
      */
     public $im_obj = null;
 
-    //按项目来创建群
-    /*
-     * {
-  "code":200,
-  "tid":"11001",
-  "faccid":{
-         "accid":["a","b","c"],
-         "msg":"team count exceed"
-     }
-}*/
-
     /**
      * @return ServerAPI
      */
@@ -42,6 +31,7 @@ class YunIM
     {
         return $this->im_obj;
     }
+    //user info
 
     public function updateBUserinfo($id){
         $info = (new Buserlib())->get_user_info($id);
@@ -82,6 +72,33 @@ class YunIM
         return $this->updateUserInfo($accid,$data);
     }
 
+    public function updatePUserinfo($p_id){
+        if(!$p_id){
+            return false;
+        }
+        $accid = $this->build_im_userid($p_id, 'P');
+        $icon = "http://content.iytime.com/im/group_icon.png";
+        //
+        $data = [
+            'name'=>'莫川设计',
+            'icon'=>$icon,
+            'sign'=>'',
+            'email'=>'',
+            'birth'=>'',
+            'mobile'=>'',
+            'gender'=>0,
+            'ex'=>[
+                'ename'=>'',
+                'comp'=>'',
+                'depart'=>'',
+                'post'=>''
+            ]
+        ];
+        $im = new \app\common\library\YunIM();
+
+        return $im->updateUserInfo($accid,$data);
+    }
+
     public function updateUserInfo($accid,$data){
         return $this->imobj()->updateUinfo(
             $accid,
@@ -95,6 +112,8 @@ class YunIM
             json_encode($data['ex'])
             );
     }
+
+    //group
 
     public function updateGroupByProject($p_id){
         $fields = 'id,imgroup_id,name,address,customer_manager_user_id,desgin_user_id,desgin_assistant_user_id,manager_user_id,supervision_user_id,decorate_butler_user_id,owner_user_id';
@@ -279,6 +298,32 @@ class YunIM
         return ['err' => 1, 'msg' => '更新群信息失败'];
     }
 
+    public function queryGroup($tids){
+        return $this->imobj()->queryGroup($tids,1);
+
+    }
+
+    public function removeGroup($p_id,$tid=0){
+        $ower = $this->build_im_userid($p_id,'P');
+        $rs = $this->imobj()->removeGroup($tid,$ower);
+        if($rs['code']==200){
+            return ['err' => 0, 'msg' => 'success'];
+        }
+        return ['err' => 1, 'msg' => '删除失败','code'=>$rs['code']];
+    }
+
+    public function queryGroupMsg($tid,$accid){
+        $endtime = time();
+        $begintime = $endtime - 10*24*3600;
+        return $this->imobj()->queryGroupMsg($tid,$accid,$begintime,$endtime,20,2);
+    }
+
+    public function addIntoGroup($tid,$owner,$accid){
+        return $this->imobj()->addIntoGroup($tid,$owner,$accid);
+    }
+
+    //=====
+
     public function save_im_list($p_id,$tid,$gname,$members_B,$members_C){
         $im = new mIM();
         $members_B = array_unique($members_B);
@@ -309,6 +354,14 @@ class YunIM
         }
     }
 
+    //message
+
+    public function sendTestMsg($from,$to,$type,$message,$option=array("push"=>false,"roam"=>true,"history"=>false,"sendersync"=>true, "route"=>false),$pushcontent=''){
+        return $this->imobj()->sendMsg($from,$type,$to,0,['msg'=>$message],$option,$pushcontent);
+    }
+
+    //create user id
+
     public function create_members($members_B,$members_C){
         $members = [];
         $members_B = array_unique($members_B);
@@ -329,34 +382,6 @@ class YunIM
         }
 
         return array_unique($members);
-    }
-
-    public function sendTestMsg($from,$to,$type,$message,$option=array("push"=>false,"roam"=>true,"history"=>false,"sendersync"=>true, "route"=>false),$pushcontent=''){
-        return $this->imobj()->sendMsg($from,$type,$to,0,['msg'=>$message],$option,$pushcontent);
-    }
-
-    public function queryGroup($tids){
-      return $this->imobj()->queryGroup($tids,1);
-
-    }
-
-    public function removeGroup($p_id,$tid=0){
-        $ower = $this->build_im_userid($p_id,'P');
-        $rs = $this->imobj()->removeGroup($tid,$ower);
-        if($rs['code']==200){
-            return ['err' => 0, 'msg' => 'success'];
-        }
-        return ['err' => 1, 'msg' => '删除失败','code'=>$rs['code']];
-    }
-
-    public function queryGroupMsg($tid,$accid){
-        $endtime = time();
-        $begintime = $endtime - 10*24*3600;
-        return $this->imobj()->queryGroupMsg($tid,$accid,$begintime,$endtime,20,2);
-    }
-
-    public function addIntoGroup($tid,$owner,$accid){
-        return $this->imobj()->addIntoGroup($tid,$owner,$accid);
     }
 
     public function createCUserID($user_id)
@@ -437,6 +462,7 @@ class YunIM
                 'name'=>$name,
                 'token'=>$res['info']['token']
             ]);
+            $this->updatePUserinfo($p_id);
             //$m->update_admin(['id' => $user_id], ['im_token' => $res['info']['token']]);
             return ['err' => 0, 'msg' => 'ok', 'name'=>$name,'token' => $res['info']['token']];
         }else{
@@ -449,6 +475,7 @@ class YunIM
                     'name'=>$name,
                     'token'=>$res['info']['token']
                 ]);
+                $this->updatePUserinfo($p_id);
                 //$m->update_admin(['id' => $user_id], ['im_token' => $res['info']['token']]);
                 return ['err' => 0, 'msg' => 'ok', 'name'=>$name,'token' => $res['info']['token']];
             }
@@ -461,6 +488,9 @@ class YunIM
     {
         return strtolower($type) . '_' . $user_id;
     }
+
+
+    //
 
     public function imobj()
     {
