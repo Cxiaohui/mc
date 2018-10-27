@@ -959,47 +959,7 @@ $(function () {
         });
     }
 });
-//系统消息
-var sysnotice = {
-    readbtn: 'a.setreadsysnt',
-    ajaxurl: '',
-    data: null,
-    init: function () {
-        this._bindEvent();
-        this.ajaxurl = U('Myadmin/Index/sysoper');
-    },
-    _bindEvent: function () {
-        if ($(this.readbtn).length > 0) {
-            $(this.readbtn).on('click', function () {
-                var me = $(this), _id = me.attr('data-id');
-                sysnotice.data = {
-                    'id': _id,
-                    'act': 'setread',
-                    'ajax': 1
-                };
-                sysnotice._post();
-                sysnotice._decNum(me);
-                me.parent('li').remove();
-            });
-        }
-    },
-    _decNum: function (obj) {
-        var nobj = obj.closest('ul').prev('a').children('span.badge'),
-                n = parseInt(nobj.text());
-        if (n - 1 <= 0) {
-            nobj.remove();
-        } else {
-            nobj.text(n - 1);
-        }
-    },
-    _post: function () {
-        if (!this.data) {
-            return false;
-        }
-        $.post(this.ajaxurl, this.data, function (d) {
-        }, 'json');
-    }
-};
+
 //go-top
 var gotop = {
     tagele: '.go-top',
@@ -1021,63 +981,7 @@ var gotop = {
         });
     }
 };
-var PURL = {
-    ourl: '',
-    href: '',
-    params: '',
-    jing: '',
-    init: function (url) {
-        this.ourl = url || window.location.href;
-        this._parseUrl();
-    },
-    _parseUrl: function () {
-        var str = this.ourl;
-        var index = str.indexOf("#");
-        if (index > 0) {
-            this.jing = str.substr(index);
-            str = str.substring(0, index);
-        }
-        index = str.indexOf("?");
-        if (index > 0) {
-            this.href = str.substring(0, index);
-            str = str.substr(index + 1);
-            var parts = str.split("&");
-            for (var i = 0; i < parts.length; i++) {
-                var kv = parts[i].split("=");
-                this.params[kv[0]] = kv[1];
-            }
-        }
-        else {
-            this.href = this.ourl;
-            this.params = {};
-        }
-    },
-    set: function (key, val) {
-        this.params[key] = val;
-    },
-    remove: function (key) {
-        this.params[key] = undefined;
-    },
-    get: function (key) {
-        return this.params[key];
-    },
-    url: function () {
-        var strurl = this.href;
-        var objps = [];//这里用数组组织,再做join操作
-        for (var k in this.params) {
-            if (this.params[k]) {
-                objps.push(k + "=" + this.params[k]);
-            }
-        }
-        if (objps.length > 0) {
-            strurl += "?" + objps.join("&");
-        }
-        if (this.jing.length > 0) {
-            strurl += this.jing;
-        }
-        return strurl;
-    }
-};
+
 
 //删除图片文件
 var delFile={
@@ -1204,6 +1108,30 @@ var mFile = {
 
 };
 
-
-
+//https://developer.qiniu.com/kodo/api/3928/error-responses
+var qnErrors = {
+    "298":"部分操作执行成功",
+    "400":"请求报文格式错误(包括上传时，上传表单格式错误)",
+    "401":"认证授权失败",
+    "403":"权限不足，拒绝访问",
+    "404":"资源不存在",
+    "405":"请求方式错误",
+    "406":"上传的数据 CRC32 校验错误",
+    "413":"请求资源大小大于指定的最大值",
+    "419":"用户账号被冻结",
+    "478":"镜像回源失败(主要指镜像源服务器出现异常)",
+    "502":"错误网关",
+    "503":"服务端不可用",
+    "504":"服务端操作超时",
+    "573":"单个资源访问频率过高",
+    "579":"上传成功但是回调失败",
+    "599":"服务端操作失败",
+    "608":"资源内容被修改",
+    "612":"指定资源不存在或已被删除",
+    "614":"目标资源已存在",
+    "630":"已创建的空间数量达到上限，无法创建新空间",
+    "631":"指定空间不存在",
+    "640":"调用列举资源(list)接口时，指定非法的marker参数",
+    "701":"在断点续上传过程中，后续上传接收地址不正确或ctx信息已过期"
+};
 

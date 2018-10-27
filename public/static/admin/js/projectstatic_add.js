@@ -49,6 +49,8 @@ var mc_qiniu = {
                     //console.log(err.message);
                     if(err.message.indexOf('file type doesn\'t match')>-1){
                         layer.alert('上传的文件类型有误，请确认后再上传');
+                    }else if(err.code && qnErrors[err.code]){
+                        layer.alert(qnErrors[err.code]);
                     }else{
                         layer.alert(err.message);
                     }
