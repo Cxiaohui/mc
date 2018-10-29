@@ -48,6 +48,19 @@ var mc_qiniu = {
                     if(err.message.indexOf('file type doesn\'t match')>-1){
                         layer.alert('上传的文件类型有误，请确认后再上传');
                     }else if(err.code && qnErrors[err.code]){
+
+                        //目标资源已存在
+                        if(err.code == 614){
+                            var res = {
+                                "filename":nameinfo['filename'],
+                                "key":nameinfo['q_key'],
+                                "hash":md5(nameinfo['q_key'])
+                            };
+
+                            _this.after_upload && _this.after_upload(file_dom,res);
+                            return false;
+                        }
+
                         layer.alert(qnErrors[err.code]);
                     }else{
                         layer.alert(err.message);
@@ -73,7 +86,7 @@ var mc_qiniu = {
         var ext = filename.toLowerCase().split('.').splice(-1)[0];
         //console.log(dtx);
         return{
-            'q_key':'projects/mcdocs-'+md5(filename)+'.'+ext,
+            'q_key':'projects/mcdocs-'+md5(encodeURIComponent(filename)+'-'+(new Date().getTime()))+'.'+ext,
             'filename':filename
         } ;
     },
