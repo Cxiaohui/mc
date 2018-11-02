@@ -26,19 +26,19 @@ class Base extends Controller{
 
     protected function loadJsCss($data, $type = 'js', $module = 'home') {
         $newData = array();
-
+        //print_r($data);exit;
         foreach ($data as $val) {
             $val      = trim($val);
             $fpath    = '';
             $fname    = '';
             $fnamemin = '';
-            //��վ�ļ�
+
             if (strpos($val, 'http://') !== false || strpos($val, 'https://') !== false) {
                 $newData[] = $val;
                 continue;
             }
 
-            //�Ƿ��ǹ�����JS���,��p:��ͷ
+            //
             if (strpos($val, 'p:') !== false) {
                 $fpath = './static/plugin/' . str_replace('p:', '', $val);
             } else {

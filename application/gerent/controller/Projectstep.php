@@ -185,8 +185,13 @@ class Projectstep extends Common{
 
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
 
-        $js = $this->loadJsCss(array('p:common/common',
-            'https://unpkg.com/qiniu-js@2/dist/qiniu.min.js','p:md5/md5','stepdocs'), 'js', 'admin');
+        $js = $this->loadJsCss(array(
+            'p:common/common',
+            //'https://unpkg.com/qiniu-js@2/dist/qiniu.min.js',
+            'p:qiniu/qiniu-2.5.1',
+            'p:md5/md5',
+            'stepdocs'
+        ), 'js', 'admin');
         //print_r($cates);
         $this->assign('footjs', $js);
         $this->assign('info', $info);

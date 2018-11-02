@@ -166,7 +166,8 @@ class Projectstatic extends Common{
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
         $js = $this->loadJsCss(array(
             'p:common/common',
-            'https://unpkg.com/qiniu-js@2/dist/qiniu.min.js',
+            //'https://unpkg.com/qiniu-js@2/dist/qiniu.min.js',
+            'p:qiniu/qiniu-2.5.1',
             'p:md5/md5','projectstatic_add'
         ), 'js', 'admin');
 
