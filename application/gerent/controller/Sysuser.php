@@ -21,6 +21,15 @@ class Sysuser extends Common{
      * @var mSystable
      */
     protected $admin_model;
+    /**
+     * @var Project
+     */
+    protected $pm;
+
+    /**
+     * @var Projectadmin
+     */
+    protected $apm;
 
     public function _initialize($check_login=true)
     {

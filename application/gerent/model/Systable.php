@@ -46,7 +46,7 @@ class Systable extends  Base{
     }
 
     public function del_admin($id){
-        return $this->update_admin(['id'=>$id],['is_del'=>1]);
+        return $this->update_admin(['id'=>$id],['isdel'=>1]);
         //return $this->_del_row($this->admin_table,['id'=>$id]);
         //return $this->_update_data($this->admin_table,['id'=>$id],['status'=>0,'role'=>'','role_id'=>0,'isdel'=>1]);
     }

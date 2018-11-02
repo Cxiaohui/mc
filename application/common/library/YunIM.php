@@ -56,8 +56,12 @@ class YunIM
 
     public function updateCUserinfo($id){
         $info = (new Cuserlib())->get_user_info($id);
-        //print_r($info);exit;
-        $project = $info['project']?$info['project']['name']:'';
+
+        $project = [];
+        if(is_array($info['project']) && in_array('name',$info['project'])){
+            $project[] = $info['project']['name'];
+        }
+
         $data = [
             'name'=>$info['uname'],
             'icon'=>$info['head_pic'],
@@ -66,8 +70,9 @@ class YunIM
             'birth'=>'',
             'mobile'=>$info['mobile'],
             'gender'=>$info['gender'],
-            'ex'=>['projects'=>[$project]]
+            'ex'=>['projects'=>$project]
         ];
+        //print_r($data);exit;
         $accid = $this->build_im_userid($id,'c');
         return $this->updateUserInfo($accid,$data);
     }
