@@ -54,7 +54,7 @@ class Projectstatic extends Common{
         if(!empty($pstatics)){
             $Projectlog = new Projectlog();
             foreach($pstatics as $k=>$pst){
-                $pstatics[$k]['docs'] = $this->M->get_list(['p_static_id'=>$pst['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime');
+                $pstatics[$k]['docs'] = $this->M->get_list(['p_static_id'=>$pst['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime',0);
                 $pstatics[$k]['doc_count'] = count($pstatics[$k]['docs'] );
                 //5效果图，6cad图，7主材
                 $pstatics[$k]['logs'] = $Projectlog->get_list(

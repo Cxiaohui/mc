@@ -58,7 +58,7 @@ class Projectreport extends Common{
             $projectreportmodify = new Projectreportmodify();
             foreach($list as $k=>$v){
                 $list[$k]['doc_count'] = $this->MD->get_count(['p_id'=>$p_id,'p_rep_id'=>$v['id']]);
-                $list[$k]['modifys'] = $projectreportmodify->get_list(['p_id'=>$p_id,'p_rep_id'=>$v['id'],'isdel'=>0],'id,type,content,addtime');
+                $list[$k]['modifys'] = $projectreportmodify->get_list(['p_id'=>$p_id,'p_rep_id'=>$v['id'],'isdel'=>0],'id,type,content,addtime',0);
             }
 
             //t odo 检查当前用户是负责该项目的哪个职能：设计师or项目经理？
