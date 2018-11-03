@@ -42,7 +42,7 @@
                     <td><?php if($stp1['level'] > 1){
                         echo str_repeat('--',$stp1['level']),'|&nbsp;';}
                         ?>{$stp1.name}</td>
-                    <td>{$stp1.plan_time}</td>
+                    <td>{$stp1.plan_time1}|{$stp1.plan_time2}</td>
                     <td>{if $stp1.b_user_name}
                         {$stp1.b_user_name}:{$stp1.b_user_mesg}
                         {/if}
@@ -73,7 +73,7 @@
                 <td><?php if($stp2['level'] > 1){
                     echo str_repeat('--',$stp2['level']),'|&nbsp;';}
                     ?>{$stp2.name}</td>
-                <td>{$stp2.plan_time}</td>
+                <td>{$stp2.plan_time1}|{$stp2.plan_time2}</td>
                 <td>{if $stp2.b_user_name}
                     {$stp2.b_user_name}:{$stp2.b_user_mesg}
                     {/if}

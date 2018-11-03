@@ -105,10 +105,10 @@ class Projectstep extends Common{
         $type1_steps = $type2_steps = [];
         if($act == 'edit'){
             $s_w['type'] = 1;
-            $type1_steps = $this->M->get_step_list($s_w,'id,pid,type,name,plan_time');
+            $type1_steps = $this->M->get_step_list($s_w,'id,pid,type,name,plan_time,plan_time1,plan_time2');
             $type1_steps = $this->create_type_steps($type1_steps);
             $s_w['type'] = 2;
-            $type2_steps = $this->M->get_step_list($s_w,'id,pid,type,name,plan_time');
+            $type2_steps = $this->M->get_step_list($s_w,'id,pid,type,name,plan_time,plan_time1,plan_time2');
             $type2_steps = $this->create_type_steps($type2_steps);
 
         }
@@ -263,10 +263,11 @@ class Projectstep extends Common{
     protected function create_type_steps($steps){
         if(!empty($steps)){
             foreach($steps as $k=>$v){
-                $steps[$k]['plan_time'] = explode('|',$v['plan_time']);
+                $steps[$k]['plan_time'] = [$v['plan_time1'],$v['plan_time2']];
+                /*$steps[$k]['plan_time'] = explode('|',$v['plan_time']);
                 if(!isset($steps[$k]['plan_time'][1])){
                     $steps[$k]['plan_time'][1] = '';
-                }
+                }*/
             }
             return create_level_tree($steps);
         }
@@ -410,7 +411,7 @@ class Projectstep extends Common{
                       'name'=>$sub['name'],
                       'step_sort'=>$sk,
                       //todo 运行一段时间 后，取消 plan_time 的赋值 20180929
-                      'plan_time'=>$sub['time1'].'|'.$sub['time1'],
+                      'plan_time'=>$sub['time1'].'|'.$sub['time2'],
                       'plan_time1'=>$sub['time1'],
                       'plan_time2'=>$sub['time2'],
                   ];
