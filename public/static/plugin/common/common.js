@@ -934,7 +934,7 @@ $(function () {
     $(document).on('click','.del_qnfile',function(){
         //console.log('del_qnfile');
         //mcdoc_upload_box
-        var _div = $(this).closest('.mcdoc_upload_box'),
+        var _div = $(this).closest('.qiniu_doc_line'),
             qn_key = _div.find('.p_doc').attr('data-key');
         if(!qn_key){
             return false;
@@ -959,6 +959,121 @@ $(function () {
         });
     }
 });
+
+var mc_qiniu = {
+    'config':{
+        'base_config':{
+            useCdnDomain: true,//表示是否使用 cdn 加速域名
+            region: null//选择上传域名区域
+        },
+        'putExtra':{
+            fname: "",//文件原文件名
+            params: {},//用来放置自定义变量
+            mimeType: null//["image/png", "image/jpeg", "image/gif"]
+        },
+        'uptoken':'',
+        'select':'.filepick',
+        'file_prefix':'test'
+    },
+    init:function(options){
+        if(typeof md5 == 'undefined'){
+            throw new Error('需要引入md5.js');
+        }
+        this.config.uptoken = options.uptoken;
+        this.config.select = options.upselect;
+        if(options.after_upload){
+            this.after_upload = options.after_upload;
+        }
+        this.file_prefix = options.file_prefix;
+        if(options.mime_type){
+            this.config.putExtra.mimeType = options.mime_type;
+        }
+        this.init_upload_event();
+
+    },
+    init_upload_event:function(){
+        var _this = this;
+        $(document).on('change',_this.config.select,function(){
+            var len = this.files.length;
+            for(var i=0;i<len; i++){
+                _this.do_upload(i,this.files[i],len);
+            }
+        });
+    },
+    do_upload:function(index,fileobj,file_len){
+        var _this = this,
+            nameinfo = this.do_filename(fileobj.name),
+            press = $('.mcdoc_press');
+
+        var observer = {
+            next:function(res){
+                //console.log(res);
+                press.show().css('width',res.total.percent+'%').html(res.total.percent+'%');
+            },
+            error:function(err){
+                //layer.alert(err.code);
+                if(err.message.indexOf('file type doesn\'t match')>-1){
+
+                    layer.alert('上传的文件类型有误，请确认后再上传');
+                }else if(err.code && qnErrors[err.code]){
+                    //目标资源已存在
+                    if(err.code == 614){
+                        var res = {
+                            "filename":nameinfo['filename'],
+                            "key":nameinfo['q_key'],
+                            "hash":md5(nameinfo['q_key'])
+                        };
+
+                        _this.after_upload && _this.after_upload(res);
+                        return false;
+                    }
+
+                    layer.alert(qnErrors[err.code]);
+                }else{
+                    layer.alert(err.message);
+                }
+                console.log(err);
+            },
+            complete:function(res){
+                //console.log(res);
+                //console.log(nameinfo);
+                res['filename'] = nameinfo['filename'];
+                _this.after_upload && _this.after_upload(res);
+                if(index==file_len-1){
+                    press.hide();
+                }
+            }
+        };
+
+        var subscription;
+        // 调用sdk上传接口获得相应的observable，控制上传和暂停
+        var observable = qiniu.upload(fileobj, nameinfo['q_key'], _this.config.uptoken, _this.config.putExtra, _this.config.base_config);
+        observable.subscribe(observer)
+    },
+    do_filename:function(filename){
+
+        var ext = filename.toLowerCase().split('.').splice(-1)[0];
+        //console.log(dtx);
+        return{//reports
+            'q_key':this.file_prefix+'/mcdocs-'+md5(encodeURIComponent(filename)+'-'+(new Date().getTime()))+'.'+ext,
+            'filename':filename
+        } ;
+    },
+    after_upload:function(res){
+
+        var ext = (res['filename'].split('.').splice(-1))[0].toLowerCase();
+
+        var html = '<div class="qiniu_doc_line">'
+            +'<p><a href="javascript:;" class="text-error del_qnfile"><i class="icon-trash"></i> 删除</a></p>';
+        if(ext=='jpg' || ext=='png' || ext=='jpeg' || ext=='gif'){
+            html += '<p><img src="'+qu_host+res['key']+'" style="height: 120px;"/> </p>';
+        }
+        html += '文件名：<input class="p_doc" value="'+res['filename']+'" data-ext="'+ext+'" data-key="'+res['key']+'" data-hash="'+res['hash']+'">'
+            +'</div>';
+        $('.mcdoc_ppress').after(html);
+
+    }
+};
 
 //go-top
 var gotop = {
