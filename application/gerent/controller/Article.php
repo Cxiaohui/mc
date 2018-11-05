@@ -101,6 +101,7 @@ class Article extends Common{
         }
 
         $cates = $this->article_model->get_cate_keydata();
+        //print_r($cates);
         $js = $this->loadJsCss(array('p:common/common','p:ueditor/ueditor','p:webuper/js/webuploader','singleUp','p:cate/jquery.cate','article'), 'js', 'admin');
 
         $this->assign('footjs', $js);
