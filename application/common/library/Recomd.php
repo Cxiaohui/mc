@@ -18,9 +18,9 @@ class Recomd {
         $cachekey = 'indexsll:'.$dev;
         $data = cache($cachekey);
 
-        /*if($data){
+        if($data){
             return $data;
-        }*/
+        }
 
 
         $w = '';
@@ -39,7 +39,7 @@ class Recomd {
             }
             $data[] = $tmp;
         }
-        //cache($cachekey,$data,120);
+        cache($cachekey,$data,120);
         return $data;
     }
 
@@ -129,6 +129,12 @@ class Recomd {
         return $info;
     }
 
+    public function clear_cache(){
+        cache('indexsll:app',null);
+        cache('indexsll:table',null);
+        cache('indexsll:pc',null);
+        cache('indexsll:wx',null);
+    }
 
 
     /**

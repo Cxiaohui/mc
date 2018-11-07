@@ -127,9 +127,11 @@ class Recommend extends Common
         if(!$res){
             $this->error('删除失败');
         }
-        //todo 清除相关缓存
+        // 清除相关缓存
+        (new lRecomd())->clear_cache();
+
         if($info['stable'] && $info['stable']!='self' && $info['sid']) {
-            $this->M->set_recmd($info['stable'],$info['sid'],0,0);
+            $this->M->set_recmd($info['stable'],$info['sid'],0);
         }
         $this->success('删除成功');
     }
