@@ -26,7 +26,7 @@ class Recomd {
         $w = '';
         $now = date('Y-m-d');
 
-        $w = " betime<='{$now}' and (entime=0 or entime>='{$now}')";
+        $w = " betime<='{$now}' and (entime=0 or entime>='{$now}') and isdel=0";
 
         //echo $w;
         $list = Db::name('recommend')->field('retype,stable,sid,pic,url')->where($w)->order('sort','asc')->select();
