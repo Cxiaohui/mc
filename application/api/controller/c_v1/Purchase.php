@@ -101,7 +101,12 @@ class Purchase extends Common{
             }
         }*/
 
-        $docs = (new Purchasedoc())->get_list(['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,addtime');
+        $docs = (new Purchasedoc())->get_order_list(
+            ['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0],
+            'id,file_type,file_name,file_path,addtime',
+            ['seq'=>'asc'],
+            0);
+
         if(!empty($docs)){
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){

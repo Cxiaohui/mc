@@ -230,7 +230,12 @@ class Project extends Common{
         $step_info['plan_day'] = ceil((strtotime($plan_time[1])-strtotime($plan_time[0]))/(24*3600))+1;
         $step_info['plan_time'] = implode('-',$plan_time);
         $primary_doc = [];
-        $docs = (new Projectdoc())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],'id,is_primary,file_type,file_name,file_path,addtime',0);
+        $docs = (new Projectdoc())->get_order_list(
+            ['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],
+            'id,is_primary,file_type,file_name,file_path,addtime',
+            ['seq'=>'asc'],
+            0);
+
         if(!empty($docs)){
             $q_host = config('qiniu.host');
             $img_ext = config('img_ext');

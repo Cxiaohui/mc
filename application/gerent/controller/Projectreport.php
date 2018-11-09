@@ -97,7 +97,7 @@ class Projectreport extends Common{
             if(!$info){
                 $this->error('该验收报告不存在');
             }
-            $info['docs'] = $this->MD->get_list(['p_rep_id'=>$id,'isdel'=>0],'*',0);
+            $info['docs'] = $this->MD->get_order_list(['p_rep_id'=>$id,'isdel'=>0],'*',['seq'=>'asc'],0);
         }
 
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
@@ -269,11 +269,13 @@ class Projectreport extends Common{
 
         //docs
         if(!empty($docs)){
+            $max_seq = $this->MD->where(['p_id'=>$p_id,'p_rep_id'=>$id,'isdel'=>0])->max('seq');
             $inserts = [];
-            foreach($docs as $dc){
+            foreach($docs as $k=>$dc){
                 $inserts[] = [
                     'p_id'=>$p_id,
                     'p_rep_id'=>$id,
+                    'seq'=>$max_seq+$k,
                     //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                     'file_type'=>$dc['ext'],
                     'file_name'=>$dc['filename'],

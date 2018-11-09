@@ -52,7 +52,7 @@ class Purchase extends Common{
             $Projectlog = new Projectlog();
             foreach($list as $k=>$v){
 
-                $list[$k]['docs'] = $purchasedoc->get_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime',0);
+                $list[$k]['docs'] = $purchasedoc->get_order_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime',['seq'=>'asc'],0);
                 $list[$k]['doc_count'] = count($list[$k]['docs']);
                 $list[$k]['logs']  = $Projectlog->get_list(['p_id'=>$p_id,'p_step_id'=>$v['id'],'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime',0);
             }
@@ -88,7 +88,7 @@ class Purchase extends Common{
             if(!$info){
                 $this->error('该采购信息不存在');
             }
-            $info['docs'] = (new Purchasedoc())->get_list(['pu_id'=>$id,'isdel'=>0],'*',0);
+            $info['docs'] = (new Purchasedoc())->get_order_list(['pu_id'=>$id,'isdel'=>0],'*',['seq'=>'asc'],0);
         }
 
         $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
@@ -180,11 +180,14 @@ class Purchase extends Common{
 
         //docs
         if(!empty($docs)){
+            $mp = new Purchasedoc();
+            $max_seq = $mp->where(['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0])->max('seq');
             $inserts = [];
-            foreach($docs as $dc){
+            foreach($docs as $k=>$dc){
                 $inserts[] = [
                     'p_id'=>$p_id,
                     'pu_id'=>$id,
+                    'seq'=>$max_seq+$k,
                     //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                     'file_type'=>$dc['ext'],
                     'file_name'=>$dc['filename'],
@@ -195,7 +198,7 @@ class Purchase extends Common{
                 ];
             }
             if(!empty($inserts)){
-                (new Purchasedoc())->insert_all($inserts);
+                $mp->insert_all($inserts);
             }
         }
 

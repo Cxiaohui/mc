@@ -184,7 +184,12 @@ class Project extends Common{
         $step_info['plan_time'] = implode('-',$plan_time);
 
         $primary_doc = [];
-        $docs = (new Projectdoc())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],'id,is_primary,file_type,file_name,file_path,addtime',0);
+        $docs = (new Projectdoc())->get_order_list(
+            ['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],
+            'id,is_primary,file_type,file_name,file_path,addtime',
+            ['seq'=>'asc'],
+            0);
+
         if(!empty($docs)){
             $q_host = config('qiniu.host');
             $img_ext = config('img_ext');
@@ -286,12 +291,14 @@ class Project extends Common{
         }
         if(!empty($imgs)){
             $imgs = explode(',',$imgs);
-            foreach($imgs as $img){
+            $max_seq = $projectdoc->where(['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0])->max('seq');
+            foreach($imgs as $k=>$img){
                 $ext = strtolower(pathinfo($img)['extension']);
                 $doc_inserts[] = [
                     'p_id'=>$p_id,
                     'p_step_id'=>$step_id,
                     'is_primary'=>0,
+                    'seq'=>$max_seq+$k,
                     'file_type'=>$ext,
                     //'file_name'=>'',
                     'file_path'=>$img,

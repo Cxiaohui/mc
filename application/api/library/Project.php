@@ -49,7 +49,13 @@ class Project{
             $pdoc = new Projectdoc();
             $imgtypes = ['jpg','jpeg','png'];
             $step_ids = array2to1($step_ids,'id');
-            $step_docs = $pdoc->get_list(['p_id'=>$p_id,'is_primary'=>1,'file_type'=>['in',$imgtypes],'p_step_id'=>['in',$step_ids],'isdel'=>0],'id,p_step_id,file_type,file_name,file_path');
+
+            $step_docs = $pdoc->get_order_list(
+                ['p_id'=>$p_id,'is_primary'=>1,'file_type'=>['in',$imgtypes],'p_step_id'=>['in',$step_ids],'isdel'=>0],
+                'id,p_step_id,file_type,file_name,file_path',
+                ['seq'=>'asc'],
+                0);
+
             if(!empty($step_docs)){
                 foreach($step_docs as $k=>$v){
                     $step_docs[$k]['url'] = c_img($v['file_path'],0);

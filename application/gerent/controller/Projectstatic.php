@@ -54,7 +54,7 @@ class Projectstatic extends Common{
         if(!empty($pstatics)){
             $Projectlog = new Projectlog();
             foreach($pstatics as $k=>$pst){
-                $pstatics[$k]['docs'] = $this->M->get_list(['p_static_id'=>$pst['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime',0);
+                $pstatics[$k]['docs'] = $this->M->get_order_list(['p_static_id'=>$pst['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime',['seq'=>'asc'],0);
                 $pstatics[$k]['doc_count'] = count($pstatics[$k]['docs'] );
                 //5效果图，6cad图，7主材
                 $pstatics[$k]['logs'] = $Projectlog->get_list(
@@ -159,7 +159,7 @@ class Projectstatic extends Common{
             if(!$info){
                 $this->error('该信息不存在');
             }
-            $info['docs'] = $this->M->get_list(['p_static_id'=>$id,'isdel'=>0],'*',0);
+            $info['docs'] = $this->M->get_order_list(['p_static_id'=>$id,'isdel'=>0],'*',['seq'=>'asc'],0);
         }
         //print_r($info);
         $policy = ['mimeLimit'=>''];
@@ -279,12 +279,14 @@ class Projectstatic extends Common{
 
         //docs
         if(!empty($docs)){
+            $max_seq = $this->M->where(['p_static_id'=>$id,'p_id'=>$p_id,'type'=>$post['type'],'isdel'=>0])->max('seq');
             $inserts = [];
-            foreach($docs as $dc){
+            foreach($docs as $k=>$dc){
                 $inserts[] = [
                     'p_static_id'=>$id,
                     'p_id'=>$p_id,
                     'type'=>$post['type'],
+                    'seq'=>$max_seq+$k,
                     //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                     'file_type'=>$dc['ext'],
                     'file_name'=>$dc['filename'],

@@ -75,7 +75,12 @@ class Purchase extends Common
         $status = [0=>'待确认',1=>'已驳回',2=>'已确认'];
         $rep_info['status_name'] = $status[$rep_info['status']];
 
-        $docs = (new Purchasedoc())->get_list(['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,addtime');
+        $docs = (new Purchasedoc())->get_order_list(
+            ['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0],
+            'id,file_type,file_name,file_path,addtime',
+            ['seq'=>'asc'],
+            0);
+
         if(!empty($docs)){
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){
