@@ -279,14 +279,14 @@ class Projectstatic extends Common{
 
         //docs
         if(!empty($docs)){
-            $max_seq = $this->M->where(['p_static_id'=>$id,'p_id'=>$p_id,'type'=>$post['type'],'isdel'=>0])->max('seq');
+            $max_seq = $this->M->get_max(['p_static_id'=>$id,'p_id'=>$p_id,'type'=>$post['type'],'isdel'=>0],'seq');
             $inserts = [];
             foreach($docs as $k=>$dc){
                 $inserts[] = [
                     'p_static_id'=>$id,
                     'p_id'=>$p_id,
                     'type'=>$post['type'],
-                    'seq'=>$max_seq+$k,
+                    'seq'=>$max_seq+$k+1,
                     //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                     'file_type'=>$dc['ext'],
                     'file_name'=>$dc['filename'],

@@ -105,7 +105,7 @@ class Offer extends Common{
             'id,file_type,file_name,file_path,sign_complex_path,addtime',
             ['seq'=>'asc'],
             0);
-        
+
         if(!empty($docs)){
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){

@@ -54,6 +54,9 @@ class General extends Model{
         return Db::name($this->t)->where($where)->delete();
     }
 
+    public function get_max($where,$filed){
+        return Db::name($this->t)->where($where)->max($filed);
+    }
 
     public function insert_all($data){
         return Db::name($this->t)->insertAll($data);

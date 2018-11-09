@@ -291,14 +291,14 @@ class Project extends Common{
         }
         if(!empty($imgs)){
             $imgs = explode(',',$imgs);
-            $max_seq = $projectdoc->where(['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0])->max('seq');
+            $max_seq = $projectdoc->get_max(['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],'seq');
             foreach($imgs as $k=>$img){
                 $ext = strtolower(pathinfo($img)['extension']);
                 $doc_inserts[] = [
                     'p_id'=>$p_id,
                     'p_step_id'=>$step_id,
                     'is_primary'=>0,
-                    'seq'=>$max_seq+$k,
+                    'seq'=>$max_seq+$k+1,
                     'file_type'=>$ext,
                     //'file_name'=>'',
                     'file_path'=>$img,

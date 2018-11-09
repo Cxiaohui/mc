@@ -181,13 +181,13 @@ class Purchase extends Common{
         //docs
         if(!empty($docs)){
             $mp = new Purchasedoc();
-            $max_seq = $mp->where(['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0])->max('seq');
+            $max_seq = $mp->get_max(['p_id'=>$p_id,'pu_id'=>$id,'isdel'=>0],'seq');
             $inserts = [];
             foreach($docs as $k=>$dc){
                 $inserts[] = [
                     'p_id'=>$p_id,
                     'pu_id'=>$id,
-                    'seq'=>$max_seq+$k,
+                    'seq'=>$max_seq+$k+1,
                     //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                     'file_type'=>$dc['ext'],
                     'file_name'=>$dc['filename'],

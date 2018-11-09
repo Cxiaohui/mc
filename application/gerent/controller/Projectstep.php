@@ -323,6 +323,8 @@ class Projectstep extends Common{
         $inserts = [];
         $mdc = new Projectdoc();
         $has_primary = $mdc->get_count(['p_id'=>$step_info['p_id'],'p_step_id'=>$stepid,'is_primary'=>1,'isdel'=>0]);
+
+        $max_seq = $mdc->get_max(['p_id'=>$step_info['p_id'],'p_step_id'=>$stepid,'isdel'=>0],'seq');
         $is_primary = 0;
         foreach($docs as $k=>$dc){
             if(!$has_primary){
@@ -333,6 +335,7 @@ class Projectstep extends Common{
                 'p_id'=>$step_info['p_id'],
                 'p_step_id'=>$stepid,
                 'is_primary'=>$is_primary,
+                'seq'=>$max_seq+$k+1,
                 //'file_type'=>strtolower(pathinfo($dc['filename'])['extension']),
                 'file_type'=>$dc['ext'],
                 'file_name'=>$dc['filename'],
