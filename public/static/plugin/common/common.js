@@ -973,6 +973,7 @@ var mc_qiniu = {
         },
         'uptoken':'',
         'select':'.filepick',
+        'fileshowbox':'.mcdoc_upload_box',
         'file_prefix':'test'
     },
     init:function(options){
@@ -1070,7 +1071,7 @@ var mc_qiniu = {
         }
         html += '文件名：<input class="p_doc" value="'+res['filename']+'" data-ext="'+ext+'" data-key="'+res['key']+'" data-hash="'+res['hash']+'">'
             +'</div>';
-        $('.mcdoc_ppress').after(html);
+        $(this.config.fileshowbox).append(html);
 
     }
 };
