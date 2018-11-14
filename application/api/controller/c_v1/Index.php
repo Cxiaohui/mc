@@ -54,7 +54,7 @@ class Index extends Common{
                 //为您提供
                 'wntg'=>[
                     'title'=>'为您提供',
-                    'img_url'=>$q_host.'static/index/app_wntg.jpg',
+                    'img_url'=>$q_host.'static/index/app_wntg_20181114.jpg',
                     'info_url'=>$h5_base_url .'BecomeProvide.html'
                 ],
                 //他们的家
@@ -65,13 +65,13 @@ class Index extends Common{
                 //实景样板间
                 'sjybj'=>[
                     'title'=>'实景样板间',
-                    'img_url'=>$q_host.'static/index/app_sjybj2.jpg',
+                    'img_url'=>$q_host.'static/index/app_sjybj_20181114.jpg',
                     'info_url'=>'http://anli.mzgtuan.com/quanjing/huandiban/'
                 ],
                 //资讯
                 'zx'=>[
                     'title'=>'资讯',
-                    'img_url'=>$q_host.'static/index/app_zx2.jpg',
+                    'img_url'=>$q_host.'static/index/app_zx_20181114.jpg',
                     'info_url'=>$h5_base_url .'hotTopic.html'
                 ]
             ]
