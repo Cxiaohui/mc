@@ -269,7 +269,8 @@ class YunIM
             'owner'=>$ower_user,
             'announcement'=>$announcement,
             'intro'=>$intro,
-            'members'=>implode(',',$members)
+            'members'=>implode(',',$members),
+            'isdel'=>0
         ];
         (new Imgroups())->save_groups($group_data);
         //$this->save_im_list($p_id,$tid,$gname,$members_B,$members_C);
