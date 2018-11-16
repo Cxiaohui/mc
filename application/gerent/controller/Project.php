@@ -159,7 +159,8 @@ class Project extends Common{
         $res = $this->M->update_data($w,['uptime'=>$this->datetime,'isdel'=>1]);
         if($res){
             //解散群
-            $groups = (new Imgroups())->get_list(['p_id'=>$id],'id,p_id,tid,owner',0);
+            $img = new Imgroups();
+            $groups = $img->get_list(['p_id'=>$id],'id,p_id,tid,owner',0);
             if(!empty($groups)){
                 $yim = new YunIM();
                 foreach($groups as $gp){
@@ -172,7 +173,7 @@ class Project extends Common{
                         ],'remove_group');
                     }
                 }
-
+                $img->update_data(['p_id'=>$id],['isdel'=>1]);
             }
             $this->success('删除成功');
         }

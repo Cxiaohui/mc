@@ -401,13 +401,13 @@ class Index extends \app\common\controller\Base
 
     function t12(){
         $yim = new \app\common\library\YunIM();
-        $res = $yim->queryGroupMsg('560928224','c_1');
+        $res = $yim->queryGroupMsg('560928224','p_1');
         print_r($res);
     }
 
     function t13(){
         $yim = new \app\common\library\YunIM();
-        $res = $yim->sendTestMsg('p_4','624712007',1,'今天是'.date('Y-m-d H:i'));
+        $res = $yim->sendTestMsg('p_23','1459721559',1,'今天是'.date('Y-m-d H:i'));
         //http://pa5ijfg62.bkt.clouddn.com/doc/testestesteststtte.docx
         //$res = $yim->sendTestMsg('p_1','560928224',1,'今天是'.date('Y-m-d H:i'));
         print_r($res);
