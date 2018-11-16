@@ -10,9 +10,27 @@ use app\common\model\Imgroups;
 use Qiniu\Auth,
     \Qiniu\Config as QConfig,
     Qiniu\Storage\BucketManager,
+    app\common\model\Project,
+    app\common\library\YunIM,
     Qiniu\Storage\UploadManager;
 
 class T extends \app\common\controller\Base{
+
+    public function cgroupim()
+    {
+        $p_id = input('get.p_id',0,'int');
+        if(!$p_id){
+            exit('error:p_id is false');
+        }
+
+        (new Project())->update_data(['id'=>$p_id],['imgroup_id'=>0]);
+
+        $yim = new YunIM();
+
+        $res = $yim->createGroupByProject($p_id);
+
+        print_r($res);
+    }
 
     public function dwz(){
         $url = 'http://pa5ijfg62.bkt.clouddn.com/reports/mcdocs-3b82b6e2e9f62bcaac7bb7dfe0be9c18.jpg?watermark/1/image/aHR0cDovL3BhNWlqZmc2Mi5ia3QuY2xvdWRkbi5jb20vc2lnbmltZy90ZXN0c2lnbi5qcGc=/dissolve/99/gravity/SouthEast/dx/15/dy/15/ws/0.8/wst/0';
