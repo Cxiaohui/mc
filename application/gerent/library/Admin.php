@@ -22,7 +22,7 @@ class Admin{
         $sql = 'select ad.id,ad.name,ad.post,adp.id as part_id,adp.name as dp_name  
 from `mc_admin` as ad 
 left join `mc_admin_department` as adp on adp.id=ad.`depart_id` 
-where ad.isdel=0 and ad.is_work=1 order by adp.`sort` asc';
+where ad.isdel=0 and ad.status=1 and ad.is_work=1 order by adp.`sort` asc';
 
         $list = (new mg())->query_sql($sql);
         if(empty($list)){

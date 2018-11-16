@@ -96,9 +96,10 @@ class Project extends Common{
         }
         $info['marks'] = $this->mpjm->get_info(['p_id'=>$id],'p_remarks,owner_remarks');
         $aroles = (new Approle())->get_list('status=1','id,name,remark',0);
-        $admins = (new Admin())->get_admin_list(['status'=>1,'is_work'=>1,'isdel'=>0],'id,name,post');
-        $plogs = (new Projectlog())->get_list(['p_id' => $id], 'id,oper_user_name,oper_desc,addtime');
-
+        $admins = (new Admin())->get_admin_list(['status'=>1,'is_work'=>1,'isdel'=>0],'id,name,post',0);
+        $plogs = (new Projectlog())->get_list(['p_id' => $id], 'id,oper_user_name,oper_desc,addtime',0);
+        //print_r($admins);
+        //print_r($info);
         $this->assign('info', $info);
         $this->assign('plogs', $plogs);
         $this->assign('aroles', create_kv($aroles,'id',['name','remark']));

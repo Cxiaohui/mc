@@ -31,32 +31,44 @@
                     <p style="word-break:break-all;">{$info.marks.p_remarks}</p></td></tr>
                 <tr><th colspan="4">项目主要负责人信息</th></tr>
                 <tr><td class="align-r"><span class="error">*</span>项目经理</td><td>
+                    {if isset($admins[$info.manager_user_id])}
                     {$admins[$info.manager_user_id]}
+                    {/if}
                     <!--{/*[{$aroles[$info.manager_role_id]}]*/}-->
                     </td>
                     <td class="align-r"><span class="error">*</span>客户经理</td><td>
+                        {if isset($admins[$info.customer_manager_user_id])}
                         {$admins[$info.customer_manager_user_id]}
+                        {/if}
                         <!--{/*[{$aroles[$info.customer_manager_role_id]}]*/}-->
 
                 </td></tr>
                 <tr><td class="align-r"><span class="error">*</span>设计师</td><td>
+                    {if isset($admins[$info.desgin_user_id])}
                     {$admins[$info.desgin_user_id]}
+                    {/if}
                     <!--{/*[{$aroles[$info.desgin_role_id]}]*/}-->
                 </td>
                     <td class="align-r"><span class="error">*</span>设计师助理</td><td>
+                        {if isset($admins[$info.desgin_assistant_user_id])}
                         {$admins[$info.desgin_assistant_user_id]}
+                        {/if}
                         <!--{/*[{$aroles[$info.desgin_assistant_role_id]}]*/}-->
 
                     </td>
                 </tr>
 
                 <tr><td class="align-r"><span class="error">*</span>项目质检</td><td>
+                    {if isset($admins[$info.supervision_user_id])}
                     {$admins[$info.supervision_user_id]}
+                    {/if}
                     <!--{/*[{$aroles[$info.supervision_role_id]}]*/}-->
 
                 </td>
                     <td class="align-r"><span class="error">*</span>装修管家</td><td>
+                        {if isset($admins[$info.decorate_butler_user_id])}
                         {$admins[$info.decorate_butler_user_id]}
+                        {/if}
                         <!--{/*[{$aroles[$info.decorate_butler_role_id]}]*/}-->
 
                     </td>
