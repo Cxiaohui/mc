@@ -72,11 +72,12 @@ class Anysizeimg{
         if(strpos($srcfile,'mcdocs-')!==false){
 
 
-            $ext = pathinfo($srcfile,PATHINFO_EXTENSION);
+
             $fop = '';
+            /*$ext = pathinfo($srcfile,PATHINFO_EXTENSION);
             if(in_array($ext,config('img_ext'))){
                 $fop = '?imageMogr2/strip/format/webp/interlace/1/quality/80/';//?imageslim
-            }
+            }*/
 
             return ['err'=>1,'msg'=>'It\'s a Qiniu file.','src'=>config('qiniu.host').$srcfile.$fop];
         }

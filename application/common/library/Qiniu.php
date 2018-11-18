@@ -16,10 +16,13 @@ use think\image\Exception;
 class Qiniu{
 
     static public function save_new_img($w_url){
+        $savename = explode('-',str_replace(config('qiniu.host'),'',$w_url))[0].'-'.md5($w_url).'.jpg';
+        return self::fop_save($w_url,$savename,'sign/');
+    }
+    static public function fop_save($w_url,$savename,$dir=''){
         try{
+
             $qn = config('qiniu');
-            //$savebuket = $qn['bucket1'];
-            $savename = explode('-',str_replace($qn['host'],'',$w_url))[0].'-'.md5($w_url).'.jpg';
 
             $auth = new Auth($qn['AccessKey'],$qn['SecretKey']);
 
@@ -30,7 +33,7 @@ class Qiniu{
             $safe_sign = $auth->sign(str_replace('http://','',$newurl));
 
 
-            $finalURL = $newurl.'/sign/'.$safe_sign;
+            $finalURL = $newurl.'/'.$dir.$safe_sign;
 
             /**
              * {
