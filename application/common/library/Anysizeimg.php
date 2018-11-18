@@ -70,7 +70,7 @@ class Anysizeimg{
         }
         //七牛
         if(strpos($srcfile,'mcdocs-')!==false){
-            return ['err'=>1,'msg'=>'It\'s a Qiniu file.','src'=>config('qiniu.host').$srcfile];
+            return ['err'=>1,'msg'=>'It\'s a Qiniu file.','src'=>config('qiniu.host').$srcfile.'?imageslim'];
         }
         $src = '';
         //检查是否已经是全路径了

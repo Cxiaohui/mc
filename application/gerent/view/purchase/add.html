@@ -33,11 +33,11 @@
                     <div class="docli">
                         {if in_array($dc.file_type,$img_ext)}
 
-                        <p><a href="{$qn_host}{$dc.file_path}" target="_blank"><img src="{$qn_host}{$dc.file_path}" style="height: 200px;"/></a></p>
+                        <p><a href="{:quimg($dc.file_path,'')}" target="_blank"><img src="{:quimg($dc.file_path,'')}" style="height: 200px;"/></a></p>
                         <p>{$dc.file_name} </p>
                         {else /}
                         <div class="docli">
-                            <h4><i class="icon-file-alt"></i> <a href="{$qn_host}{$dc.file_path}" target="_blank">{$dc.file_name}</a> </h4>
+                            <h4><i class="icon-file-alt"></i> <a href="{:quimg($dc.file_path,'')}" target="_blank">{$dc.file_name}</a> </h4>
 
                             {/if}
                             <a href="javascript:;" class="text-error del_mcfile" data-type="3" data-id="{$dc.id}"><i class="icon-trash"></i> 删除</a>

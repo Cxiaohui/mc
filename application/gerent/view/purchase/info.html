@@ -43,8 +43,8 @@
             </tr>
             <tr><td colspan="5">
                 {notempty name="da.docs"}
-                {foreach name="da.docs" item="doc"}
-                <p><a href="{$qn_host}{$doc.file_path}" target="_blank">{$doc.file_name}</a></p>
+                {foreach name="da.docs" item="dc"}
+                <p><a href="{:quimg($dc.file_path,'')}" target="_blank">{$dc.file_name}</a></p>
 
                 {/foreach}
                 {/notempty}

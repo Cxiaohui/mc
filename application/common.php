@@ -29,9 +29,9 @@ function quimg($path1,$path2,$q_host=''){
     $src = $path1?:$path2;
 
     if(strpos($src,'http://')!==false){
-        return $src;
+        return $src.'?imageslim';//图片瘦身服务
     }
-    return ($q_host?:config('qiniu.host')).$src;
+    return ($q_host?:config('qiniu.host')).$src.'?imageslim';//图片瘦身服务
 }
 
 /**

@@ -66,7 +66,8 @@ class Index extends Common{
                 'sjybj'=>[
                     'title'=>'实景样板间',
                     'img_url'=>$q_host.'static/index/app_sjybj_20181114.jpg',
-                    'info_url'=>'http://anli.mzgtuan.com/quanjing/huandiban/'
+                    'info_url'=>'https://vr.justeasy.cn/view/2492282.html'
+                    //'info_url'=>'http://anli.mzgtuan.com/quanjing/huandiban/'
                 ],
                 //资讯
                 'zx'=>[
