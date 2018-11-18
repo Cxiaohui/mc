@@ -193,7 +193,7 @@ class Steptime{
         $paylist = (new Projectpay())->get_list(['p_id'=>$p_id,'paied_time'=>0,'isdel'=>0],'id,name,payable,payable_time',0);
 
         // 预约信息  $user_type
-        $bookings = (new Booking())->get_list(['p_id'=>$p_id],'id,to_users,booking_time,booking_content');
+        $bookings = (new Booking())->get_list(['p_id'=>$p_id],'id,to_users,booking_time,booking_content',0);
 
         $days = [];
         $colors = self::step_colors();
@@ -358,7 +358,7 @@ class Steptime{
         $paylist = (new Projectpay())->get_list(['p_id'=>$p_id,'paied_time'=>0,'isdel'=>0],'id,name,payable,payable_time',0);
 
         // 预约信息  $user_type
-        $bookings = (new Booking())->get_list(['p_id'=>$p_id],'id,to_users,booking_time,booking_content');
+        $bookings = (new Booking())->get_list(['p_id'=>$p_id],'id,to_users,booking_time,booking_content',0);
 
         $days = [];
         $colors = self::step_colors();

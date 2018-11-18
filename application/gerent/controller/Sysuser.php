@@ -72,13 +72,13 @@ class Sysuser extends Common{
     }
 
     protected function getadminprojects($user_id){
-        $pids = $this->apm->get_list(['b_user_id'=>$user_id],'p_id');
+        $pids = $this->apm->get_list(['b_user_id'=>$user_id],'p_id',0);
         if(empty($pids)){
             return [];
         }
         $pids = array2to1($pids,'p_id');
         //print_r($pids);
-        return $this->pm->get_list(['id'=>['in',$pids],'isdel'=>0],'id,name');
+        return $this->pm->get_list(['id'=>['in',$pids],'isdel'=>0],'id,name',0);
     }
 
     protected function dosearch(){

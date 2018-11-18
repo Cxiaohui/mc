@@ -17,8 +17,8 @@ class Imgjoin{
         
         $buserids = array_unique($buserids);
         $cuserids = array_unique($cuserids);
-        $busers = (new Buser())->get_list(['id'=>['in',$buserids]],'id,head_pic');
-        $cusers = (new Cuser())->get_list(['id'=>['in',$cuserids]],'id,head_pic');
+        $busers = (new Buser())->get_list(['id'=>['in',$buserids]],'id,head_pic',0);
+        $cusers = (new Cuser())->get_list(['id'=>['in',$cuserids]],'id,head_pic',0);
 
         $pic_list = [];
         foreach($busers as $bu){

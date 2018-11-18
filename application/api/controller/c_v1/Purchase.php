@@ -117,7 +117,7 @@ class Purchase extends Common{
                 unset($docs[$dk]['file_path']);
             }
         }
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime',0);
 
         return $this->response([
             'code'=>200,

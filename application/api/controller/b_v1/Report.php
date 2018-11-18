@@ -37,7 +37,7 @@ class Report extends Common{
         }
         $preport = new Projectreport();
         //,'status'=>['in','0,1,2,3,4']
-        $list = $preport->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status');
+        $list = $preport->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status',0);
         if(empty($list)){
             return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
@@ -114,7 +114,7 @@ class Report extends Common{
 
 
         // 输出操作记录 - 20181005
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>3],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>3],'id,oper_user_name,oper_desc,addtime',0);
 
         return $this->response([
             'code'=>200,

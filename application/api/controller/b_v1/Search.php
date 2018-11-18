@@ -26,7 +26,7 @@ class Search extends Common{
             return $this->response(['code'=>201,'msg'=>'请输入需要搜索的文字']);
         }
 
-        $list = (new Pject())->get_list(['name'=>['like','%'.$keyword.'%']],'id,name as title,addtime');
+        $list = (new Pject())->get_list(['name'=>['like','%'.$keyword.'%']],'id,name as title,addtime',0);
 
         if(!empty($list)){
             foreach($list as $k=>$lt){

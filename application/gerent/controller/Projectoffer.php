@@ -53,7 +53,7 @@ class Projectoffer extends Common{
         }
         $is_sejishi = false;
         $is_jingli = false;
-        $list = $this->M->get_list(['p_id'=>$p_id,'isdel'=>0]);
+        $list = $this->M->get_list(['p_id'=>$p_id,'isdel'=>0],'*',0);
         if(!empty($list)){
             $projectreportmodify = new Projectoffermodify();
             foreach($list as $k=>$v){

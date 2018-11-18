@@ -56,7 +56,7 @@ class Booking extends Common{
                     $types[] = 5;
                 }
                 //,'owner_user_id'=>$this->user_id,'1,3,5'
-                $pinfo = (new Projectadmin())->get_list(['p_id'=>$post['p_id'],'type'=>['in',$types]],'id,b_user_id');
+                $pinfo = (new Projectadmin())->get_list(['p_id'=>$post['p_id'],'type'=>['in',$types]],'id,b_user_id',0);
                 if($pinfo){
                     $b_user_ids = array2to1($pinfo,'b_user_id');
 

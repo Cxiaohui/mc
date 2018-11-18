@@ -28,13 +28,13 @@ class Pcase extends Common{
         if(!$p_info){
             return $this->response(['code'=>201,'msg'=>'访问错误']);
         }
-        $p_cont = (new Pcasestep())->get_list(['case_id'=>$id,'isdel'=>0],'id,title,summary');
+        $p_cont = (new Pcasestep())->get_list(['case_id'=>$id,'isdel'=>0],'id,title,summary',0);
         if(!empty($p_cont)){
             $h5_base_url = $this->h5_base_url();
             $p_img = new Pcasestepimg();
             foreach($p_cont as $k=>$cont){
                 $p_cont[$k]['info_url'] = $h5_base_url .'DetailsPage2.html?id='.$cont['id'];
-                $p_cont[$k]['imgs'] = $p_img->get_list(['case_id'=>$id,'case_step_id'=>$cont['id']],'img_url');
+                $p_cont[$k]['imgs'] = $p_img->get_list(['case_id'=>$id,'case_step_id'=>$cont['id']],'img_url',0);
             }
         }
         // 浏览数加 1

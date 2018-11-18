@@ -45,7 +45,7 @@ class Purchase extends Common{
         }
 
 
-        $list = $this->m->get_list(['p_id'=>$p_id,'isdel'=>0]);
+        $list = $this->m->get_list(['p_id'=>$p_id,'isdel'=>0],'*',0);
         if(!empty($list)){
             //$purchasemodify = new Purchasemodify();
             $purchasedoc = new Purchasedoc();

@@ -36,9 +36,9 @@ class Payrecord extends Common{
 
         $w = ['p_id'=>$p_id,'p_type'=>1,'isdel'=>0];
         $fields = 'id,name,payable,payable_time,paied,paied_time,remark';
-        $type1 = $pay->get_list($w,$fields);
+        $type1 = $pay->get_list($w,$fields,0);
         $w['p_type'] = 2;
-        $type2 = $pay->get_list($w,$fields);
+        $type2 = $pay->get_list($w,$fields,0);
         //$count = count($type1) + count($type2);
         $data = [];
         $data['project'] = $p_info;

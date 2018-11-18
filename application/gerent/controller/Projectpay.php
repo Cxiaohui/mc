@@ -39,9 +39,9 @@ class Projectpay extends Common{
         }
 
         $w = ['p_id'=>$p_id,'p_type'=>1,'isdel'=>0];
-        $type1 = $this->M->get_list($w,'*');
+        $type1 = $this->M->get_list($w,'*',0);
         $w['p_type'] = 2;
-        $type2 = $this->M->get_list($w,'*');
+        $type2 = $this->M->get_list($w,'*',0);
         $count = count($type1) + count($type2);
 
         $js = $this->loadJsCss(array('p:common/common'), 'js', 'admin');
@@ -101,9 +101,9 @@ class Projectpay extends Common{
         $type1 = $type2 = [];
         if($act = 'edit'){
             $w = ['p_id'=>$p_id,'p_type'=>1,'isdel'=>0];
-            $type1 = $this->M->get_list($w,'id,name,payable,payable_time');
+            $type1 = $this->M->get_list($w,'id,name,payable,payable_time',0);
             $w['p_type'] = 2;
-            $type2 = $this->M->get_list($w,'id,name,payable,payable_time');
+            $type2 = $this->M->get_list($w,'id,name,payable,payable_time',0);
         }
 
         $js = $this->loadJsCss(array('p:common/common','projectpay'), 'js', 'admin');

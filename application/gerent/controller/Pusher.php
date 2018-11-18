@@ -269,7 +269,7 @@ class Pusher extends Common{
             ['id'=>$info['decorate_butler_user_id'],'role'=>'装修管家','name'=>''],
         ];
         $buser_ids = array2to1($data,'id');
-        $busers = (new Buser())->get_list(['id'=>['in',$buser_ids]],'id,name');
+        $busers = (new Buser())->get_list(['id'=>['in',$buser_ids]],'id,name',0);
         foreach($busers as $bu){
             foreach ($data as $k=>$da){
 

@@ -34,7 +34,7 @@ class Purchase extends Common
         }
         $purchase = new mPure();
 
-        $list = $purchase->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status');
+        $list = $purchase->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,status',0);
         if(empty($list)){
             return $this->response(['code'=>200,'msg'=>'没有数据','data'=>['list'=>[]]]);
         }
@@ -91,7 +91,7 @@ class Purchase extends Common
                 unset($docs[$dk]['file_path']);
             }
         }
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime',0);
 
         return $this->response([
             'code'=>200,

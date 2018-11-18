@@ -50,7 +50,7 @@ class Projectstatic extends Common{
         $log_type = $this->log_type();
         $type = input('get.type',1,'int');
         $where = ['p_id'=>$p_id,'type'=>$type,'isdel'=>0];
-        $pstatics = $this->ps->get_list($where,'id,p_id,name,type,status,addtime');
+        $pstatics = $this->ps->get_list($where,'id,p_id,name,type,status,addtime',0);
         if(!empty($pstatics)){
             $Projectlog = new Projectlog();
             foreach($pstatics as $k=>$pst){
@@ -59,7 +59,7 @@ class Projectstatic extends Common{
                 //5效果图，6cad图，7主材
                 $pstatics[$k]['logs'] = $Projectlog->get_list(
                     ['p_id'=>$p_id,'p_step_id'=>$pst['id'],'p_step_type'=>$log_type[$type]],
-                    'id,oper_user_name,oper_desc,addtime');
+                    'id,oper_user_name,oper_desc,addtime',0);
             }
         }
 
@@ -97,7 +97,7 @@ class Projectstatic extends Common{
         $data = $this->M->get_list($w,'*',0);
         //print_r($data);
         $doc_types = $this->doc_type();
-        $pstatic = (new pstatic())->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,type');
+        $pstatic = (new pstatic())->get_list(['p_id'=>$p_id,'isdel'=>0],'id,name,type',0);
 
 
         $q_host = config('qiniu.host');

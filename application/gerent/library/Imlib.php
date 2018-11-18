@@ -34,7 +34,7 @@ class Imlib{
             }
         }
         $p_info = (new Project())->get_info(['id'=>$p_id],'id,owner_user_id');
-        $p_admins = (new Projectadmin())->get_list(['p_id'=>$p_id],'type,b_user_id');
+        $p_admins = (new Projectadmin())->get_list(['p_id'=>$p_id],'type,b_user_id',0);
 
         $c_users = (new Cuser())->get_list(['id'=>['in',$c_user_ids]],'id,uname,mobile,head_pic',0);
         $b_users = (new Buser())->get_list(['id'=>['in',$b_user_ids]],'id,name as uname,mobile,head_pic',0);

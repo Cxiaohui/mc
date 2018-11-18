@@ -135,7 +135,7 @@ class Cases extends Common{
             $this->error('访问错误');
         }
 
-        $data = (new Pcasestep())->get_list(['case_id'=>$case_id,'isdel'=>0],'id,case_id,title,addtime');
+        $data = (new Pcasestep())->get_list(['case_id'=>$case_id,'isdel'=>0],'id,case_id,title,addtime',0);
 
         $js = $this->loadJsCss(array('p:common/common'), 'js', 'admin');
         //print_r($cates);

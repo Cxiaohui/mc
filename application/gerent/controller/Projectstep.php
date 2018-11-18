@@ -210,14 +210,14 @@ class Projectstep extends Common{
         $docs = (new Projectdoc())->get_list(['p_id'=>$info['p_id'],'p_step_id'=>$stepid,'isdel'=>0],'id,file_type,is_primary,file_name,file_path',0);
         $p_info = $this->mpj->get_info(['id'=>$info['p_id']],'id,name');
 
-        $modify = (new Stepmodify())->get_list(['p_id'=>$info['p_id'],'p_step_id'=>$stepid],'img,content,addtime');
+        $modify = (new Stepmodify())->get_list(['p_id'=>$info['p_id'],'p_step_id'=>$stepid],'img,content,addtime',0);
         foreach($modify as $k=>$md){
             if($md['img']){
                 $modify[$k]['img'] = config('qiniu.host').$md['img'];
             }
         }
 
-        $plogs = (new Projectlog())->get_list(['p_id' => $info['p_id'],'p_step_id'=>$stepid], 'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id' => $info['p_id'],'p_step_id'=>$stepid], 'id,oper_user_name,oper_desc,addtime',0);
 
         $js = $this->loadJsCss(['p:common/common'], 'js', 'admin');
         //print_r($cates);

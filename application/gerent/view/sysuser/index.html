@@ -76,13 +76,13 @@
                 <td>{if $da['allow_lg_b']==1}<label class="label label-success">允许登录</label> {else /}禁止{/if}
 
                     <br/>{$b_powers[$da['b_power_tag']]}</td>
-                <td>
+                <td><div style="max-height: 180px;max-width: 100px;overflow: scroll;">
                     {empty name="da.projects"}无
                     {else/}
                     {foreach name="da.projects" item="prot"}
-                    <p><a href="{:url('project/info',['id'=>$prot.id])}" target="_blank">{$prot.name}</a> </p>
+                    <p style="white-space: nowrap;"><a href="{:url('project/info',['id'=>$prot.id])}" target="_blank">{$prot.name}</a> </p>
                     {/foreach}
-                    {/empty}
+                    {/empty}</div>
                 </td>
                 <td>{if $da.lgtime>0}{$da.lgtime|date="Y-m-d H:i",###}{/if}</td>
                 <td>

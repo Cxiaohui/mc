@@ -36,7 +36,7 @@ class Im extends Common{
             $data = $this->m->get_order_list($where,$field,['updatetime'=>'desc'],$page['offset'].','.$page['limit']);
             $p_ids = array2to1($data,'p_id');
             if(!empty($p_ids)){
-                $ps = (new Project())->get_list(['id'=>['in',$p_ids]],'id,name');
+                $ps = (new Project())->get_list(['id'=>['in',$p_ids]],'id,name',0);
                 $projects = create_kv($ps,'id','name');
             }
 

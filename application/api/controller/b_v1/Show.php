@@ -78,7 +78,7 @@ class Show extends Common{
 
         $static_info['status_name'] = $this->status[$static_info['status']];
 
-        $docs = (new Projectstaticdocs())->get_list(['p_static_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,sign_complex_path,addtime');
+        $docs = (new Projectstaticdocs())->get_list(['p_static_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,sign_complex_path,addtime',0);
         if(!empty($docs)){
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){
@@ -90,7 +90,7 @@ class Show extends Common{
             }
         }
         // 输出操作记录 - 20181005
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>$this->log_type[$static_info['type']]],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$id,'p_step_type'=>$this->log_type[$static_info['type']]],'id,oper_user_name,oper_desc,addtime',0);
 
         return $this->response([
             'code'=>200,
@@ -189,7 +189,7 @@ class Show extends Common{
         $where = ['p_id'=>$p_id,'type'=>$type];
         $info = $pstatic->get_info($where,'id,p_id,name,type,status');
 
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$info['id'],'p_step_type'=>$this->log_type[$info['type']]],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$info['id'],'p_step_type'=>$this->log_type[$info['type']]],'id,oper_user_name,oper_desc,addtime',0);
 
 
         return $this->response([

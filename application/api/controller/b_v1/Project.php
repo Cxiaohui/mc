@@ -91,7 +91,7 @@ class Project extends Common{
             $step1_docs = APject::get_step_type_docs($pstep, $p_id, 1);
             $step2_docs = APject::get_step_type_docs($pstep, $p_id, 2);
             //logs
-            $plogs = (new Projectlog())->get_list(['p_id' => $p_id], 'id,oper_user_name,oper_desc,addtime');
+            $plogs = (new Projectlog())->get_list(['p_id' => $p_id], 'id,oper_user_name,oper_desc,addtime',0);
 
             return $this->response([
                 'code' => 200,
@@ -207,7 +207,7 @@ class Project extends Common{
             }
         }
         //logs
-        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'p_step_type'=>$step_info['type']],'id,oper_user_name,oper_desc,addtime');
+        $plogs = (new Projectlog())->get_list(['p_id'=>$p_id,'p_step_id'=>$step_id,'p_step_type'=>$step_info['type']],'id,oper_user_name,oper_desc,addtime',0);
 
         $data =  [
             'step_info'=>$step_info,
