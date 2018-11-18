@@ -70,7 +70,15 @@ class Anysizeimg{
         }
         //七牛
         if(strpos($srcfile,'mcdocs-')!==false){
-            return ['err'=>1,'msg'=>'It\'s a Qiniu file.','src'=>config('qiniu.host').$srcfile.'?imageslim'];
+
+
+            $ext = pathinfo($srcfile,PATHINFO_EXTENSION);
+            $fop = '';
+            if(in_array($ext,config('img_ext'))){
+                $fop = '?imageMogr2/strip/format/webp/interlace/1/quality/80/';//?imageslim
+            }
+
+            return ['err'=>1,'msg'=>'It\'s a Qiniu file.','src'=>config('qiniu.host').$srcfile.$fop];
         }
         $src = '';
         //检查是否已经是全路径了

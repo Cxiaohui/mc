@@ -28,10 +28,17 @@ function get_full_url($base64=false) {
 function quimg($path1,$path2,$q_host=''){
     $src = $path1?:$path2;
 
-    if(strpos($src,'http://')!==false){
-        return $src.'?imageslim';//图片瘦身服务
+    //
+    $ext = pathinfo($src,PATHINFO_EXTENSION);
+    $fop = '';
+    if(in_array($ext,config('img_ext'))){
+        $fop = '?imageMogr2/strip/format/webp/interlace/1/quality/80/';//?imageslim
     }
-    return ($q_host?:config('qiniu.host')).$src.'?imageslim';//图片瘦身服务
+
+    if(strpos($src,'http://')!==false){
+        return $src.$fop;//图片瘦身服务
+    }
+    return ($q_host?:config('qiniu.host')).$src.$fop;//图片瘦身服务
 }
 
 /**
