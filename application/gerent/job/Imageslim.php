@@ -14,7 +14,7 @@ use think\queue\Job,
 class Imageslim{
     protected $log_file = 'imageslim_status';
 
-    public function fire($job,$data=[])
+    public function fire(Job $job,$data=[])
     {
         //$data = ['type'=>'','id'=>0];
 
@@ -85,9 +85,7 @@ class Imageslim{
                         if($sign_complex_path_thumb){
                             $update['sign_complex_path_thumb'] = $sign_complex_path_thumb;
                         }
-
                     }
-
                 }
 
                 if(!empty($update)){

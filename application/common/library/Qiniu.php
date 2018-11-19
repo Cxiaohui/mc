@@ -10,16 +10,17 @@ use Qiniu\Auth,
     \Qiniu\Config as QConfig,
     Qiniu\Storage\BucketManager,
     Qiniu\Storage\UploadManager;
-use think\image\Exception;
+use think\image\Exception,
+    app\common\library\Mylog as mlog;
 
 
 class Qiniu{
 
     static public function save_new_img($w_url){
         $savename = explode('-',str_replace(config('qiniu.host'),'',$w_url))[0].'-'.md5($w_url).'.jpg';
-        return self::fop_save($w_url,$savename,'sign/');
+        return self::fop_save($w_url,$savename);
     }
-    static public function fop_save($w_url,$savename,$dir=''){
+    static public function fop_save($w_url,$savename){
         try{
 
             $qn = config('qiniu');
@@ -33,7 +34,7 @@ class Qiniu{
             $safe_sign = $auth->sign(str_replace('http://','',$newurl));
 
 
-            $finalURL = $newurl.'/'.$dir.$safe_sign;
+            $finalURL = $newurl.'/sign/'.$safe_sign;
 
             /**
              * {
@@ -48,7 +49,11 @@ class Qiniu{
             if(isset($res['key'])){
                 return ['err'=>0,'key'=>$res['key'],'hash'=>$res['hash']];
             }
-            return ['err'=>1,'msg'=>'保存新图片失败','res'=>$res];
+            return ['err'=>1,'msg'=>'保存新图片失败','res'=>$res,'param'=>[
+                'newurl'=>$newurl,
+                'safe_sign'=>$safe_sign,
+                'finalURL'=>$finalURL
+            ]];
 
         }catch (\Exception $e){
             return ['err'=>1,'msg'=>'保存新图片失败.','res'=>$e->getMessage()];
