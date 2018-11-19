@@ -402,10 +402,10 @@ class Index extends \app\common\controller\Base
 
     function tqq(){
 
-        //\think\Queue::push('app\gerent\job\Imageslim',['type'=>'static_doc','id'=>134]);
+        \think\Queue::push('app\gerent\job\Imageslim',['type'=>'static_doc','id'=>37]);
         //$job = new \think\queue\Job();
-        $islim = new \app\gerent\job\Imageslim();
-        $islim->fire(null,['type'=>'static_doc','id'=>134]);
+        //$islim = new \app\gerent\job\Imageslim();
+        //$islim->fire(null,['type'=>'static_doc','id'=>134]);
         /*$file_path = 'projectstatics/mcdocs-63b89c4e921de4184acba69cc8a467c2.jpg';
         $new_path = get_qn_img_slm($file_path);
 
