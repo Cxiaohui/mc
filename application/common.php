@@ -29,21 +29,27 @@ function quimg($path1,$path2,$q_host=''){
     $src = $path1?:$path2;
 
     //
-    $fop = '';
+    //$fop = '';
     /*$ext = pathinfo($src,PATHINFO_EXTENSION);
     if(in_array($ext,config('img_ext'))){
-        $fop = '?imageMogr2/strip/format/webp/interlace/1/quality/80/';//?imageslim
+        $fop = '?imageslim';
+        $fop = '?imageMogr2/strip/format/webp/interlace/1/quality/80/';
+        $fop = '?imageView2/2/w/2048/';
     }*/
 
     if(strpos($src,'http://')!==false){
-        return $src.$fop;//图片瘦身服务
+        return $src;
+    }else{
+        return ($q_host?:config('qiniu.host')).$src;
     }
-    return ($q_host?:config('qiniu.host')).$src.$fop;//图片瘦身服务
+
 }
 
 function get_qn_img_slm($src){
     $ext = pathinfo($src,PATHINFO_EXTENSION);
-    $newsrc = str_replace([config('qiniu.host'),'.'.$ext],'',$src).'_slim.'.$ext;
+    $newsrc = str_replace([config('qiniu.host'),'.'.$ext],'',$src).'_2048.'.$ext;
+
+    return $newsrc;
 }
 
 /**

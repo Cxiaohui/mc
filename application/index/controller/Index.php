@@ -399,6 +399,23 @@ class Index extends \app\common\controller\Base
         print_r($res);
     }
 
+
+    function tqq(){
+
+        //\think\Queue::push('app\gerent\job\Imageslim',['type'=>'static_doc','id'=>134]);
+        //$job = new \think\queue\Job();
+        $islim = new \app\gerent\job\Imageslim();
+        $islim->fire(null,['type'=>'static_doc','id'=>134]);
+        /*$file_path = 'projectstatics/mcdocs-63b89c4e921de4184acba69cc8a467c2.jpg';
+        $new_path = get_qn_img_slm($file_path);
+
+        //$res = \app\common\library\Http::curl_get('http://content.iytime.com/projectstatics/mcdocs-63b8e4184acba69cc8a467c2.jpg?imageInfo');
+        dump([
+            config('qiniu.host').$file_path.'?imageView2/2/w/2048/',
+            $new_path
+        ]);*/
+    }
+
     function t12(){
         $yim = new \app\common\library\YunIM();
         $res = $yim->queryGroupMsg('560928224','p_1');
