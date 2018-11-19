@@ -401,8 +401,9 @@ class Index extends \app\common\controller\Base
 
 
     function tqq(){
-
-        \think\Queue::push('app\gerent\job\Imageslim',['type'=>'static_doc','id'=>37]);
+        $type = input("get.type",'','trim');
+        $id = input("get.id",0,'int');
+        \think\Queue::push('app\gerent\job\Imageslim',['type'=>$type,'id'=>$id]);
         //$job = new \think\queue\Job();
         //$islim = new \app\gerent\job\Imageslim();
         //$islim->fire(null,['type'=>'static_doc','id'=>134]);
