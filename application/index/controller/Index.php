@@ -19,6 +19,19 @@ class Index extends \app\common\controller\Base
         return '^_^';
     }
 
+    public function t24(){
+        dump([
+            quimg('','aaaaaaaaa'),
+            quimg('bbbbbbbb',''),
+            quimg('cccccccc','ddddddddd'),
+            quimg(['eeeeeeee',''],'ddddddddd'),
+            quimg(['','fffffff'],['ddddddddd','']),
+            quimg(['',''],['gggggggg','']),
+            quimg(['',''],['','']),
+        ]);
+
+    }
+
     public function test_im(){
         $yim = new \app\common\library\YunIM();
         $res = $yim->imobj()->updateUserToken('b_5');
@@ -87,9 +100,11 @@ class Index extends \app\common\controller\Base
         \think\Queue::later(2,'app\gerent\job\Pushqueue',$data);
         echo $test_data[$key];
     }
+
     public function timg(){
         echo '<img src="http://t.cn/EPS8YuD"/>';
     }
+
     public function test_imgmegre(){
         $type = input('get.type','');
         $id = input('get.id',0);

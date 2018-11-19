@@ -53,7 +53,7 @@ class Transaction extends Common {
             $docs = Docs::get_all_project_docs($where,1);
             if(!empty($docs)){
                 $docs[0]['addtime'] = formatTime(strtotime($docs[0]['addtime']));
-                unset($docs[0]['file_path']);
+                unset($docs[0]['file_path'],$docs[0]['file_path_thumb']);
                 $last_doc = $docs[0];
             }
         }

@@ -56,9 +56,10 @@ class Mydocs extends Common
             //'img'=>[]
         ];
         foreach($list as $k=>$lt){
-            $lt['file_url'] = c_img($lt['file_path'],0);
+            //$lt['file_url'] = c_img($lt['file_path'],0);
+            $lt['file_url'] = quimg($lt['file_path_thumb'],$lt['file_path']);
             $lt['addtime'] = date('Y-m-d',strtotime($lt['addtime']));
-            unset($lt['file_path']);
+            unset($lt['file_path'],$lt['file_path_thumb']);
             if(in_array(strtolower($lt['file_type']),$words)){
                 $docs['word'][] = $lt;
             }

@@ -186,7 +186,7 @@ class Project extends Common{
         $primary_doc = [];
         $docs = (new Projectdoc())->get_order_list(
             ['p_id'=>$p_id,'p_step_id'=>$step_id,'isdel'=>0],
-            'id,is_primary,file_type,file_name,file_path,addtime',
+            'id,is_primary,file_type,file_name,file_path,file_path_thumb,addtime',
             ['seq'=>'asc'],
             0);
 
@@ -194,9 +194,10 @@ class Project extends Common{
             $q_host = config('qiniu.host');
             $img_ext = config('img_ext');
             foreach($docs as $k=>$d){
-                $docs[$k]['file_url'] = $q_host.$d['file_path'];
+                //$docs[$k]['file_url'] = $q_host.$d['file_path'];
+                $docs[$k]['file_url'] = quimg($d['file_path_thumb'],$d['file_path'],$q_host);
                 $docs[$k]['addtime'] = date('Y-m-d',strtotime($d['addtime']));
-                unset($docs[$k]['file_path']);
+                unset($docs[$k]['file_path'],$docs[$k]['file_path_thumb']);
                 //施工
                 if($step_info['type']==2){
                     if($d['is_primary']==1 && in_array($d['file_type'],$img_ext)){

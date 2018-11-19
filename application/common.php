@@ -26,8 +26,27 @@ function get_full_url($base64=false) {
 }
 
 function quimg($path1,$path2,$q_host=''){
-    $src = $path1?:$path2;
+    $src = '';
 
+    if(is_array($path1)){
+        $src = $path1[0]?:$path1[1];
+
+    }else if(is_string($path1)){
+        $src = $path1?:'';
+    }
+
+    if(!$src){
+        if(is_array($path2)){
+            $src = $path2[0]?:$path2[1];
+
+        }else if(is_string($path2)){
+            $src = $path2?:'';
+        }
+    }
+
+    if(!$src){
+        return ($q_host?:config('qiniu.host')).'static/default.png';
+    }
     //
     //$fop = '';
     /*$ext = pathinfo($src,PATHINFO_EXTENSION);

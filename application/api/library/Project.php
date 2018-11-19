@@ -52,15 +52,16 @@ class Project{
 
             $step_docs = $pdoc->get_order_list(
                 ['p_id'=>$p_id,'is_primary'=>1,'file_type'=>['in',$imgtypes],'p_step_id'=>['in',$step_ids],'isdel'=>0],
-                'id,p_step_id,file_type,file_name,file_path',
+                'id,p_step_id,file_type,file_name,file_path,file_path_thumb',
                 ['seq'=>'asc'],
                 0);
 
             if(!empty($step_docs)){
                 foreach($step_docs as $k=>$v){
-                    $step_docs[$k]['url'] = c_img($v['file_path'],0);
+                    //$step_docs[$k]['url'] = c_img($v['file_path'],0);
+                    $step_docs[$k]['url'] = quimg($v['file_path_thumb'],$v['file_path'],0);
                     $step_docs[$k]['file_url'] = $step_docs[$k]['url'];
-                    unset($step_docs[$k]['file_path']);
+                    unset($step_docs[$k]['file_path'],$step_docs[$k]['file_path_thumb']);
                 }
             }
         }

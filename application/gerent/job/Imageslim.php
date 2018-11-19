@@ -120,6 +120,16 @@ class Imageslim{
     protected function create_new_img($file_path){
 
         $new_path = $this->get_qn_img_slm($file_path);
+
+        if(!$new_path){
+            mlog::write([
+                'null new_path',
+                $new_path,
+                $file_path
+            ],$this->log_file);
+            return false;
+        }
+
         $s_url = config('qiniu.host').$file_path.'?imageView2/2/w/2048/';
 
         $res = Qiniu::fop_save($s_url,$new_path);
@@ -140,7 +150,11 @@ class Imageslim{
     protected function get_qn_img_slm($src){
         $ext = pathinfo($src,PATHINFO_EXTENSION);
         $newsrc = str_replace([config('qiniu.host'),'.'.$ext],'',$src).'_2048.'.$ext;
-
+        /*mlog::write([
+            'get_qn_img_slm',
+            $ext,
+            $newsrc
+        ],$this->log_file);*/
         return $newsrc;
     }
 

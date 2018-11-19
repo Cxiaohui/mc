@@ -16,6 +16,29 @@ use Qiniu\Auth,
 
 class T extends \app\common\controller\Base{
 
+    public function createimgs(){
+
+        /*$steps = (new \app\common\model\Projectstep())->get_list(['isdel'=>0],'id',0);
+        $this->createimg_job('step_doc',$steps);*/
+        /*$offers = (new \app\common\model\Projectoffer())->get_list(['isdel'=>0],'id',0);
+        $this->createimg_job('offer_doc',$offers);*/
+        /*$reports = (new \app\common\model\Projectreport())->get_list(['isdel'=>0],'id',0);
+        $this->createimg_job('report_doc',$reports);*/
+        /*$statics = (new \app\common\model\Projectstatic())->get_list(['isdel'=>0],'id',0);
+        $this->createimg_job('static_doc',$statics);*/
+        /*$pus = (new \app\common\model\Purchase())->get_list(['isdel'=>0],'id',0);
+        $this->createimg_job('pu_doc',$pus);*/
+    }
+    public function createimg_job($type,$data){
+        if(empty($data)){
+            return false;
+        }
+        foreach($data as $tp){
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>$type,'id'=>$tp['id']]);
+            usleep(5);
+        }
+    }
+
     public function cgroupim()
     {
         $p_id = input('get.p_id',0,'int');

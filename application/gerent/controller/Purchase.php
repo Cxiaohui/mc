@@ -52,7 +52,7 @@ class Purchase extends Common{
             $Projectlog = new Projectlog();
             foreach($list as $k=>$v){
 
-                $list[$k]['docs'] = $purchasedoc->get_order_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,file_type,file_name,file_path,addtime',['seq'=>'asc'],0);
+                $list[$k]['docs'] = $purchasedoc->get_order_list(['p_id'=>$p_id,'pu_id'=>$v['id'],'isdel'=>0],'id,file_type,file_name,file_path,file_path_thumb,addtime',['seq'=>'asc'],0);
                 $list[$k]['doc_count'] = count($list[$k]['docs']);
                 $list[$k]['logs']  = $Projectlog->get_list(['p_id'=>$p_id,'p_step_id'=>$v['id'],'p_step_type'=>8],'id,oper_user_name,oper_desc,addtime',0);
             }

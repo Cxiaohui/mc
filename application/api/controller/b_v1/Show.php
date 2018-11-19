@@ -78,15 +78,19 @@ class Show extends Common{
 
         $static_info['status_name'] = $this->status[$static_info['status']];
 
-        $docs = (new Projectstaticdocs())->get_list(['p_static_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,sign_complex_path,addtime',0);
+        $docs = (new Projectstaticdocs())->get_list(['p_static_id'=>$id,'isdel'=>0],'id,file_type,file_name,file_path,file_path_thumb,sign_complex_path,sign_complex_path_thumb,addtime',0);
         if(!empty($docs)){
             $qiniu_host = config('qiniu.host');
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
                 //print_r($dv);
-                $docs[$dk]['file_url'] = quimg($dv['sign_complex_path'],$dv['file_path'],$qiniu_host);
+                $docs[$dk]['file_url'] = quimg(
+                    [$dv['sign_complex_path_thumb'],$dv['sign_complex_path']],
+                    [$dv['file_path_thumb'],$dv['file_path']],
+                    $qiniu_host);
 
-                unset($docs[$dk]['file_path']);
+                unset($docs[$dk]['file_path'],$docs[$dk]['file_path_thumb'],
+                    $docs[$dk]['sign_complex_path_thumb'],$docs[$dk]['sign_complex_path']);
             }
         }
         // 输出操作记录 - 20181005
@@ -158,7 +162,7 @@ class Show extends Common{
         }*/
 
         $w = ['p_id'=>$p_id,'type'=>$type,'isdel'=>0];
-        $data = (new Projectstaticdocs())->get_list($w,'id,file_type,file_name,file_path,sign_complex_path,addtime',0);
+        $data = (new Projectstaticdocs())->get_list($w,'id,file_type,file_name,file_path,file_path_thumb,sign_complex_path,sign_complex_path_thumb,addtime',0);
 
         if(empty($data)){
             return $this->response(['code'=>201,'msg'=>'没有数据']);
@@ -167,10 +171,13 @@ class Show extends Common{
         if(!empty($data)){
 
             foreach($data as $k=>$da){
-                $data[$k]['file_url'] = quimg($da['sign_complex_path'],$da['file_path'],$q_host);
+                $data[$k]['file_url'] = quimg(
+                    [$da['sign_complex_path_thumb'],$da['sign_complex_path']],
+                    [$da['file_path_thumb'],$da['file_path']],
+                    $q_host);
 
                 $data[$k]['addtime'] = date("Y-m-d",strtotime($da['addtime']));
-                unset($data[$k]['file_path'],$data[$k]['sign_complex_path']);
+                unset($data[$k]['file_path'],$data[$k]['file_path_thumb'],$data[$k]['sign_complex_path'],$data[$k]['sign_complex_path_thumb']);
             }
         }
         $pstatic = new pstatic();

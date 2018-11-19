@@ -114,7 +114,11 @@ class Projectstatic extends Common{
 
                 foreach($data as $k=>$da){
 
-                    $da['file_url'] = quimg($da['sign_complex_path'],$da['file_path'],$q_host);
+                    $da['file_url'] = quimg(
+                        [$da['sign_complex_path_thumb'],$da['sign_complex_path']],
+                        [$da['file_path_thumb'],$da['file_path']],
+                        $q_host);
+
                     if($da['type'] == $tk){
                         $list[$tk]['list'][] = $da;
                         unset($data[$k]);

@@ -98,7 +98,7 @@ class Report extends Common{
 
         $docs = (new Projectreportdoc())->get_order_list(
             ['p_id'=>$p_id,'p_rep_id'=>$id,'isdel'=>0],
-            'id,file_type,file_name,file_path,sign_complex_path,addtime',
+            'id,file_type,file_name,file_path,file_path_thumb,sign_complex_path,sign_complex_path_thumb,addtime',
             ['seq'=>'asc'],
             0);
 
@@ -107,8 +107,13 @@ class Report extends Common{
             foreach($docs as $dk=>$dv){
                 $docs[$dk]['addtime'] = date('Y-m-d',strtotime($dv['addtime']));
 
-                $docs[$dk]['file_url'] = quimg($dv['sign_complex_path'],$dv['file_path'],$qiniu_host);
-                unset($docs[$dk]['file_path'],$docs[$dk]['sign_complex_path']);
+                $docs[$dk]['file_url'] = quimg(
+                    [$dv['sign_complex_path_thumb'],$dv['sign_complex_path']],
+                    [$dv['file_path_thumb'],$dv['file_path']],
+                    $qiniu_host);
+
+                unset($docs[$dk]['file_path'],$docs[$dk]['file_path_thumb'],
+                    $docs[$dk]['sign_complex_path'],$docs[$dk]['sign_complex_path_thumb']);
             }
         }
 
