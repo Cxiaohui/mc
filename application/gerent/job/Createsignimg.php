@@ -79,13 +79,14 @@ class Createsignimg{
         $mdoc = null;
         $w = [];
         $fileds = '';
-
+        $slim_type = '';
         switch($data['type']) {
             case 'offer':
                 $m = new Projectoffer();
                 $mdoc = new Projectofferdoc();
                 $w = ['p_offer_id'=>$data['id'],'isdel'=>0];
                 $fileds = 'id,sign_img,sejishi_sign_img,jingli_sign_img';
+                $slim_type = 'offer_doc';
                 break;
 
             case 'report':
@@ -93,6 +94,7 @@ class Createsignimg{
                 $mdoc = new Projectreportdoc();
                 $w = ['p_rep_id'=>$data['id'],'isdel'=>0];
                 $fileds = 'id,sign_img,jingli_sign_img';
+                $slim_type = 'report_doc';
                 break;
 
             case 'static_2':
@@ -100,6 +102,7 @@ class Createsignimg{
                 $mdoc = new Projectstaticdocs();
                 $w = ['p_static_id'=>$data['id'],'isdel'=>0];
                 $fileds = 'id,sign_img';
+                $slim_type = 'static_doc';
                 break;
         }
 
@@ -194,6 +197,7 @@ class Createsignimg{
                 if($saveres['err']==0){
                     $mdoc->update_data(['id'=>$doc['id']],['sign_complex_path'=>$saveres['key']]);
 
+
                     mlog::write('success!',$this->log_file);
                 }else{
                     mlog::write([
@@ -204,6 +208,10 @@ class Createsignimg{
                 }
                 usleep(4);
             }
+
+            //继续
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>$slim_type,'id'=>$data['id']]);
+
         }catch(\Exception $e){
             throw new \Exception($e);
         }

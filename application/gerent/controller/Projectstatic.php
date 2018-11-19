@@ -299,6 +299,7 @@ class Projectstatic extends Common{
             if(!empty($inserts)){
                 $this->M->insert_all($inserts);
             }
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>'static_doc','id'=>$id]);
         }
         $doc_type = $this->doc_type();
         $log_type = $this->log_type();

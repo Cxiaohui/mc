@@ -312,6 +312,8 @@ class Project extends Common{
         if(!empty($doc_inserts)){
             $projectdoc->insert_all($doc_inserts);
             $isupdate = true;
+
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>'step_doc','id'=>$step_id]);
         }
 
         //添加到操作日志

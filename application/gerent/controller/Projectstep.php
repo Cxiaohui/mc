@@ -347,7 +347,10 @@ class Projectstep extends Common{
         }
         if(!empty($inserts)){
             $mdc->insert_all($inserts);
+
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>'step_doc','id'=>$stepid]);
         }
+
         //add log
         Plog::add_one($step_info['p_id'],$stepid,$step_info['type'],['type'=>1,'id'=>session('user_id'),'name'=>session('name')],'[上传]'.$usermesg);
         $p_info = $this->mpj->get_info(['id'=>$step_info['p_id']],'id,owner_user_id');

@@ -200,6 +200,8 @@ class Purchase extends Common{
             if(!empty($inserts)){
                 $mp->insert_all($inserts);
             }
+
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>'pu_doc','id'=>$id]);
         }
 
         //add log

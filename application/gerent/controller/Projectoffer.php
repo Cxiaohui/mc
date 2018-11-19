@@ -283,6 +283,8 @@ class Projectoffer extends Common{
             if(!empty($inserts)){
                 $this->MD->insert_all($inserts);
             }
+
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>'offer_doc','id'=>$id]);
         }
 
         //add log

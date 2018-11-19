@@ -17,7 +17,7 @@ use think\queue\Job,
     app\common\library\Qiniu,
     app\common\library\Shorturl,
     app\common\library\Mylog as mlog;
-
+//已经不用了 20181008
 class Compleximg{
     protected $log_file = 'compleximg_status';
 
