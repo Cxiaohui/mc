@@ -53,7 +53,13 @@ class Cwidgets extends Common{
 
 
     public function select_group_admins($selected=''){
-        $data = Admin::admin_in_depart();
+        $cpid = 0;
+        if(session('cp_power_tag')!=1){
+            $cpid = session('cpid');
+        }
+
+
+        $data = Admin::admin_in_depart($cpid);
         $this->assign('selected',$selected);
         $this->assign('data',$data);
         return $this->fetch('widget/select_group_admins');

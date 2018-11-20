@@ -10,7 +10,7 @@ use app\common\model\General as mg;
 class Admin{
 
 
-    static public function admin_in_depart(){
+    static public function admin_in_depart($cpid=0){
 
         $cache_key = config('ad_cache_key.admin_in_depart');
         $data = cache($cache_key);
@@ -18,11 +18,18 @@ class Admin{
             return $data;
         }
 
+        $cpidw = '';
+        if($cpid>0){
+            $cpidw = ' and ad.cpid='.$cpid;
+        }
+
 
         $sql = 'select ad.id,ad.name,ad.post,adp.id as part_id,adp.name as dp_name  
 from `mc_admin` as ad 
 left join `mc_admin_department` as adp on adp.id=ad.`depart_id` 
-where ad.isdel=0 and ad.status=1 and ad.is_work=1 order by adp.`sort` asc';
+where ad.isdel=0 '.$cpidw.' and ad.status=1 and ad.is_work=1 order by adp.`sort` asc';
+
+
 
         $list = (new mg())->query_sql($sql);
         if(empty($list)){

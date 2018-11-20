@@ -29,10 +29,10 @@ class Project extends Common{
     //我负责的项目列表
     public function list_get(){
 
-
+        //print_r($this->user);
         $where = ['isdel'=>0];
-        if($this->user['cpid']>0){
-            $where['cpid'] = $this->user['cpid'];
+        if($this->user['cpid']>1){
+            $where['cpid'] = ['in',[1,$this->user['cpid']]];
         }
         //print_r($where);
         //项目中分配的权限
