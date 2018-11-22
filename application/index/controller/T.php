@@ -24,17 +24,17 @@ class T extends \app\common\controller\Base{
         $this->createimg_job('offer_doc',$offers);*/
         /*$reports = (new \app\common\model\Projectreport())->get_list(['isdel'=>0],'id',0);
         $this->createimg_job('report_doc',$reports);*/
-        /*$statics = (new \app\common\model\Projectstatic())->get_list(['isdel'=>0],'id',0);
-        $this->createimg_job('static_doc',$statics);*/
+        $statics = (new \app\common\model\Projectstatic())->get_list(['isdel'=>0],'id',0);
+        $this->createimg_job('static_doc',$statics,1);
         /*$pus = (new \app\common\model\Purchase())->get_list(['isdel'=>0],'id',0);
         $this->createimg_job('pu_doc',$pus);*/
     }
-    public function createimg_job($type,$data){
+    public function createimg_job($type,$data,$force=0){
         if(empty($data)){
             return false;
         }
         foreach($data as $tp){
-            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>$type,'id'=>$tp['id']]);
+            \think\Queue::later(2,'app\gerent\job\Imageslim',['type'=>$type,'id'=>$tp['id'],'force'=>$force]);
             usleep(5);
         }
     }

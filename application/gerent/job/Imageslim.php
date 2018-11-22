@@ -22,6 +22,7 @@ class Imageslim{
             $select_fields = 'id,file_type,file_path,file_path_thumb';
             $m = null;
             $where = [];
+            $width = 2048;
             switch ($data['type']){
                 //mc_p_step_docs:p_step_id
                 case 'step_doc':
@@ -45,6 +46,7 @@ class Imageslim{
                     $m = new \app\common\model\Projectstaticdocs();
                     $select_fields .= ',sign_complex_path,sign_complex_path_thumb';
                     $where = ['p_static_id'=>$data['id'],'isdel'=>0];
+                    $width = 3000;
                     break;
                 //mc_purchase_docs:pu_id
                 case 'pu_doc':
@@ -61,6 +63,7 @@ class Imageslim{
                 mlog::write(['empty:list ',$data], $this->log_file);
             }
             $img_exts = config('img_ext');
+            $force = isset($data['force']) ? $data['force'] : 0;
             //dump($list);exit;
             foreach($list as $da){
 
@@ -69,9 +72,9 @@ class Imageslim{
                 }
 
                 $update = [];
-                if(!$da['file_path_thumb']){
+                if($force==1 || !$da['file_path_thumb']){
 
-                    $file_path_thumb = $this->create_new_img($da['file_path']);
+                    $file_path_thumb = $this->create_new_img($da['file_path'],$width);
                     if($file_path_thumb){
                         $update['file_path_thumb'] = $file_path_thumb;
                     }
@@ -79,9 +82,9 @@ class Imageslim{
 
                 if(isset($da['sign_complex_path']) && $da['sign_complex_path']){
 
-                    if(!$da['sign_complex_path_thumb']){
+                    if($force==1 || !$da['sign_complex_path_thumb']){
 
-                        $sign_complex_path_thumb = $this->create_new_img($da['sign_complex_path']);
+                        $sign_complex_path_thumb = $this->create_new_img($da['sign_complex_path'],$width);
                         if($sign_complex_path_thumb){
                             $update['sign_complex_path_thumb'] = $sign_complex_path_thumb;
                         }
@@ -117,9 +120,9 @@ class Imageslim{
     }
 
 
-    protected function create_new_img($file_path){
+    protected function create_new_img($file_path,$width=2048){
 
-        $new_path = $this->get_qn_img_slm($file_path);
+        $new_path = $this->get_qn_img_slm($file_path,$width);
 
         if(!$new_path){
             mlog::write([
@@ -130,7 +133,7 @@ class Imageslim{
             return false;
         }
 
-        $s_url = config('qiniu.host').$file_path.'?imageView2/2/w/2048/';
+        $s_url = config('qiniu.host').$file_path.'?imageView2/2/w/3000/q/90';
 
         $res = Qiniu::fop_save($s_url,$new_path);
 
@@ -147,9 +150,9 @@ class Imageslim{
         return false;
     }
 
-    protected function get_qn_img_slm($src){
+    protected function get_qn_img_slm($src,$width=2048){
         $ext = pathinfo($src,PATHINFO_EXTENSION);
-        $newsrc = str_replace([config('qiniu.host'),'.'.$ext],'',$src).'_2048.'.$ext;
+        $newsrc = str_replace([config('qiniu.host'),'.'.$ext],'',$src).'_'.$width.'.'.$ext;
         /*mlog::write([
             'get_qn_img_slm',
             $ext,

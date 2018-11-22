@@ -50,6 +50,8 @@ class Common extends BCommon{
         if(in_array($this->user['b_power_tag'],[1,2])){
             return true;
         }
+        //todo 还需要处理分公司情况
+
         if($this->user['b_power_tag']==3){
             $count = (new \app\common\model\Projectadmin)->get_count(['p_id'=>$p_id,'b_user_id'=>$this->user_id]);
             if($count>0){
