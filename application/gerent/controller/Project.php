@@ -157,24 +157,42 @@ class Project extends Common{
         if(session('cp_power_tag')!=1){
             $w['cpid'] = session('cpid');
         }
+        $pinfo = $this->M->get_info($w,'id,name');
+        if(!$pinfo){
+            $this->error('删除失败');
+        }
+        \extend\Mylog::write([
+            'mesg'=>'删除项目',
+            'info'=>$pinfo
+        ],'delete_project');
+
         $res = $this->M->update_data($w,['uptime'=>$this->datetime,'isdel'=>1]);
         if($res){
-            //解散群
+            //解散群--20181122 不解散群，发群消息：该群所属的项目“XXXX”已被管理员移除
+
             $img = new Imgroups();
             $groups = $img->get_list(['p_id'=>$id],'id,p_id,tid,owner',0);
             if(!empty($groups)){
+
                 $yim = new YunIM();
+
+                $option = ["push"=>true,"roam"=>true,"history"=>false,"sendersync"=>true, "route"=>false];
+                $message = '该群所属的项目“'.$pinfo['name'].'”已被管理员移除';
+                $pushcontent = $message;
+
                 foreach($groups as $gp){
-                    $res = $yim->imobj()->removeGroup($gp['tid'],$gp['owner']);
+                    $res = $yim->sendTestMsg($gp['owner'],$gp['tid'],1,$message,$option,$pushcontent);
+                    //$res = $yim->imobj()->removeGroup($gp['tid'],$gp['owner']);
+
                     if($res['code']!=200){
                         \extend\Mylog::write([
-                            'mesg'=>'解散群失败',
+                            'mesg'=>'发送消息失败',
                             'res'=>$res,
                             'info'=>$gp
-                        ],'remove_group');
+                        ],'delete_project');
                     }
                 }
-                $img->update_data(['p_id'=>$id],['isdel'=>1]);
+                $img->update_data(['p_id'=>$id],['project_status'=>0]);
             }
             $this->success('删除成功');
         }
