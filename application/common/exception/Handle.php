@@ -32,8 +32,11 @@ class Handle extends thk_handle{
 
 
         $error_meesage = Config::get('error_message')? : '有错误，请稍后再试';
+        $HTTP_ACCEPT = trim(request()->server('HTTP_ACCEPT'));
+        //echo $HTTP_ACCEPT;
         // 请求异常
-        if ($e instanceof Exception && request()->isAjax()) {
+        if($HTTP_ACCEPT == 'application/json'){
+        //if ($e instanceof Exception && request()->isAjax()) {
             //return response($e->getMessage(), $e->getStatusCode())
             header('Content-Type:application/json; charset=utf-8');
             echo json_encode([
