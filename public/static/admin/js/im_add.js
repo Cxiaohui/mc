@@ -82,8 +82,8 @@ function addintogroup(o){
             layermsg(d.msg,1);
             //刷新页面
             setTimeout(function(){
-                //location.reload();
-            },1400);
+                location.reload();
+            },1600);
 
         }else{
             layeralert(d.msg,4);

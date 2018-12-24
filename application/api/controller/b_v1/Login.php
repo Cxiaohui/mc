@@ -44,13 +44,13 @@ class Login extends Common{
 
         //cache check and delete
         $cache_key = config('cache_key.mobile_verify_code').$mobile;
-        /*$v_code = cache($cache_key);
-        if(!$v_code){
+        $v_code = cache($cache_key);
+        /*if(!$v_code){
             return $this -> response(['code' => 201, 'msg' => '验证码已过期']);
-        }
+        }*/
         if($vcode != $v_code){
             return $this -> response(['code' => 201, 'msg' => '验证码不正确']);
-        }*/
+        }
 
         //检查是否是平台用户
         $check_rs = LG::b_mobile_check($mobile);

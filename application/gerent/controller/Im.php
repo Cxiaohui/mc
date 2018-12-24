@@ -148,12 +148,12 @@ class Im extends Common{
         if($res['code']==200){
             $members = explode(',',$im_info['members']);
             unset($members[array_search($accid,$members)]);
-
+            $members = array_unique($members);
             $this->m->update_data(
                 ['id'=>$id],
                 [
-                    'size'=>$im_info['size']-1,
-                    'members'=>implode(',',array_unique($members)),
+                    'size'=>count($members)+1,
+                    'members'=>implode(',',$members),
                     'updatetime'=>$this->datetime
                 ]);
 
@@ -191,11 +191,12 @@ class Im extends Common{
             //
             $members = explode(',',$im_info['members']);
             $members[] = $accid;
+            $members = array_unique($members);
             $this->m->update_data(
                 ['id'=>$id],
                 [
-                    'size'=>$im_info['size']+1,
-                    'members'=>implode(',',array_unique($members)),
+                    'size'=>count($members)+1,//加上群主
+                    'members'=>implode(',',$members),
                     'updatetime'=>$this->datetime
                 ]);
 
