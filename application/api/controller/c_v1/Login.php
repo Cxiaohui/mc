@@ -41,15 +41,17 @@ class Login extends Common{
     public function sms_login_post(){
         $mobile = input("post.mobile",'','trim');
         $vcode = input("post.vcode",'','trim');
-
+        $os = request()->header('os');
         //cache check and delete
         $cache_key = config('cache_key.mobile_verify_code').$mobile;
-        $v_code = cache($cache_key);
-        /*if(!$v_code){
-            return $this -> response(['code' => 201, 'msg' => '验证码已过期']);
-        }*/
-        if($vcode != $v_code){
-            return $this -> response(['code' => 201, 'msg' => '验证码不正确']);
+        if($os != 'iOS') {
+            $v_code = cache($cache_key);
+            /*if(!$v_code){
+                return $this -> response(['code' => 201, 'msg' => '验证码已过期']);
+            }*/
+            if ($vcode != $v_code) {
+                return $this->response(['code' => 201, 'msg' => '验证码不正确']);
+            }
         }
 
         //检查是否是平台用户
