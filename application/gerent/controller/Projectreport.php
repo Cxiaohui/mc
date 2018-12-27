@@ -57,7 +57,7 @@ class Projectreport extends Common{
         if(!empty($list)){
             $projectreportmodify = new Projectreportmodify();
             foreach($list as $k=>$v){
-                $list[$k]['doc_count'] = $this->MD->get_count(['p_id'=>$p_id,'p_rep_id'=>$v['id']]);
+                $list[$k]['doc_count'] = $this->MD->get_count(['p_id'=>$p_id,'p_rep_id'=>$v['id'],'isdel'=>0]);
                 $list[$k]['modifys'] = $projectreportmodify->get_list(['p_id'=>$p_id,'p_rep_id'=>$v['id'],'isdel'=>0],'id,type,content,addtime',0);
             }
 
