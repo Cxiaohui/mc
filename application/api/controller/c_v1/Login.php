@@ -44,7 +44,7 @@ class Login extends Common{
         $os = request()->header('os');
         //cache check and delete
         $cache_key = config('cache_key.mobile_verify_code').$mobile;
-        if($os != 'iOS') {
+//        if($os != 'iOS') {
             $v_code = cache($cache_key);
             /*if(!$v_code){
                 return $this -> response(['code' => 201, 'msg' => '验证码已过期']);
@@ -52,7 +52,7 @@ class Login extends Common{
             if ($vcode != $v_code) {
                 return $this->response(['code' => 201, 'msg' => '验证码不正确']);
             }
-        }
+//        }
 
         //检查是否是平台用户
         $check_rs = LG::c_mobile_check($mobile);
