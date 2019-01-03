@@ -29,7 +29,7 @@ class Goods extends Common {
             }
 
             foreach($goods as $gk=>$gd){
-                $goods[$gk]['coverimg'] = c_img($gd['coverimg'],8,400);
+                $goods[$gk]['coverimg'] = c_img($gd['coverimg'],8,0);
                 $goods[$gk]['info_url'] = $this->h5_base_url().'AdvocateMaterial.html?gid='.$gd['id'];
             }
 

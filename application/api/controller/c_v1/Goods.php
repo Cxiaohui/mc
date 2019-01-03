@@ -111,7 +111,7 @@ class Goods extends Common {
         $imgs = (new Goodsimg())->get_list($w,'id,file_path',0);
         if(!empty($imgs)){
             foreach($imgs as $k=>$img){
-                $imgs[$k]['file_url'] = c_img($img['file_path'],8,400);
+                $imgs[$k]['file_url'] = c_img($img['file_path'],8,0);
                 unset($imgs[$k]['file_path']);
             }
         }

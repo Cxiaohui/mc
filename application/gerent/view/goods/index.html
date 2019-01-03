@@ -56,7 +56,7 @@
             <tr>
                 <td>{$da.id}</td>
                 <td>
-                    <img src="{$da.coverimg}" style="height: 50px;"/>
+                    <img src="{:c_img($da.coverimg,8,400)}" style="height: 50px;"/>
                 </td>
                 <td><a href="{$h5_base_url}AdvocateMaterial.html?gid={$da.id}" target="_blank">{$da.name}</a></td>
                 <td>{if isset($cates[$da.cate_id])}{$cates[$da.cate_id]}{else /}--{/if}</td>
