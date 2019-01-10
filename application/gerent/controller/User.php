@@ -136,7 +136,7 @@ class User extends Common{
             unset($post['ref']);
 
             if(isset($post['id']) && $post['id']>0){
-                $exists = $this->Um->get_count(['id'=>['neq',$post['id']],'mobile'=>$post['mobile']]);
+                $exists = $this->Um->get_count(['id'=>['neq',$post['id']],'mobile'=>$post['mobile'],'isdel'=>0]);
                 if($exists>0){
                     $this->error('新的手机号已经存在，请换一个');
                 }
