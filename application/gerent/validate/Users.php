@@ -13,7 +13,7 @@ class Users extends Validate{
     protected $rule = [
         'cpid'  =>  'require',//|unique:admin
         'uname'  =>  'require',//|unique:admin
-        'mobile'=>'require|unique:admin',
+        'mobile'=>'require|unique:users',
         'lgpwd' =>  'require'
     ];
 
