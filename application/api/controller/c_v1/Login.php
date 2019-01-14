@@ -49,9 +49,9 @@ class Login extends Common{
             /*if(!$v_code){
                 return $this -> response(['code' => 201, 'msg' => '验证码已过期']);
             }*/
-            if ($vcode != $v_code) {
-                return $this->response(['code' => 201, 'msg' => '验证码不正确']);
-            }
+//            if ($vcode != $v_code) {
+//                return $this->response(['code' => 201, 'msg' => '验证码不正确']);
+//            }
 //        }
 
         //检查是否是平台用户
