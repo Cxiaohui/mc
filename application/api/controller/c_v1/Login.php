@@ -52,7 +52,7 @@ class Login extends Common{
         //测试
         if($check_sms){
             $v_code = cache($cache_key);
-            if ($vcode != $v_code) {
+            if (!$v_code || $vcode != $v_code) {
                 return $this->response(['code' => 201, 'msg' => '验证码不正确']);
             }
         }
