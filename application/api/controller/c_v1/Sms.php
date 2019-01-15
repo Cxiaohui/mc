@@ -17,6 +17,10 @@ class Sms extends Common{
         if(!$mobile){
             return $this -> response(['code' => 201, 'msg' => '手机号有误']);
         }
+        //测试
+        if(strpos($mobile,'t')!==false){
+            $mobile = str_replace('t','',$mobile);
+        }
         //检查是否是平台用户
         $check_rs = Login::c_mobile_check($mobile);
         if($check_rs['err']!=0){

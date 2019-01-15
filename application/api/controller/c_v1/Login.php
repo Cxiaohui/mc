@@ -43,9 +43,21 @@ class Login extends Common{
         $vcode = input("post.vcode",'','trim');
         $os = request()->header('os');
         //cache check and delete
+        $check_sms = false;
+        if(strpos($mobile,'t')!==false){
+            $mobile = str_replace('t','',$mobile);
+            $check_sms = true;
+        }
         $cache_key = config('cache_key.mobile_verify_code').$mobile;
-//        if($os != 'iOS') {
+        //测试
+        if($check_sms){
             $v_code = cache($cache_key);
+            if ($vcode != $v_code) {
+                return $this->response(['code' => 201, 'msg' => '验证码不正确']);
+            }
+        }
+//        if($os != 'iOS') {
+//            $v_code = cache($cache_key);
             /*if(!$v_code){
                 return $this -> response(['code' => 201, 'msg' => '验证码已过期']);
             }*/
