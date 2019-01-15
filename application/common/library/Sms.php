@@ -6,7 +6,8 @@
  * Time: 19:07
  */
 namespace app\common\library;
-use app\common\model\SMS as mSMS;
+use app\common\model\SMS as mSMS,
+    app\common\library\Mylog;
 class Sms{
 
     static public function verify_send($to,$v_code=null){
@@ -36,6 +37,10 @@ class Sms{
         if($rs['respCode']=='00000'){
             return ['err'=>0,'msg'=>'发送成功'];
         }else{
+            Mylog::write([
+                'to'=>$to,
+                'rs'=>$rs
+            ],'sms_record');
             return ['err'=>1,'msg'=>$rs['respDesc']];
         }
     }
