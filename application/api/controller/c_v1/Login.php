@@ -43,7 +43,7 @@ class Login extends Common{
         $vcode = input("post.vcode",'','trim');
         $os = request()->header('os');
         //cache check and delete
-        $check_sms = false;
+        $check_sms = true;
         if(strpos($mobile,'t')!==false){
             $mobile = str_replace('t','',$mobile);
             $check_sms = true;
