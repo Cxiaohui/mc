@@ -44,6 +44,7 @@
                                 <a href="javascript:;" class="move_btn"><i class="icon-move"></i> </a>
                                 <a href="javascript:;" class="del_img"><i class="icon-trash"></i> </a>
                             </div>
+                            <input type="file" class="uploadfile" name="upload1" style="width: 100%;height: 100%;position: absolute;"/>
                             <img src="{if $info&&isset($info['imgs'][0])}{$info['imgs'][0]['src']}{else/}/data/image/imgadd.png{/if}" class="defimg">
 
                         </li>
@@ -52,6 +53,7 @@
                                 <a href="javascript:;" class="move_btn"><i class="icon-move"></i> </a>
                                 <a href="javascript:;" class="del_img"><i class="icon-trash"></i> </a>
                             </div>
+                            <input type="file" class="uploadfile" name="upload2" style="width: 100%;height: 100%;position: absolute;"/>
                             <img src="{if $info&&isset($info['imgs'][1])}{$info['imgs'][1]['src']}{else/}/data/image/imgadd.png{/if}" class="defimg">
                         </li>
                         <li class="uploadimgbox">
@@ -59,6 +61,7 @@
                                 <a href="javascript:;" class="move_btn"><i class="icon-move"></i> </a>
                                 <a href="javascript:;" class="del_img"><i class="icon-trash"></i> </a>
                             </div>
+                            <input type="file" class="uploadfile" name="upload3" style="width: 100%;height: 100%;position: absolute;"/>
                             <img src="{if $info&&isset($info['imgs'][2])}{$info['imgs'][2]['src']}{else/}/data/image/imgadd.png{/if}" class="defimg">
                         </li>
                         <li class="uploadimgbox">
@@ -66,6 +69,7 @@
                                 <a href="javascript:;" class="move_btn"><i class="icon-move"></i> </a>
                                 <a href="javascript:;" class="del_img"><i class="icon-trash"></i> </a>
                             </div>
+                            <input type="file" class="uploadfile" name="upload4" style="width: 100%;height: 100%;position: absolute;"/>
                             <img src="{if $info&&isset($info['imgs'][3])}{$info['imgs'][3]['src']}{else/}/data/image/imgadd.png{/if}" class="defimg">
                         </li>
                         <li class="uploadimgbox">
@@ -73,6 +77,7 @@
                                 <a href="javascript:;" class="move_btn"><i class="icon-move"></i> </a>
                                 <a href="javascript:;" class="del_img"><i class="icon-trash"></i> </a>
                             </div>
+                            <input type="file" class="uploadfile" name="upload5" style="width: 100%;height: 100%;position: absolute;"/>
                             <img src="{if $info&&isset($info['imgs'][4])}{$info['imgs'][4]['src']}{else/}/data/image/imgadd.png{/if}" class="defimg">
                         </li>
                     </ul>
@@ -81,8 +86,8 @@
                         <div class="mt10 ml10 text-error">仅允许jpg和png格式，1.5M内，大小 626x348（px）</div>
                     </div>-->
 
-                    <div id="progressbar" class="progress progress-success progress-striped mt5 span3 ml0" style="display:none">
-                        <span class="bar" style="width: 0%;">0%</span>
+                    <div class="mcdoc_ppress" style="display: none;">
+                        <div class="mcdoc_press">0%</div>
                     </div>
                 </div>
             </div>
@@ -107,4 +112,6 @@
     var up_url = "{:url('Up/index')}",
         del_url = "{:url('File/del')}",
         ed_url = "{:url('Ueditor/index')}";
+    var uptoken = '{$uptoken}',
+        qu_host = "{$qn_host}";
 </script>

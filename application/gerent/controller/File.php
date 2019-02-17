@@ -14,21 +14,37 @@ class File extends Common{
         config('default_return_type','json');
     }
 
-    function del(){
+    function del($path=''){
         if(!$this->request->isAjax()){
-            return ['err'=>1,'msg'=>'文件有误'];
+            return ['err'=>1,'msg'=>'文件有误0'];
         }
-        $path = input('post.path','');
+        if(!$path){
+            $path = input('post.path','');
+        }
+
         //$path = '/data/image/goods/20171109/578e12908853c5a00b7a37085e1c560a.jpg?1510234929085';
         if(!$path){
-            return ['err'=>1,'msg'=>'文件有误'];
+            return ['err'=>1,'msg'=>'文件有误1'];
         }
+        //qn
+        if(strpos($path,'/mcdocs-')!==false){
+            //$key = str_replace('http://'.config('qiniu.host').'/','',$path);
+            return $this->del_qndoc($path);
+        }
+
+        if(strpos($path,'default')!==false){
+            return ['err'=>0,'msg'=>'默认图片'];
+        }
+
+
         if(strpos($path,'?')!==false){
            $path = explode('?',$path)[0];
         }
         $path = '.'.ltrim($path,'.');
+
         if(!file_exists($path)){
-            return ['err'=>1,'msg'=>'文件有误'];
+
+            return ['err'=>0,'msg'=>'文件有误3'];
         }
         unlink($path);
         //优化：把文件的缩略图也删除
@@ -64,18 +80,27 @@ class File extends Common{
 
     }
 
-    function del_qndoc(){
+    function del_qndoc($qn_key=''){
         if(!$this->request->isAjax()){
             return ['err'=>1,'msg'=>'删除失败'];
         }
+        if(!$qn_key){
+            $qn_key = input('post.qn_key','','trim');
+        }
 
-        $qn_key = input('post.qn_key','','trim');
+
+
         if(!$qn_key){
             return ['err'=>1,'msg'=>'删除失败'];
         }
+
+        if(strpos($qn_key,'mcdocs-')===false){
+            return $this->del($qn_key);
+        }
+
         $res = \app\common\library\Qiniu::delete_file($qn_key);
 
-        return ['err'=>0,'msg'=>'删除成功','res'=>$res];
+        return ['err'=>0,'msg'=>'删除成功qn','res'=>$res];
     }
 
 

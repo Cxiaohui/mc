@@ -63,6 +63,11 @@ class Qiniu{
     }
 
     static public function delete_file($file_key,$bucket=null){
+
+        if(strpos($file_key,'http')!==false){
+            $file_key = str_replace('http://'.config('qiniu.host').'/','',$file_key);
+        }
+
         //BucketManager
         $auth = new Auth(config('qiniu.AccessKey'),config('qiniu.SecretKey'));
         $config = new QConfig();

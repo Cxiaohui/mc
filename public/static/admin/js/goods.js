@@ -6,7 +6,36 @@ $(function(){
     }
 
     if($('.uploadimgbox').length>0){
-        var confg = {
+
+        mc_qiniu.init({
+            'uptoken':uptoken,
+            'upselect':'.uploadfile',
+            'file_prefix':'goods',
+            'mime_type':["image/png", "image/jpeg", "image/gif"],
+            'after_upload':function(res){
+                console.log(res);
+                console.log(res.thisdom);
+                var timenow = new Date().getTime();
+                res.thisdom.next('img.defimg').attr('src', qu_host+res['key'] + '?' + timenow);
+                //$('#rt_'+file.source.getRuid()).closest('.uploadimgbox').find('img.defimg').attr('src', response['data'] + '?' + timenow);
+                //$('#logoinput').val(res['key']);
+                //$('#logoimg').attr('src',qu_host+res['key']);
+                /*var ext = (res['filename'].split('.').splice(-1))[0].toLowerCase();
+
+                var html = '<div class="qiniu_doc_line">';
+                if(ext=='jpg' || ext=='png' || ext=='jpeg' || ext=='gif'){
+                    html += '<p><img src="'+qu_host+res['key']+'" style="height: 120px;"/> </p>';
+                }
+                html += '<input type="hidden" name="head_pic" class="p_doc" value="'+res['key']+'" data-ext="'+ext+'" data-key="'+res['key']+'" data-hash="'+res['hash']+'">'
+                    +'<p><a href="javascript:;" class="text-error del_qnfile"><i class="icon-trash"></i> 删除</a></p>'
+                    +'</div>';
+                $('.mcdoc_upload_box').append(html);*/
+            }
+
+        });
+
+
+        /*var confg = {
             'ubtn': '.uploadimgbox',
             'btntext': '',
             //'btntext': '<i class="icon-upload-alt"></i> 上传封面图片',
@@ -38,7 +67,7 @@ $(function(){
 
         };
         //插件初始化
-        sUpd.init(confg);
+        sUpd.init(confg);*/
     }
     $('.goodsimg').dragsort({
         //容器拖动手柄
@@ -153,7 +182,7 @@ var valid = {
         $('.defimg').each(function(i){
             var src = $(this).attr('src');
             if(src.indexOf('imgadd.png')<=-1){
-                imgs.push(src);
+                imgs.push(src.split('?')[0]);
             }
         });
 

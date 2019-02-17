@@ -1,6 +1,31 @@
 /**
  * Created by xiaohui on 2015/7/15.
  */
+
+mc_qiniu.init({
+    'uptoken':uptoken,
+    'upselect':'.select',
+    'file_prefix':'sysusers',
+    'mime_type':["image/png", "image/jpeg", "image/gif"],
+    'after_upload':function(res){
+        //$('#logoinput').val(res['key']);
+        //$('#logoimg').attr('src',qu_host+res['key']);
+        var ext = (res['filename'].split('.').splice(-1))[0].toLowerCase();
+
+        var html = '<div class="qiniu_doc_line">';
+        if(ext=='jpg' || ext=='png' || ext=='jpeg' || ext=='gif'){
+            html += '<p><img src="'+qu_host+res['key']+'" style="height: 120px;"/> </p>';
+        }
+        html += '<input type="hidden" name="head_pic" class="p_doc" value="'+res['key']+'" data-ext="'+ext+'" data-key="'+res['key']+'" data-hash="'+res['hash']+'">'
+            +'<p><a href="javascript:;" class="text-error del_qnfile"><i class="icon-trash"></i> 删除</a></p>'
+            +'</div>';
+            $('.mcdoc_upload_box').append(html);
+    }
+
+});
+
+
+
 $(function(){
 
     //分类
@@ -10,7 +35,7 @@ $(function(){
     });*/
 
     //头像上传
-    if($('#filePicker').length>0){
+    /*if($('#filePicker').length>0){
         var confg = {
             'btntext': '<i class="icon-upload-alt"></i> 上传头像',
             'server': up_url,
@@ -30,7 +55,7 @@ $(function(){
         };
         //插件初始化
         sUpd.init(confg);
-    }
+    }*/
 
     /*formValid.showErr($('input[name="name"]'));
     setTimeout(function(){

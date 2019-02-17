@@ -112,17 +112,22 @@ class Goods extends Common{
 
         //$cates = create_kv($cates,'id','name');
         //print_r($cates);
-
+        $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
         $js = $this->loadJsCss(array(
             'p:common/common',
             //'p:tagsinput/jquery.tagsinput',
             'p:ueditor/ueditor',
             //'p:cate/jquery.cate',
             //'p:bootstrap/bootstrap-datetimepicker.min',
-            'p:webuper/js/webuploader','singleUp',
+//            'p:webuper/js/webuploader','singleUp',
+            'p:qiniu/qiniu-2.5.1',
+            'p:md5/md5',
             'p:dragSort/jquery.dragsort-052',
             'goods'), 'js', 'admin');
         $this->assign('footjs', $js);
+
+        $this->assign('uptoken', $uptoken);
+        $this->assign('qn_host', config('qiniu.host'));
         $this->assign('cates', $cates);
         $this->assign('info', $info);
         return $this->fetch('add');

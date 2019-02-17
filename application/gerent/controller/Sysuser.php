@@ -115,6 +115,7 @@ class Sysuser extends Common{
     }
 
     public function add($id=0){
+
         if($this->request->isPost()){
             return $this->save_user_data();
         }
@@ -122,6 +123,13 @@ class Sysuser extends Common{
         if($id>0){
             $where = ['id'=>$id,'isdel'=>0];
             $info = $this->admin_model->get_admin_info($where);
+
+            //修改正head_pic 的路径
+            $httphost = $this->request->scheme().'://'.$this->request->host();
+
+            $info['head_pic_url'] = c_img($info['head_pic'],3);
+            $info['head_pic'] = str_replace($httphost,'',$info['head_pic_url']);
+//            print_r($info);
         }
         $roles = $this->admin_model->get_role_list(['status'=>1],'id,name,remark');
         $departs = $this->admin_model->get_depart_list(['isdel'=>0],'id,name',0);
@@ -130,13 +138,20 @@ class Sysuser extends Common{
             $cpw = ['id'=>session('cpid')];
         }
         //print_r($departs);
+        $uptoken = \app\common\library\Qiniu::get_uptoken(config('qiniu.bucket1'));
         $js = $this->loadJsCss(array('p:common/common',
             //'p:cate/jquery.cate',
-            'p:webuper/js/webuploader','singleUp','user_add'), 'js', 'admin');
+//            'p:webuper/js/webuploader','singleUp',
+            'p:qiniu/qiniu-2.5.1',
+            'p:md5/md5',
+            'user_add'), 'js', 'admin');
         $this->assign('footjs', $js);
         $this->assign('info', $info);
         $this->assign('roles', $roles);
         $this->assign('departs', $departs);
+        $this->assign('uptoken', $uptoken);
+        $this->assign('img_ext', config('img_ext'));
+        $this->assign('qn_host', config('qiniu.host'));
         $this->assign('b_powers', $this->b_powers());
         $this->assign('company', (new Company())->get_list($cpw,'id,name',0));
         $this->assign('teams', (new Teams())->get_list('1=1','id,name',0));
@@ -251,6 +266,9 @@ class Sysuser extends Common{
             $scene = 'add';
         }
         $ref = $post['ref'];
+        if(!isset($post['head_pic'])){
+            $post['head_pic'] = '';
+        }
         //print_r($post);
         $vAdmin = Loader::validate('admin');
         $res = $vAdmin->scene($scene)->check($post);

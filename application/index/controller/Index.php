@@ -19,6 +19,10 @@ class Index extends \app\common\controller\Base
         return '^_^';
     }
 
+    public function t25(){
+        phpinfo();
+    }
+
     public function t24(){
         dump([
             quimg('','aaaaaaaaa'),

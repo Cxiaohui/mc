@@ -932,7 +932,7 @@ $(function () {
 
     }
     $(document).on('click','.del_qnfile',function(){
-        //console.log('del_qnfile');
+        console.log('del_qnfile');
         //mcdoc_upload_box
         var _div = $(this).closest('.qiniu_doc_line'),
             qn_key = _div.find('.p_doc').attr('data-key');
@@ -997,11 +997,11 @@ var mc_qiniu = {
         $(document).on('change',_this.config.select,function(){
             var len = this.files.length;
             for(var i=0;i<len; i++){
-                _this.do_upload(i,this.files[i],len);
+                _this.do_upload(i,this.files[i],len,$(this));
             }
         });
     },
-    do_upload:function(index,fileobj,file_len){
+    do_upload:function(index,fileobj,file_len,thisele){
         var _this = this,
             nameinfo = this.do_filename(fileobj.name),
             press = $('.mcdoc_press');
@@ -1009,7 +1009,10 @@ var mc_qiniu = {
         var observer = {
             next:function(res){
                 //console.log(res);
-                press.show().css('width',res.total.percent+'%').html(res.total.percent+'%');
+                if(press.length>0){
+                    press.show().css('width',res.total.percent+'%').html(res.total.percent+'%');
+                }
+
             },
             error:function(err){
                 //layer.alert(err.code);
@@ -1020,6 +1023,7 @@ var mc_qiniu = {
                     //目标资源已存在
                     if(err.code == 614){
                         var res = {
+                            "thisdom":thisele,
                             "filename":nameinfo['filename'],
                             "key":nameinfo['q_key'],
                             "hash":md5(nameinfo['q_key'])
@@ -1039,8 +1043,10 @@ var mc_qiniu = {
                 //console.log(res);
                 //console.log(nameinfo);
                 res['filename'] = nameinfo['filename'];
+                res['thisdom'] = thisele;
                 _this.after_upload && _this.after_upload(res);
-                if(index==file_len-1){
+                if(press.length>0 && index==file_len-1){
+
                     press.hide();
                 }
             }

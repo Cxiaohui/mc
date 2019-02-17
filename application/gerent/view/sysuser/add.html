@@ -165,18 +165,37 @@
             <div class="control-group">
                 <label class="control-label"><span class="error">*</span> 头像</label>
                 <div class="controls">
-                    <input type="hidden" name="head_pic" id="logoinput" value="{if $info}{$info.head_pic}{/if}">
-                    <div class="uploadimgbox" style="width: 200px;height:150px;">
+                    <!--<input type="hidden" name="head_pic" id="logoinput" value="{if $info}{$info.head_pic}{/if}">-->
+                    <!--<div class="uploadimgbox" style="width: 200px;height:150px;">
                         <img src="{if $info}{:c_img($info.head_pic,3)}{else/}/data/image/default.png{/if}" id="logoimg" class="defimg" alt="logo">
-                    </div>
-                    <div class="row-fluid">
+                    </div>-->
+                    <!--<div class="row-fluid">
                         <div id="filePicker" class="mt5 pull-left"></div>
                         <div class="mt10 ml10 text-error pull-left">仅允许jpg和png格式，1.5M内，大小 600x600（px）</div>
                     </div>
 
                     <div id="progressbar" class="progress progress-success progress-striped mt5 span3 ml0" style="display:none">
                         <span class="bar" style="width: 0%;">0%</span>
+                    </div>-->
+
+                    <div class="mcdoc_upload_box" style="width: 300px;">
+                        <input type="file" class="select"/>
+                        <div class="mt10 ml10 text-error">仅允许jpg和png格式，1.5M内，大小 600x600（px）</div>
+                        <div class="mcdoc_ppress">
+                            <div class="mcdoc_press">0%</div>
+                        </div>
+                        <p>&nbsp;</p>
+                        {if $info}
+                        <div class="qiniu_doc_line">
+
+                            <p><img src="{if $info}{:c_img($info.head_pic,3)}{else/}/data/image/default.png{/if}" style="height: 120px;"/> </p>
+                            <input type="hidden" name="head_pic" class="p_doc" value="{$info.head_pic}" data-ext="" data-key="{$info.head_pic}" data-hash="">
+
+                            <p><a href="javascript:;" class="text-error del_qnfile"><i class="icon-trash"></i> 删除</a></p>
+                        </div>
+                        {/if}
                     </div>
+
                 </div>
             </div>
             <div class="control-group">
@@ -201,4 +220,6 @@
 </div><!-- 主体 end-->
 <script type="text/javascript">
     var up_url = "{:url('Up/index')}";
+    var uptoken = '{$uptoken}',
+        qu_host = "{$qn_host}";
 </script>
