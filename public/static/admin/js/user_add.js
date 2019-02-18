@@ -11,7 +11,9 @@ mc_qiniu.init({
         //$('#logoinput').val(res['key']);
         //$('#logoimg').attr('src',qu_host+res['key']);
         var ext = (res['filename'].split('.').splice(-1))[0].toLowerCase();
-
+        if($('.qiniu_doc_line').length>0){
+            $('.qiniu_doc_line').remove();
+        }
         var html = '<div class="qiniu_doc_line">';
         if(ext=='jpg' || ext=='png' || ext=='jpeg' || ext=='gif'){
             html += '<p><img src="'+qu_host+res['key']+'" style="height: 120px;"/> </p>';
