@@ -1,3 +1,6 @@
 public/data
 public/mch5
 .gitignore
+/thinkphp/
+composer.lock
+/vendor/
