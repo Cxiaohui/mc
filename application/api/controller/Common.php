@@ -94,7 +94,7 @@ class Common extends Rest {
     protected function get_public_h5url(){
         return [
             'pzsm_url'=>$this->h5_base_url().'DetailsPage.html?id=20',
-            'ysbz_url'=>$this->h5_base_url().'DetailsPage.html?id=19',
+            'ysbz_url'=>$this->h5_base_url().'DetailsPage.html?id=37',
             'sgbz_url'=>$this->h5_base_url().'DetailsPage.html?id=36',
             'zxbz_url'=>$this->h5_base_url().'DecorateSecurity.html',
             'kfzx_url'=>$this->h5_base_url().'ConsumerLine.html',
