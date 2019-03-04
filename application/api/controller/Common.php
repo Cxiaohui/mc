@@ -95,7 +95,7 @@ class Common extends Rest {
         return [
             'pzsm_url'=>$this->h5_base_url().'DetailsPage.html?id=20',
             'ysbz_url'=>$this->h5_base_url().'DetailsPage.html?id=19',
-            'sgbz_url'=>$this->h5_base_url().'DetailsPage.html?id=18',
+            'sgbz_url'=>$this->h5_base_url().'DetailsPage.html?id=36',
             'zxbz_url'=>$this->h5_base_url().'DecorateSecurity.html',
             'kfzx_url'=>$this->h5_base_url().'ConsumerLine.html',
             'mctk_url'=>$this->h5_base_url().'DetailsPage.html?id=21',
