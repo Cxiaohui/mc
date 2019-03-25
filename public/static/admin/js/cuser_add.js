@@ -61,12 +61,12 @@ $(function(){
             formValid.showSuccess(mobile);
         }
 
-        if(!checkInputEmpty(lgpwd)){
-            formValid.showErr(lgpwd,'请填写密码');
-            return false;
-        }else{
-            formValid.showSuccess(lgpwd);
-        }
+        // if(!checkInputEmpty(lgpwd)){
+        //     formValid.showErr(lgpwd,'请填写密码');
+        //     return false;
+        // }else{
+        //     formValid.showSuccess(lgpwd);
+        // }
 
     });
 });

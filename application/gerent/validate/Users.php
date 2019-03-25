@@ -14,7 +14,7 @@ class Users extends Validate{
         'cpid'  =>  'require',//|unique:admin
         'uname'  =>  'require',//|unique:admin
         'mobile'=>'require|unique:users',
-        'lgpwd' =>  'require'
+//        'lgpwd' =>  'require'
     ];
 
     protected $message = [
@@ -23,11 +23,11 @@ class Users extends Validate{
         //'uname.alphaDash'  =>  '用户名只能为字母和数字，下划线_及破折号-',
         'mobile.require' =>  '请填写手机号码',
         'mobile.unique' =>  '该手机号码已存在',
-        'lgpwd.require' =>  '请设置密码'
+//        'lgpwd.require' =>  '请设置密码'
     ];
 
     protected $scene = [
-        'add'=>['cpid','uname','mobile','lgpwd'],
+        'add'=>['cpid','uname','mobile'],
         'edit'  =>  ['cpid','uname']
     ];
 }
