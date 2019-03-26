@@ -123,7 +123,7 @@ class User extends Common{
         unset($post['file']);
         $scene = 'edit';
         if(!isset($post['id'])){
-            $post['lgstat'] = Str::randString(5);
+//            $post['lgstat'] = Str::randString(5);
             $scene = 'add';
         }
         //$ref = $post['ref'];

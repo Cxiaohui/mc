@@ -20,7 +20,7 @@ class User extends General{
 
         }else{
             $data['addtime'] = $this->now_datetime;
-            $data['lgpwd'] = create_pwd($data['lgpwd'],$data['lgstat']);
+//            $data['lgpwd'] = create_pwd($data['lgpwd'],$data['lgstat']);
             return $this->add_data($data);
 
         }
