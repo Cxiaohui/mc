@@ -35,7 +35,8 @@ class Stepstatus{
 
     public function do_job(){
         $ps = new Projectstep();
-        $where = ['isdel'=>0,'realtime'=>''];
+//        $where = ['isdel'=>0,'realtime'=>''];
+        $where = ['status'=>0,'isdel'=>0,'plan_time1'=>['elt',date('Y-m-d')]];
         $list = $ps->get_list($where,'id,plan_time1,status',0);
         $today = strtotime(date('Y-m-d'));
         if(!empty($list)){
