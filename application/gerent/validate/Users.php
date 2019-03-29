@@ -13,7 +13,7 @@ class Users extends Validate{
     protected $rule = [
         'cpid'  =>  'require',//|unique:admin
         'uname'  =>  'require',//|unique:admin
-        'mobile'=>'require|unique:users',
+        'mobile'=>'require',//unique:users
 //        'lgpwd' =>  'require'
     ];
 
@@ -22,7 +22,7 @@ class Users extends Validate{
         'uname.require'  =>  '用户名必须',
         //'uname.alphaDash'  =>  '用户名只能为字母和数字，下划线_及破折号-',
         'mobile.require' =>  '请填写手机号码',
-        'mobile.unique' =>  '该手机号码已存在',
+        //'mobile.unique' =>  '该手机号码已存在',
 //        'lgpwd.require' =>  '请设置密码'
     ];
 
