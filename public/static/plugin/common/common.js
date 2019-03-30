@@ -997,6 +997,7 @@ var mc_qiniu = {
         $(document).on('change',_this.config.select,function(){
             var len = this.files.length;
             for(var i=0;i<len; i++){
+                console.log("filetype:"+this.files[i].type);
                 _this.do_upload(i,this.files[i],len,$(this));
             }
         });

@@ -2,7 +2,13 @@
  * Created by chenxh on 2018/7/8.
  */
 var uploadeds = [];
-var mime_type = null;
+var mime_type = [
+    "",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/wps-writer",
+    "application/pdf"
+];
 if(type==2){
     mime_type = ["image/png", "image/jpeg", "image/gif"];
 }

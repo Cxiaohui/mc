@@ -163,6 +163,7 @@ class Projectstatic extends Common{
             if(!$info){
                 $this->error('该信息不存在');
             }
+            $type = $info['type'];
             $info['docs'] = $this->M->get_order_list(['p_static_id'=>$id,'isdel'=>0],'*',['seq'=>'asc'],0);
         }
         //print_r($info);
