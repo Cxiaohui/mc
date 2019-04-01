@@ -38,7 +38,8 @@ class Handle extends thk_handle{
         if($HTTP_ACCEPT == 'application/json'){
         //if ($e instanceof Exception && request()->isAjax()) {
             //return response($e->getMessage(), $e->getStatusCode())
-            header('Content-Type:application/json; charset=utf-8');
+            //todo Uncaught think\exception\ErrorException: Cannot modify header information - headers already sent by (output started at /home/wwwroot/mc_php/thinkphp/library/think/Response.php:128) in /home/wwwroot/mc_php/application/common/exception/Handle.php:41
+            @header('Content-Type:application/json; charset=utf-8');
             echo json_encode([
                 'code'=>500,
                 'msg'=>$error_meesage,

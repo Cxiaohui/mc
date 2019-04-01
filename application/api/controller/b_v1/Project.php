@@ -26,12 +26,15 @@ class Project extends Common{
 
         $this->PA = new Projectadmin();
     }
+    //todo b:17:de4e5313e666743b91c21acaa35eedd2
+    //todo Undefined index: cpid
+    //todo /home/wwwroot/mc_php/application/api/controller/b_v1/Project.php 34
     //我负责的项目列表
     public function list_get(){
 
         //print_r($this->user);
         $where = ['isdel'=>0];
-        if($this->user['cpid']>1){
+        if(isset($this->user['cpid']) && $this->user['cpid']>1){
             $where['cpid'] = ['in',[1,$this->user['cpid']]];
         }
         //print_r($where);
